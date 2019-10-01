@@ -4,7 +4,7 @@
  * www.crudigniter.com
  */
  
-class Dashboard extends CI_Controller{
+class Start_match extends CI_Controller{
     function __construct()
     {
 		parent::__construct();
@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller{
 
     function index()
     {
-        $data['_view'] = 'dashboard';
+        $data['_view'] = 'startmatch_view';
         $this->load->view('layouts/main',$data);
 	}
 	
