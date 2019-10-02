@@ -23,10 +23,12 @@
 					</div>
 					<div class="col-md-6">
 						<label for="company" class="control-label"><span class="text-danger">*</span>Company</label>
-						<div class="form-group">
-							<input type="text" name="company" value="<?php echo $this->input->post('company'); ?>" class="form-control" id="company" />
-							<span class="text-danger"><?php echo form_error('company');?></span>
-						</div>
+						<select name="company" class="form-control">
+							<option value="">select group</option>
+							<option value="G2">G2</option>
+							<option value="CG">CG</option>	
+						</select>
+						<span class="text-danger"><?php echo form_error('company');?></span>
 					</div>
 					<div class="col-md-6">
 						<label for="employee_id" class="control-label"><span class="text-danger">*</span>Employee Id</label>
@@ -37,10 +39,13 @@
 					</div>
 					<div class="col-md-6">
 						<label for="player_role" class="control-label"><span class="text-danger">*</span>Player Role</label>
-						<div class="form-group">
-							<input type="text" name="player_role" value="<?php echo $this->input->post('player_role'); ?>" class="form-control" id="player_role" />
-							<span class="text-danger"><?php echo form_error('player_role');?></span>
-						</div>
+						<select name="player_role" class="form-control">
+							<option value="">select group</option>
+							<option value="Batsman">Batsman</option>
+							<option value="Bowler">Bowler</option>
+							<option value="All Rounder">All Rounder</option>	
+						</select>
+						<span class="text-danger"><?php echo form_error('player_role');?></span>
 					</div>
 				</div>
 			</div>

@@ -10,14 +10,12 @@
             <div class="box-body">
                 <table class="table table-striped">
                     <tr>
-						<th>User Password</th>
 						<th>User Name</th>
 						<th>User Email</th>
 						<th>Actions</th>
                     </tr>
                     <?php foreach($users as $u){ ?>
                     <tr>
-						<td><?php echo $u['user_password']; ?></td>
 						<td><?php echo $u['user_name']; ?></td>
 						<td><?php echo $u['user_email']; ?></td>
 						<td>

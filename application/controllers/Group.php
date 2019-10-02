@@ -30,22 +30,24 @@ class Group extends CI_Controller{
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('group_name','Group Name','required|max_length[255]');
-		$this->form_validation->set_rules('tournament_id','Tournament Id','required|integer');
 		
 		if($this->form_validation->run())     
         {   
             $params = array(
 				'group_name' => $this->input->post('group_name'),
-				'tournament_id' => $this->input->post('tournament_id'),
+				'tournament_id' => $this->input->post('tournament_id')
             );
+
             
             $group_id = $this->Group_model->add_group($params);
             redirect('group/index');
         }
         else
         {  
-            $this->load->model('Tournament_model');
-			$data['all_tournaments'] = $this->Tournament_model->get_all_tournaments();
+            // $this->load->model('Tournament_model');
+            // $data['all_tournaments'] = $this->Tournament_model->get_all_tournaments();
+            
+            $data['all_tournaments'] = $this->Group_model->get_all_tournaments();
             
             $data['_view'] = 'group/add';
             $this->load->view('layouts/main',$data);
@@ -65,13 +67,13 @@ class Group extends CI_Controller{
             $this->load->library('form_validation');
 
 			$this->form_validation->set_rules('group_name','Group Name','required|max_length[255]');
-			$this->form_validation->set_rules('tournament_id','Tournament Id','required|integer');
+			$this->form_validation->set_rules('tournament_name','Tournament Name','required|integer');
 		
 			if($this->form_validation->run())     
             {   
                 $params = array(
 					'group_name' => $this->input->post('group_name'),
-					'tournament_id' => $this->input->post('tournament_id'),
+					'tournament_id' => $this->input->post('tournament_name'),
                 );
 
                 $this->Group_model->update_group($group_id,$params);            

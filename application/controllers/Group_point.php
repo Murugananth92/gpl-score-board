@@ -30,7 +30,7 @@ class Group_point extends CI_Controller{
         $this->load->library('form_validation');
         
         $this->form_validation->set_rules('group_name','Group name','required|integer');
-        $this->form_validation->set_rules('tournament_team_id','Tournament Team Id','required|integer');
+        $this->form_validation->set_rules('tournament_team_name','Tournament Team Name','required|integer');
 		$this->form_validation->set_rules('net_run_rate','Net Run Rate','required');
 		$this->form_validation->set_rules('points','Points','required|integer');
 		$this->form_validation->set_rules('wins','Wins','required|integer');
@@ -78,7 +78,7 @@ class Group_point extends CI_Controller{
             $this->load->library('form_validation');
 
 			$this->form_validation->set_rules('group_name','Group name','required|integer');
-        $this->form_validation->set_rules('tournament_team_id','Tournament Team Id','required|integer');
+        $this->form_validation->set_rules('tournament_team_name','Tournament Team Name','required|integer');
 		$this->form_validation->set_rules('net_run_rate','Net Run Rate','required');
 		$this->form_validation->set_rules('points','Points','required|integer');
 		$this->form_validation->set_rules('wins','Wins','required|integer');

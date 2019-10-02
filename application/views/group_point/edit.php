@@ -25,8 +25,8 @@
 					</div>
 
 					<div class="col-md-6">
-						<label for="tournament_id" class="control-label"><span class="text-danger">*</span>Tournament Team</label>
-						<select name="tournament_team_id" class="form-control">
+						<label for="tournament_team_name" class="control-label"><span class="text-danger">*</span>Tournament Team</label>
+						<select name="tournament_team_name" class="form-control">
 							<option value="">select tournament_team</option>
 							<?php 
 							foreach($all_tournament_teams as $tournament_team)
@@ -37,7 +37,7 @@
 							} 
 							?>
 						</select>
-						<span class="text-danger"><?php echo form_error('tournament_id');?></span>
+						<span class="text-danger"><?php echo form_error('tournament_team_name');?></span>
 					</div>
 					<div class="col-md-6">
 						<label for="net_run_rate" class="control-label"><span class="text-danger">*</span>Net Run Rate</label>

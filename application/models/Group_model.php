@@ -18,6 +18,14 @@ class Group_model extends CI_Model
     {
         return $this->db->get_where('groups',array('group_id'=>$group_id))->row_array();
     }
+
+    
+    function get_all_tournaments()
+    {
+        $this->db->select('tournament_name,tournament_id');
+        return $this->db->get_where('tournaments as T','is_active="T"')->result_array();
+
+    }
         
     /*
      * Get all groups

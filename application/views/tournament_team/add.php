@@ -8,8 +8,8 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="tournament_id" class="control-label"><span class="text-danger">*</span>Tournament Id</label>
-						<select name="tournament_id" class='form-control'>
+						<label for="tournament_name" class="control-label"><span class="text-danger">*</span>Tournament Id</label>
+						<select name="tournament_name" class='form-control'>
 						<option value="">select tournament</option>
 						<?php 
 						foreach($all_tournaments as $tournament)
@@ -20,12 +20,12 @@
 						} 
 						?>
 					</select>
-					<span class="text-danger"><?php echo form_error('tournament_id');?></span>
+					<span class="text-danger"><?php echo form_error('tournament_name');?></span>
 					</div>
 					
 					<div class="col-md-6">
-						<label for="team_id" class="control-label"><span class="text-danger">*</span>Team Name</label>
-						<select name="team_id" class='form-control'>
+						<label for="team_name" class="control-label"><span class="text-danger">*</span>Team Name</label>
+						<select name="team_name" class='form-control'>
 							<option value="">select team</option>
 							<?php 
 							foreach($all_teams as $team)
@@ -36,7 +36,7 @@
 							} 
 							?>
 						</select>
-						<span class="text-danger"><?php echo form_error('team_id');?></span>
+						<span class="text-danger"><?php echo form_error('team_name');?></span>
 					</div>
 					<div class="col-md-6">
 						<label for="captain" class="control-label"><span class="text-danger">*</span>Captain</label>
@@ -47,7 +47,7 @@
 							{
 								$selected = ($player['player_id'] == $this->input->post('captain')) ? ' selected="selected"' : "";
 
-								echo '<option value="'.$player['player_id'].'" '.$selected.'>'.$player['player_name'].'</option>';
+								echo '<option value="'.$player['player_id'].'" '.$selected.'>'.$player['player_name'].' - '.$player['employee_id'].'</option>';
 							} 
 							?>
 						</select>
@@ -62,7 +62,7 @@
 							{
 								$selected = ($player['player_id'] == $this->input->post('vice_captain')) ? ' selected="selected"' : "";
 
-								echo '<option value="'.$player['player_id'].'" '.$selected.'>'.$player['player_name'].'</option>';
+								echo '<option value="'.$player['player_id'].'" '.$selected.'>'.$player['player_name'].' - '.$player['employee_id'].'</option>';
 							} 
 							?>
 						</select>
