@@ -10,9 +10,7 @@
             <div class="box-body">
                 <table class="table table-striped">
                     <tr>
-						<th>Player Id</th>
 						<th>Player Name</th>
-						<th>Player Avatar</th>
 						<th>Player Email</th>
 						<th>Company</th>
 						<th>Employee Id</th>
@@ -21,9 +19,7 @@
                     </tr>
                     <?php foreach($players as $p){ ?>
                     <tr>
-						<td><?php echo $p['player_id']; ?></td>
 						<td><?php echo $p['player_name']; ?></td>
-						<td><?php echo $p['player_avatar']; ?></td>
 						<td><?php echo $p['player_email']; ?></td>
 						<td><?php echo $p['company']; ?></td>
 						<td><?php echo $p['employee_id']; ?></td>
