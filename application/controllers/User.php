@@ -32,9 +32,6 @@ class User extends CI_Controller{
 		$this->form_validation->set_rules('user_password','User Password','required|max_length[255]');
 		$this->form_validation->set_rules('user_name','User Name','required|max_length[100]');
 		$this->form_validation->set_rules('user_email','User Email','required|max_length[255]|valid_email');
-		$this->form_validation->set_rules('is_active','Is Active','required');
-		$this->form_validation->set_rules('created_at','Created At','required');
-		$this->form_validation->set_rules('updated_by','Updated By','integer');
 		
 		if($this->form_validation->run())     
         {   
@@ -43,9 +40,6 @@ class User extends CI_Controller{
 				'user_name' => $this->input->post('user_name'),
 				'user_email' => $this->input->post('user_email'),
 				'is_active' => $this->input->post('is_active'),
-				'created_at' => $this->input->post('created_at'),
-				'updated_at' => $this->input->post('updated_at'),
-				'updated_by' => $this->input->post('updated_by'),
             );
             
             $user_id = $this->User_model->add_user($params);
@@ -73,9 +67,6 @@ class User extends CI_Controller{
 			$this->form_validation->set_rules('user_password','User Password','required|max_length[255]');
 			$this->form_validation->set_rules('user_name','User Name','required|max_length[100]');
 			$this->form_validation->set_rules('user_email','User Email','required|max_length[255]|valid_email');
-			$this->form_validation->set_rules('is_active','Is Active','required');
-			$this->form_validation->set_rules('created_at','Created At','required');
-			$this->form_validation->set_rules('updated_by','Updated By','integer');
 		
 			if($this->form_validation->run())     
             {   
@@ -83,10 +74,7 @@ class User extends CI_Controller{
 					'user_password' => $this->input->post('user_password'),
 					'user_name' => $this->input->post('user_name'),
 					'user_email' => $this->input->post('user_email'),
-					'is_active' => $this->input->post('is_active'),
-					'created_at' => $this->input->post('created_at'),
-					'updated_at' => $this->input->post('updated_at'),
-					'updated_by' => $this->input->post('updated_by'),
+					'is_active' => $this->input->post('is_active')
                 );
 
                 $this->User_model->update_user($user_id,$params);            

@@ -5,10 +5,12 @@
  */
  
 class Player extends CI_Controller{
+    private $user_data;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Player_model');
+        $this->user_data = $this->session->userdata; 
     } 
 
     /*
@@ -26,32 +28,27 @@ class Player extends CI_Controller{
      * Adding a new player
      */
     function add()
-    {   
+    {  
+        // echo  $this->user_data['user_id'];
+        // die;
+
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('player_name','Player Name','required|max_length[150]');
-		$this->form_validation->set_rules('player_avatar','Player Avatar','required|max_length[255]');
 		$this->form_validation->set_rules('player_email','Player Email','required|max_length[255]|valid_email');
 		$this->form_validation->set_rules('company','Company','required');
 		$this->form_validation->set_rules('employee_id','Employee Id','required|integer');
 		$this->form_validation->set_rules('player_role','Player Role','required');
-		$this->form_validation->set_rules('created_at','Created At','required');
-		$this->form_validation->set_rules('created_by','Created By','integer');
-		$this->form_validation->set_rules('updated_by','Updated By','integer');
 		
 		if($this->form_validation->run())     
         {   
             $params = array(
 				'player_name' => $this->input->post('player_name'),
-				'player_avatar' => $this->input->post('player_avatar'),
 				'player_email' => $this->input->post('player_email'),
 				'company' => $this->input->post('company'),
 				'employee_id' => $this->input->post('employee_id'),
 				'player_role' => $this->input->post('player_role'),
-				'created_at' => $this->input->post('created_at'),
-				'updated_at' => $this->input->post('updated_at'),
-				'created_by' => $this->input->post('created_by'),
-				'updated_by' => $this->input->post('updated_by'),
+				'created_by' => $this->user_data['user_id']
             );
             
             $player_id = $this->Player_model->add_player($params);
@@ -77,28 +74,20 @@ class Player extends CI_Controller{
             $this->load->library('form_validation');
 
 			$this->form_validation->set_rules('player_name','Player Name','required|max_length[150]');
-			$this->form_validation->set_rules('player_avatar','Player Avatar','required|max_length[255]');
 			$this->form_validation->set_rules('player_email','Player Email','required|max_length[255]|valid_email');
 			$this->form_validation->set_rules('company','Company','required');
 			$this->form_validation->set_rules('employee_id','Employee Id','required|integer');
 			$this->form_validation->set_rules('player_role','Player Role','required');
-			$this->form_validation->set_rules('created_at','Created At','required');
-			$this->form_validation->set_rules('created_by','Created By','integer');
-			$this->form_validation->set_rules('updated_by','Updated By','integer');
 		
 			if($this->form_validation->run())     
             {   
                 $params = array(
 					'player_name' => $this->input->post('player_name'),
-					'player_avatar' => $this->input->post('player_avatar'),
 					'player_email' => $this->input->post('player_email'),
 					'company' => $this->input->post('company'),
 					'employee_id' => $this->input->post('employee_id'),
 					'player_role' => $this->input->post('player_role'),
-					'created_at' => $this->input->post('created_at'),
-					'updated_at' => $this->input->post('updated_at'),
-					'created_by' => $this->input->post('created_by'),
-					'updated_by' => $this->input->post('updated_by'),
+					'updated_by' => $this->user_data['user_id']
                 );
 
                 $this->Player_model->update_player($player_id,$params);            

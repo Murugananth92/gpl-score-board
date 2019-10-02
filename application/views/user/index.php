@@ -10,7 +10,6 @@
             <div class="box-body">
                 <table class="table table-striped">
                     <tr>
-						<th>User Id</th>
 						<th>User Password</th>
 						<th>User Name</th>
 						<th>User Email</th>
@@ -18,12 +17,10 @@
                     </tr>
                     <?php foreach($users as $u){ ?>
                     <tr>
-						<td><?php echo $u['user_id']; ?></td>
 						<td><?php echo $u['user_password']; ?></td>
 						<td><?php echo $u['user_name']; ?></td>
 						<td><?php echo $u['user_email']; ?></td>
 						<td>
-                            <a href="<?php echo site_url('user/edit/'.$u['user_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
                             <a href="<?php echo site_url('user/remove/'.$u['user_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
                         </td>
                     </tr>

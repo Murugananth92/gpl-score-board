@@ -106,30 +106,28 @@
                             </a>
 						</li>
 						<li>
-                            <a href="#">
-                                <i class="fa fa-desktop"></i> <span>Player</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('player/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('player/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
+                            <a href="<?php echo site_url('player/index');?>"><i class="fa fa-list-ul"></i>Player Listing</a>
                         </li>
 						<li>
-                            <a href="#">
-                                <i class="fa fa-desktop"></i> <span>User</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('user/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('user/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
+                            <a href="<?php echo site_url('user/index');?>"><i class="fa fa-list-ul"></i>User Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('team/index');?>"><i class="fa fa-list-ul"></i>Team Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('tournament/index');?>"><i class="fa fa-list-ul"></i>tournament Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('tournament_team/index');?>"><i class="fa fa-list-ul"></i>tournament team Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('tournament_player/index');?>"><i class="fa fa-list-ul"></i>tournament players Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('group/index');?>"><i class="fa fa-list-ul"></i>group Listing</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('group_point/index');?>"><i class="fa fa-list-ul"></i>group_points Listing</a>
                         </li>
                     </ul>
                 </section>

@@ -15,13 +15,6 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="player_avatar" class="control-label"><span class="text-danger">*</span>Player Avatar</label>
-						<div class="form-group">
-							<input type="text" name="player_avatar" value="<?php echo $this->input->post('player_avatar'); ?>" class="form-control" id="player_avatar" />
-							<span class="text-danger"><?php echo form_error('player_avatar');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
 						<label for="player_email" class="control-label"><span class="text-danger">*</span>Player Email</label>
 						<div class="form-group">
 							<input type="text" name="player_email" value="<?php echo $this->input->post('player_email'); ?>" class="form-control" id="player_email" />
