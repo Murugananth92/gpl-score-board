@@ -28,9 +28,7 @@ class Group_point extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-        
-        $this->form_validation->set_rules('group_name','Group name','required|integer');
-        $this->form_validation->set_rules('tournament_team_name','Tournament Team Name','required|integer');
+        $this->form_validation->set_rules('tournament_team_name','tournament Team Name','required');
 		$this->form_validation->set_rules('net_run_rate','Net Run Rate','required');
 		$this->form_validation->set_rules('points','Points','required|integer');
 		$this->form_validation->set_rules('wins','Wins','required|integer');
@@ -40,14 +38,16 @@ class Group_point extends CI_Controller{
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'group_id' => $this->input->post('group_name'),
-				'tournament_team_id' => $this->input->post('tournament_team_id'),
+				'group_id' => $this->input->post('tournament_id'),
+				'tournament_team_id' => $this->input->post('tournament_team_name'),
 				'net_run_rate' => $this->input->post('net_run_rate'),
 				'points' => $this->input->post('points'),
 				'wins' => $this->input->post('wins'),
 				'losses' => $this->input->post('losses'),
 				'n/r' => $this->input->post('n/r'),
             );
+
+
             
             $group_point_id = $this->Group_point_model->add_group_point($params);
             redirect('group_point/index');
@@ -55,10 +55,9 @@ class Group_point extends CI_Controller{
         else
         {
 			$this->load->model('Group_model');
-			$data['all_groups'] = $this->Group_model->get_all_groups();
-
-			$this->load->model('Tournament_team_model');
-			$data['all_tournament_teams'] = $this->Tournament_team_model->get_all_tournament_teams();
+			$data['all_tournaments'] = $this->Group_model->get_all_tournaments();
+            
+            $data['all_tournament_teams'] = $this->Group_point_model->get_all_tournament_teams();
             
             $data['_view'] = 'group_point/add';
             $this->load->view('layouts/main',$data);
@@ -77,8 +76,6 @@ class Group_point extends CI_Controller{
         {
             $this->load->library('form_validation');
 
-			$this->form_validation->set_rules('group_name','Group name','required|integer');
-        $this->form_validation->set_rules('tournament_team_name','Tournament Team Name','required|integer');
 		$this->form_validation->set_rules('net_run_rate','Net Run Rate','required');
 		$this->form_validation->set_rules('points','Points','required|integer');
 		$this->form_validation->set_rules('wins','Wins','required|integer');
@@ -88,7 +85,7 @@ class Group_point extends CI_Controller{
 			if($this->form_validation->run())     
             {   
                 $params = array(
-					'group_id' => $this->input->post('group_name'),
+					'group_id' => $this->input->post('group_id'),
 					'tournament_team_id' => $this->input->post('tournament_team_id'),
 					'net_run_rate' => $this->input->post('net_run_rate'),
 					'points' => $this->input->post('points'),
@@ -102,11 +99,9 @@ class Group_point extends CI_Controller{
             }
             else
             {
-				$this->load->model('Group_model');
-				$data['all_groups'] = $this->Group_model->get_all_groups();
 
-				$this->load->model('Tournament_team_model');
-				$data['all_tournament_teams'] = $this->Tournament_team_model->get_all_tournament_teams();
+				$this->load->model('Group_model');
+				$data['all_tournaments'] = $this->Group_model->get_all_tournaments();
 
                 $data['_view'] = 'group_point/edit';
                 $this->load->view('layouts/main',$data);

@@ -17,6 +17,12 @@ class Tournament_model extends CI_Model
     function get_tournament($tournament_id)
     {
         return $this->db->get_where('tournaments',array('tournament_id'=>$tournament_id))->row_array();
+       
+    }
+
+    public function get_active_tournament(){
+        $this->db->where("is_active","T");
+        return $this->db->get('tournaments')->row_array();
     }
         
     /*

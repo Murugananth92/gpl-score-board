@@ -55,10 +55,17 @@ class Tournament_player_model extends CI_Model
     /*
      * function to update tournament_player
      */
-    function update_tournament_player($tournament_players_id,$params)
+    function update_tournament_player($params,$team_id,$captain,$vice_captain)
     {
-        $this->db->where('tournament_players_id',$tournament_players_id);
-        return $this->db->update('tournament_players',$params);
+        // $this->db->where('tournament_players_id',$tournament_players_id);
+        // return $this->db->update('tournament_players',$params);
+        print_r($params);
+        print_r($team_id);
+        print_r($captain);
+        print_r($vice_captain);
+        // die;
+        // $this->db->where('tournament_team_id',$team_id);
+        $this->db->insert_batch('tournament_playerssd', $params,);
     }
     
     /*

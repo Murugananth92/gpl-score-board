@@ -24,6 +24,8 @@
     </head>
     
     <body class="hold-transition skin-blue sidebar-mini">
+         <!-- jQuery 3.4.1 -->
+         <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
@@ -174,8 +176,7 @@
             <div class="control-sidebar-bg"></div>
         </div>
 
-        <!-- jQuery 3.4.1 -->
-        <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+       
         <!-- Bootstrap 3.4.1 -->
         <script src="<?php echo site_url('resources/js/bootstrap.min.js');?>"></script>
         <!-- FastClick -->
