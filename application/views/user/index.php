@@ -8,12 +8,15 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-striped">
+                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
                     <tr>
 						<th>User Name</th>
 						<th>User Email</th>
-						<th>Actions</th>
+						<th class="no-sort">Actions</th>
                     </tr>
+                </thead>
+                <tbody>
                     <?php foreach($users as $u){ ?>
                     <tr>
 						<td><?php echo $u['user_name']; ?></td>
@@ -23,9 +26,11 @@
                         </td>
                     </tr>
                     <?php } ?>
+                </tbody>
                 </table>
                                 
             </div>
         </div>
     </div>
 </div>
+

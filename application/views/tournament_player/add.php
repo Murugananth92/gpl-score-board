@@ -9,14 +9,16 @@
           		<div class="row clearfix">
 					<div class="col-md-6">
 						<label for="tournament_team_name" class="control-label"><span class="text-danger">*</span>Tournament Team Name</label>
-						<select name="tournament_team_name" class='form-control'>
+						<select id="tournament_team_name" name="tournament_team_name" class='form-control'>
 							<option value="">select tournament_team</option>
 							<?php 
+							
+							
 							foreach($all_tournament_teams as $tournament_team)
 							{
 								$selected = ($tournament_team['team_id'] == $this->input->post('team_id')) ? ' selected="selected"' : "";
 
-								echo '<option value="'.$tournament_team['team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
+								echo '<option data-count="'.$tournament_team['TeamCount'].'" value="'.$tournament_team['team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
 							} 
 							?>
 						</select>
@@ -24,7 +26,7 @@
 					</div>
 					<div class="col-md-6">
 						<label for="player_name" class="control-label"><span class="text-danger">*</span>Player Id</label>
-						<select name="player_name" class='form-control'>
+						<select name="player_name[]"  multiple class='form-control chosen-select'>
 							<option value="">select player</option>
 							<?php 
 							foreach($all_players as $player)
@@ -48,4 +50,6 @@
       	</div>
     </div>
 </div>
+
+
 

@@ -8,12 +8,15 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-striped">
+                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
                     <tr>
 						<th>Tournament Name</th>
 						<th>Tournament Year</th>
-						<th>Actions</th>
+						<th class="no-sort">Actions</th>
                     </tr>
+                </thead>
+                <tbody>
                     <?php foreach($tournaments as $t){ ?>
                     <tr>
 						<td><?php echo $t['tournament_name']; ?></td>
@@ -24,6 +27,7 @@
                         </td>
                     </tr>
                     <?php } ?>
+                </tbody>
                 </table>
                                 
             </div>

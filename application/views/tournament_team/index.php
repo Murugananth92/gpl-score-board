@@ -8,26 +8,30 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-striped">
-                    <tr>
-						<th>Tournament Name</th>
-						<th>Team Name</th>
-						<th>Captain Name</th>
-						<th>Vice Captain Name</th>
-						<th>Actions</th>
-                    </tr>
-                    <?php foreach($tournament_teams as $t){ ?>
-                    <tr>
-						<td><?php echo $t['tournament_name']; ?></td>
-						<td><?php echo $t['team_name']; ?></td>
-						<td><?php echo $t['captain']; ?></td>
-						<td><?php echo $t['vice_captain']; ?></td>
-						<td>
-                            <a href="<?php echo site_url('tournament_team/edit/'.$t['tournament_team_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <a href="<?php echo site_url('tournament_team/remove/'.$t['tournament_team_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
-                        </td>
-                    </tr>
-                    <?php } ?>
+                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Tournament Name</th>
+                            <th>Team Name</th>
+                            <th>Captain Name</th>
+                            <th>Vice Captain Name</th>
+                            <th class="no-sort">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($tournament_teams as $t){ ?>
+                        <tr>
+                            <td><?php echo $t['tournament_name']; ?></td>
+                            <td><?php echo $t['team_name']; ?></td>
+                            <td><?php echo $t['captain']; ?></td>
+                            <td><?php echo $t['vice_captain']; ?></td>
+                            <td>
+                                <a href="<?php echo site_url('tournament_team/edit/'.$t['tournament_team_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
+                                <a href="<?php echo site_url('tournament_team/remove/'.$t['tournament_team_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
                 </table>
                                 
             </div>

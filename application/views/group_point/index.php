@@ -8,7 +8,8 @@
                 </div>
             </div>
             <div class="box-body">
-				<table class="table table-striped"> 
+				<table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+				<thead>
 					<tr>
 						<th>Group Id</th>
 						<th>Tournament Team Id</th>
@@ -17,8 +18,10 @@
 						<th>Wins</th>
 						<th>Losses</th>
 						<th>N/r</th>
-						<th>Action</th>
+						<th class="no-sort">Action</th>
 					</tr>
+				</thead>
+				<tbody>
 					<?php foreach($group_points as $g){ ?>
 					<tr>
 						<td><?php echo $g['group_name']; ?></td>
@@ -34,6 +37,7 @@
 						</td>
 					</tr>
 					<?php } ?>
+				</tbody>
 				</table>                 
             </div>
         </div>

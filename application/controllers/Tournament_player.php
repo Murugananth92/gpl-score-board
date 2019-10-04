@@ -30,7 +30,7 @@ class Tournament_player extends CI_Controller{
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('tournament_team_name','Tournament Team name','required|integer');
-		$this->form_validation->set_rules('player_name','Player Name','required');
+		$this->form_validation->set_rules('player_name[]','Player Name','required');
 		
 		if($this->form_validation->run())     
         {   
@@ -38,7 +38,7 @@ class Tournament_player extends CI_Controller{
 				'tournament_team_id' => $this->input->post('tournament_team_name'),
 				'player_id' => $this->input->post('player_name'),
             );
-            
+
             $tournament_player_id = $this->Tournament_player_model->add_tournament_player($params);
             redirect('tournament_player/index');
         }

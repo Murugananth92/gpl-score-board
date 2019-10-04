@@ -21,11 +21,16 @@
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+
+        <link rel="stylesheet" href="<?php echo site_url('resources/css/chosen.css');?>">
+      
     </head>
     
     <body class="hold-transition skin-blue sidebar-mini">
          <!-- jQuery 3.4.1 -->
          <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+        
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
@@ -190,5 +195,42 @@
 		<script src="<?php echo site_url('resources/js/bootstrap-datetimepicker.min.js');?>"></script>
 		<script src="<?php echo site_url('resources/select2/dist/js/select2.min.js');?>"></script>
         <script src="<?php echo site_url('resources/js/global.js');?>"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+        <script src="<?php echo site_url('resources/js/chosen.jquery.js');?>"></script>
+
+        
+        
+        <script>
+            var max_selected_options_val = 15;
+                var $chosen = $('.chosen-select').chosen({
+                max_selected_options: max_selected_options_val
+                });
+
+                $chosen.change(function () {
+                var $this = $(this);
+                var chosen = $this.data('chosen');
+                var search = chosen.search_container.find('input[type="text"]');
+                
+                search.prop('disabled', $this.val() !== null);
+                
+                if (chosen.active_field) {
+                    search.focus();
+                }
+                });
+
+
+
+                $(document).ready( function () {
+
+                $('#dataTable').dataTable( {
+                    "columnDefs": [ {
+                    "targets": 'no-sort',
+                    "orderable": false,
+                } ]
+            } );
+
+            } );
+        </script>
     </body>
 </html>

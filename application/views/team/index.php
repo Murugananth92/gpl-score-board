@@ -8,11 +8,14 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-striped">
+                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
                     <tr>
 						<th>Team Name</th>
-						<th>Actions</th>
+						<th class="no-sort">Actions</th>
                     </tr>
+                </thead>
+                <tbody>
                     <?php foreach($teams as $t){ ?>
                     <tr>
 						<td><?php echo $t['team_name']; ?></td>
@@ -22,6 +25,7 @@
                         </td>
                     </tr>
                     <?php } ?>
+                </tbody>
                 </table>
                                 
             </div>

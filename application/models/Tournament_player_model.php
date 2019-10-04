@@ -48,24 +48,28 @@ class Tournament_player_model extends CI_Model
      */
     function add_tournament_player($params)
     {
-        $this->db->insert('tournament_players',$params);
-        return $this->db->insert_id();
+        $data = [];
+        foreach($params["player_id"] as $param){
+            $data[] = [
+                "tournament_team_id" => $params["tournament_team_id"], 
+                "player_id" => $param         
+            ];
+        }
+        // echo '<pre>';
+        // print_r($data);
+        // die;
+
+        $this->db->insert_batch('tournament_players', $data);
+        
     }
     
     /*
      * function to update tournament_player
      */
-    function update_tournament_player($params,$team_id,$captain,$vice_captain)
+    function update_tournament_player($params,$team_id)
     {
-        // $this->db->where('tournament_players_id',$tournament_players_id);
-        // return $this->db->update('tournament_players',$params);
-        print_r($params);
-        print_r($team_id);
-        print_r($captain);
-        print_r($vice_captain);
-        // die;
-        // $this->db->where('tournament_team_id',$team_id);
-        $this->db->insert_batch('tournament_playerssd', $params,);
+        $this->db->where('tournament_players_id',$tournament_players_id);
+        return $this->db->update('tournament_players',$params);
     }
     
     /*
