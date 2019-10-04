@@ -1,5 +1,4 @@
 <?php
- 
 class Authentication extends CI_Controller{
     function __construct()
     {

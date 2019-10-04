@@ -15,7 +15,7 @@ class Live_score extends CI_Controller{
 
     function index()
     {
-        $data['_view'] = 'livescore_view';
+        $data['_view'] = 'scoreboard/livescore_view';
         $this->load->view('layouts/main',$data);
 	}
 	
