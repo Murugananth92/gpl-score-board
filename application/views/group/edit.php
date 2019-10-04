@@ -15,19 +15,11 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="tournament_id" class="control-label"><span class="text-danger">*</span>Tournament Name</label>
-						<select name="tournament_id" class="form-control">
-							<option value="">select tournament</option>
-							<?php 
-							foreach($all_tournaments as $tournament)
-							{
-								$selected = ($tournament['tournament_id'] == $group['tournament_id']) ? ' selected="selected"' : "";
-
-								echo '<option value="'.$tournament['tournament_id'].'" '.$selected.'>'.$tournament['tournament_name'].'</option>';
-							} 
-							?>
-						</select>
-						<span class="text-danger"><?php echo form_error('tournament_id');?></span>
+						<label for="tournament_name" class="control-label"><span class="text-danger">*</span>Tournament Name</label>
+						<div class="form-group">
+						<input type="hidden" name="tournament_id" value="<?php echo $all_tournaments[0]['tournament_id'];?>" class="form-control" id="group_name" />
+							<input disabled type="text" name="tournament_name" value="<?php $all_tournaments[0]['tournament_id']; print_r($all_tournaments[0]['tournament_name']);?>" class="form-control" id="group_name" />
+						</div>
 					</div>
 				</div>
 			</div>

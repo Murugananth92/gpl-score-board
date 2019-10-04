@@ -54,6 +54,7 @@ class Tournament extends CI_Controller{
      */
     function edit($tournament_id)
     {   
+        
         // check if the tournament exists before trying to edit it
         $data['tournament'] = $this->Tournament_model->get_tournament($tournament_id);
         

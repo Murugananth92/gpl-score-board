@@ -29,37 +29,55 @@ class Tournament_team extends CI_Controller{
     {   
         $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('tournament_id','Tournament Id','required|integer');
-		$this->form_validation->set_rules('team_id','Team Id','required|integer');
+		$this->form_validation->set_rules('tournament_name','Tournament Name','required|integer');
+		$this->form_validation->set_rules('team_name','Team Name','required|integer');
 		$this->form_validation->set_rules('captain','Captain','required');
 		$this->form_validation->set_rules('vice_captain','Vice Captain','required');
 		
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'tournament_id' => $this->input->post('tournament_id'),
-				'team_id' => $this->input->post('team_id'),
+				'tournament_id' => $this->input->post('tournament_name'),
+				'team_id' => $this->input->post('team_name'),
 				'captain' => $this->input->post('captain'),
 				'vice_captain' => $this->input->post('vice_captain'),
             );
-            
+
+            // print_r($params);
+            // print_r($this->input->post('team_name'));
+            // die;
+
+            $params1= array('tournament_team_id' => $this->input->post('team_name'),
+                            'player_id' => $this->input->post('captain'), );
+
+            $params2= array('tournament_team_id' => $this->input->post('team_name'),
+                            'player_id' => $this->input->post('vice_captain'), );
+
             $tournament_team_id = $this->Tournament_team_model->add_tournament_team($params);
+
+            $this->load->model('Tournament_player_model');
+            // insert captain in team players table
+            $tournament_team_id = $this->Tournament_player_model->add_tournament_player($params1);
+
+            // insert vice-captain in team players table
+            $tournament_team_id = $this->Tournament_player_model->add_tournament_player($params2);
+            
             redirect('tournament_team/index');
         }
         else
         {  
             $this->load->model('Tournament_model');
-			$data['all_tournaments'] = $this->Tournament_model->get_all_tournaments();
+			$data['active_tournament'] = $this->Tournament_model->get_active_tournament();
 
-			$this->load->model('Team_model');
-			$data['all_teams'] = $this->Team_model->get_all_teams();
 
-			$this->load->model('Player_model');
-			$data['all_players'] = $this->Player_model->get_all_players();
+            $data['all_teams'] = $this->Tournament_team_model->get_all_teams();
+            
+			$data['all_players'] = $this->Tournament_team_model->get_captains();
 
             
             $data['_view'] = 'tournament_team/add';
             $this->load->view('layouts/main',$data);
+
         }
     }  
 
@@ -68,41 +86,54 @@ class Tournament_team extends CI_Controller{
      */
     function edit($tournament_team_id)
     {   
+       
         // check if the tournament_team exists before trying to edit it
         $data['tournament_team'] = $this->Tournament_team_model->get_tournament_team($tournament_team_id);
-        
         if(isset($data['tournament_team']['tournament_team_id']))
         {
+          
             $this->load->library('form_validation');
 
-			$this->form_validation->set_rules('tournament_id','Tournament Id','required|integer');
-			$this->form_validation->set_rules('team_id','Team Id','required|integer');
+			$this->form_validation->set_rules('tournament_name','Tournament Name','required|integer');
 			$this->form_validation->set_rules('captain','Captain','required|integer');
 			$this->form_validation->set_rules('vice_captain','Vice Captain','required|integer');
 		
 			if($this->form_validation->run())     
             {   
+                
                 $params = array(
-					'tournament_id' => $this->input->post('tournament_id'),
+					'tournament_id' => $this->input->post('tournament_name'),
 					'team_id' => $this->input->post('team_id'),
 					'captain' => $this->input->post('captain'),
 					'vice_captain' => $this->input->post('vice_captain'),
                 );
 
-                $this->Tournament_team_model->update_tournament_team($tournament_team_id,$params);            
+
+                // $this->Tournament_team_model->update_tournament_team($tournament_team_id,$params);
+
+                $this->load->model('Tournament_player_model');
+
+                $params1[] = ['tournament_team_id' => $this->input->post('team_id'),
+                'player_id' => $this->input->post('captain')];
+                $params1[] = ['tournament_team_id' => $this->input->post('team_id'),
+                'player_id' => $this->input->post('vice_captain')];
+                   
+                $tournament_team_id2 = $this->Tournament_player_model->update_tournament_player($params1,$this->input->post('team_id'),$data['tournament_team']['captain_id'],$data['tournament_team']['vice_captain_id']);
+                
+                
                 redirect('tournament_team/index');
             }
             else
             {
+
                 $this->load->model('Tournament_model');
-                $data['all_tournaments'] = $this->Tournament_model->get_all_tournaments();
+                $data['active_tournament'] = $this->Tournament_model->get_active_tournament();
 
-                $this->load->model('Team_model');
-                $data['all_teams'] = $this->Team_model->get_all_teams();
 
-                $this->load->model('Player_model');
-                $data['all_players'] = $this->Player_model->get_all_players();
-                $data['all_players'] = $this->Player_model->get_all_players();
+                $data['all_teams'] = $this->Tournament_team_model->get_all_teams();
+                
+                $data['all_players'] = $this->Tournament_team_model->captains_edit($tournament_team_id);
+
 
                 $data['_view'] = 'tournament_team/edit';
                 $this->load->view('layouts/main',$data);
@@ -128,5 +159,6 @@ class Tournament_team extends CI_Controller{
         else
             show_error('The tournament_team you are trying to delete does not exist.');
     }
-    
+
+   
 }

@@ -19,7 +19,6 @@
 						<td><?php echo $t['team_name']; ?></td>
 						<td><?php echo $t['player_name']; ?></td>
 						<td>
-                            <a href="<?php echo site_url('tournament_player/edit/'.$t['tournament_players_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
                             <a href="<?php echo site_url('tournament_player/remove/'.$t['tournament_players_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
                         </td>
                     </tr>
@@ -30,3 +29,4 @@
         </div>
     </div>
 </div>
+

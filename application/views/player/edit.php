@@ -23,10 +23,12 @@
 					</div>
 					<div class="col-md-6">
 						<label for="company" class="control-label"><span class="text-danger">*</span>Company</label>
-						<div class="form-group">
-							<input type="text" name="company" value="<?php echo ($this->input->post('company') ? $this->input->post('company') : $player['company']); ?>" class="form-control" id="company" />
-							<span class="text-danger"><?php echo form_error('company');?></span>
-						</div>
+						<select name="company" class="form-control">
+							<option value="">select group</option>
+							<option value="G2" <?php if($player['company']=="G2") echo 'selected="selected"'; ?>>G2</option>
+							<option value="CG" <?php if($player['company']=="CG") echo 'selected="selected"'; ?>>CG</option>	
+						</select>
+						<span class="text-danger"><?php echo form_error('company');?></span>
 					</div>
 					<div class="col-md-6">
 						<label for="employee_id" class="control-label"><span class="text-danger">*</span>Employee Id</label>
@@ -37,10 +39,13 @@
 					</div>
 					<div class="col-md-6">
 						<label for="player_role" class="control-label"><span class="text-danger">*</span>Player Role</label>
-						<div class="form-group">
-							<input type="text" name="player_role" value="<?php echo ($this->input->post('player_role') ? $this->input->post('player_role') : $player['player_role']); ?>" class="form-control" id="player_role" />
-							<span class="text-danger"><?php echo form_error('player_role');?></span>
-						</div>
+						<select name="player_role" class="form-control">
+							<option value="">select group</option>
+							<option value="Batsman" <?php if($player['player_role']=="Batsman") echo 'selected="selected"'; ?>>Batsman</option>
+							<option value="Bowler" <?php if($player['player_role']=="Bowler") echo 'selected="selected"'; ?>>Bowler</option>
+							<option value="All Rounder" <?php if($player['player_role']=="All Rounder") echo 'selected="selected"'; ?>>All Rounder</option>	
+						</select>
+						<span class="text-danger"><?php echo form_error('player_role');?></span>
 					</div>
 				</div>
 			</div>

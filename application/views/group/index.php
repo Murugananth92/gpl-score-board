@@ -21,6 +21,7 @@
 						<td>
                         <a href="<?php echo site_url('group/edit/'.$g['group_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
                         <a href="<?php echo site_url('group/remove/'.$g['group_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                        <a href="<?php echo site_url('group_point/add'); ?>" class="btn btn-success btn-xs">Add teams</a>
                         </td>
                     </tr>
                     <?php } ?>

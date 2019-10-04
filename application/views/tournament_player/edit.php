@@ -8,8 +8,8 @@
 			<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="tournament_team_id" class="control-label"><span class="text-danger">*</span>Tournament Team Name</label>
-						<select name="tournament_team_id" class='form-control'>
+						<label for="tournament_team_name" class="control-label"><span class="text-danger">*</span>Tournament Team Name</label>
+						<select name="tournament_team_name" class='form-control'>
 							<option value="">select tournament_team</option>
 							<?php 
 							foreach($all_tournament_teams as $tournament_team)
@@ -20,11 +20,11 @@
 							} 
 							?>
 						</select>
-					<span class="text-danger"><?php echo form_error('tournament_id');?></span>
+					<span class="text-danger"><?php echo form_error('tournament_name');?></span>
 					</div>
 					<div class="col-md-6">
-						<label for="player_id" class="control-label"><span class="text-danger">*</span>Player Id</label>
-						<select name="player_id" class='form-control'>
+						<label for="player_name" class="control-label"><span class="text-danger">*</span>Player Id</label>
+						<select name="player_name" class='form-control'>
 							<option value="">select player</option>
 							<?php 
 							foreach($all_players as $player)
@@ -35,7 +35,7 @@
 							} 
 							?>
 						</select>
-					<span class="text-danger"><?php echo form_error('player_id');?></span>
+					<span class="text-danger"><?php echo form_error('player_name');?></span>
 					</div>
 				</div>
 			</div>

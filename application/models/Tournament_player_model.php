@@ -19,18 +19,24 @@ class Tournament_player_model extends CI_Model
         return $this->db->get_where('tournament_players',array('tournament_players_id'=>$tournament_players_id))->row_array();
         
     }
+
+    function get_players()
+    {
+        $this->db->select('player_id,player_name,employee_id');
+        $this->db->where('`player_id` NOT IN( SELECT player_id FROM tournament_players TP INNER JOIN tournament_teams as TT ON TT.tournament_team_id = TP.tournament_team_id 
+        INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active ="T"                              
+       )', NULL, FALSE);
+       return $this->db->get('players as P')->result_array();
+    }
         
     /*
      * Get all tournament_players
      */
     function get_all_tournament_players()
     {
-        // $this->db->order_by('tournament_players_id', 'desc');
-        // return $this->db->get('tournament_players')->result_array();
-
-
         $this->db->select('tournament_players_id,team_name,player_name');
         $this->db->join('tournament_teams as TT', 'TT.team_id = TP.tournament_team_id');
+        $this->db->join('tournaments as T', 'T.tournament_id = TT.tournament_id AND T.is_active = "T"');
         $this->db->join('players as P' , 'TP.player_id = P.player_id ');
         $this->db->join('teams as T1' , 'TT.team_id = T1.team_id');
         
@@ -49,10 +55,17 @@ class Tournament_player_model extends CI_Model
     /*
      * function to update tournament_player
      */
-    function update_tournament_player($tournament_players_id,$params)
+    function update_tournament_player($params,$team_id,$captain,$vice_captain)
     {
-        $this->db->where('tournament_players_id',$tournament_players_id);
-        return $this->db->update('tournament_players',$params);
+        // $this->db->where('tournament_players_id',$tournament_players_id);
+        // return $this->db->update('tournament_players',$params);
+        print_r($params);
+        print_r($team_id);
+        print_r($captain);
+        print_r($vice_captain);
+        // die;
+        // $this->db->where('tournament_team_id',$team_id);
+        $this->db->insert_batch('tournament_playerssd', $params,);
     }
     
     /*

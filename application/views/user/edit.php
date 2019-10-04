@@ -7,12 +7,6 @@
 			<?php echo form_open('user/edit/'.$user['user_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-					<div class="col-md-6">
-						<label for="user_password" class="control-label"><span class="text-danger">*</span>User Password</label>
-						<div class="form-group">
-							<input type="text" name="user_password" value="<?php echo ($this->input->post('user_password') ? $this->input->post('user_password') : $user['user_password']); ?>" class="form-control" id="user_password" />
-							<span class="text-danger"><?php echo form_error('user_password');?></span>
-						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="user_name" class="control-label"><span class="text-danger">*</span>User Name</label>
@@ -28,6 +22,12 @@
 							<span class="text-danger"><?php echo form_error('user_email');?></span>
 						</div>
 					</div>
+					<div class="col-md-6">
+						<label for="user_password" class="control-label"><span class="text-danger">*</span>User Password</label>
+						<div class="form-group">
+							<input type="text" name="user_password" value="<?php echo ($this->input->post('user_password') ? $this->input->post('user_password') : $user['user_password']); ?>" class="form-control" id="user_password" />
+							<span class="text-danger"><?php echo form_error('user_password');?></span>
+						</div>
 				</div>
 			</div>
 			<div class="box-footer">

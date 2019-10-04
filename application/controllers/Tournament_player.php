@@ -29,14 +29,14 @@ class Tournament_player extends CI_Controller{
     {   
         $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('tournament_team_id','Tournament Team Id','required|integer');
-		$this->form_validation->set_rules('player_id','Player Id','required');
+		$this->form_validation->set_rules('tournament_team_name','Tournament Team name','required|integer');
+		$this->form_validation->set_rules('player_name','Player Name','required');
 		
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'tournament_team_id' => $this->input->post('tournament_team_id'),
-				'player_id' => $this->input->post('player_id'),
+				'tournament_team_id' => $this->input->post('tournament_team_name'),
+				'player_id' => $this->input->post('player_name'),
             );
             
             $tournament_player_id = $this->Tournament_player_model->add_tournament_player($params);
@@ -47,8 +47,7 @@ class Tournament_player extends CI_Controller{
             $this->load->model('Tournament_team_model');
 			$data['all_tournament_teams'] = $this->Tournament_team_model->get_all_tournament_teams();
 
-			$this->load->model('Player_model');
-			$data['all_players'] = $this->Player_model->get_all_players();
+			$data['all_players'] = $this->Tournament_player_model->get_players();
             
             $data['_view'] = 'tournament_player/add';
             $this->load->view('layouts/main',$data);
@@ -67,14 +66,14 @@ class Tournament_player extends CI_Controller{
         {
             $this->load->library('form_validation');
 
-			$this->form_validation->set_rules('tournament_team_id','Tournament Team Id','required|integer');
-			$this->form_validation->set_rules('player_id','Player Id','required|integer');
+			$this->form_validation->set_rules('tournament_team_name','Tournament Team Name','required|integer');
+			$this->form_validation->set_rules('player_name','Player Name','required|integer');
 		
 			if($this->form_validation->run())     
             {   
                 $params = array(
-					'tournament_team_id' => $this->input->post('tournament_team_id'),
-					'player_id' => $this->input->post('player_id'),
+					'tournament_team_id' => $this->input->post('tournament_team_name'),
+					'player_id' => $this->input->post('player_name'),
                 );
 
                 $this->Tournament_player_model->update_tournament_player($tournament_players_id,$params);            
@@ -85,8 +84,7 @@ class Tournament_player extends CI_Controller{
                 $this->load->model('Tournament_team_model');
                 $data['all_tournament_teams'] = $this->Tournament_team_model->get_all_tournament_teams();
     
-                $this->load->model('Player_model');
-                $data['all_players'] = $this->Player_model->get_all_players();
+                $data['all_players'] = $this->Tournament_player_model->get_players();
                 
 
                 $data['_view'] = 'tournament_player/edit';
