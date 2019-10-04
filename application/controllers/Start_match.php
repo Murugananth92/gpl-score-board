@@ -13,16 +13,51 @@ class Start_match extends CI_Controller{
         if(!$user_id) {
             $this->logout();
         }
-        // $this->load->model('dashboard_model');
+        $this->load->model('Start_match_model');
         
     }
 
     function index()
-    {
-        $data['_view'] = 'startmatch_view';
+    {	
+		$data['matches'] = $this->Start_match_model->get_all_match();
+        $data['_view'] = 'scoreboard/startmatch_view';
         $this->load->view('layouts/main',$data);
 	}
-	
+
+	function select_players()
+	{
+		$this->form_validation->set_rules('matches','Match','required');
+		$this->form_validation->set_rules('team1','	Team 1','required');
+		$this->form_validation->set_rules('team2','	Team 2','required');
+		$this->form_validation->set_rules('match_date','Match Date','required');
+		$this->form_validation->set_rules('match_venue','Match Venue','required');
+		$this->form_validation->set_rules('team1_toss','Team Toss','required');
+		$this->form_validation->set_rules('toss_options','Toss Options','required');
+		$this->form_validation->set_rules('overs','Overs','required');
+		if($this->form_validation->run() == FALSE) {
+			$data['matches'] = $this->Start_match_model->get_all_match();
+			$data['_view'] = 'scoreboard/startmatch_view';
+			$this->load->view('layouts/main',$data);
+		} else {
+				$params = array(
+					'matches'=>$this->input->post('matches'),
+					'team1'=>$this->input->post('team1'),
+					'team2'=>$this->input->post('team2'),
+					'match_date'=>$this->input->post('match_date'),
+					'match_venue'=>$this->input->post('match_venue'),
+					'team1_toss'=>$this->input->post('team1_toss'),
+					'toss_options'=>$this->input->post('toss_options'),
+					'overs'=>$this->input->post('overs')
+				);
+				if($params) {
+
+					$data['params'] = $params;
+					$data['_view'] = 'scoreboard/selectplayer_view';
+					$this->load->view('layouts/main',$data);
+				}
+		}
+}
+
 	public function logout() 
 	{
         $this->session->sess_destroy();
