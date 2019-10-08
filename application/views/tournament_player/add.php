@@ -16,9 +16,9 @@
 							
 							foreach($all_tournament_teams as $tournament_team)
 							{
-								$selected = ($tournament_team['team_id'] == $this->input->post('team_id')) ? ' selected="selected"' : "";
+								$selected = ($tournament_team['tournament_team_id'] == $this->input->post('tournament_team_id')) ? ' selected="selected"' : "";
 
-								echo '<option data-count="'.$tournament_team['TeamCount'].'" value="'.$tournament_team['team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
+								echo '<option value="'.$tournament_team['tournament_team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
 							} 
 							?>
 						</select>

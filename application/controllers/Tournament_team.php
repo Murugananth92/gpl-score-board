@@ -128,6 +128,7 @@ class Tournament_team extends CI_Controller{
         if(isset($tournament_team['tournament_team_id']))
         {
             $this->Tournament_team_model->delete_tournament_team($tournament_team_id);
+            $this->session->set_flashdata('msg', 'The tournament team is deleted');
             redirect('tournament_team/index');
         }
         else

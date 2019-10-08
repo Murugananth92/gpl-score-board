@@ -91,6 +91,7 @@ class Team extends CI_Controller{
         if(isset($team['team_id']))
         {
             $this->Team_model->delete_team($team_id);
+            $this->session->set_flashdata('msg', 'The team is deleted');
             redirect('team/index');
         }
         else

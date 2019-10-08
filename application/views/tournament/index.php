@@ -13,6 +13,7 @@
                     <tr>
 						<th>Tournament Name</th>
 						<th>Tournament Year</th>
+                        <th>Is active</th>
 						<th class="no-sort">Actions</th>
                     </tr>
                 </thead>
@@ -21,9 +22,10 @@
                     <tr>
 						<td><?php echo $t['tournament_name']; ?></td>
 						<td><?php echo $t['tournament_year']; ?></td>
+                        <td><?php echo $t['is_active']; ?></td>
 						<td>
                             <a href="<?php echo site_url('tournament/edit/'.$t['tournament_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <a href="<?php echo site_url('tournament/remove/'.$t['tournament_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                            <!-- <a href="<?php echo site_url('tournament/remove/'.$t['tournament_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a> -->
                         </td>
                     </tr>
                     <?php } ?>

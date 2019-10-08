@@ -101,6 +101,7 @@ class User extends CI_Controller{
         if(isset($user['user_id']))
         {
             $this->User_model->delete_user($user_id);
+            $this->session->set_flashdata('msg', 'The user is deleted');
             redirect('user/index');
         }
         else

@@ -30,6 +30,7 @@
     <body class="hold-transition skin-blue sidebar-mini">
          <!-- jQuery 3.4.1 -->
          <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+       
         
         <div class="wrapper">
             <header class="main-header">
@@ -113,28 +114,28 @@
                             </a>
 						</li>
 						<li>
-                            <a href="<?php echo site_url('player/index');?>"><i class="fa fa-list-ul"></i>Player Listing</a>
+                            <a href="<?php echo site_url('player');?>"><i class="fa fa-list-ul"></i>Player Listing</a>
                         </li>
 						<li>
-                            <a href="<?php echo site_url('user/index');?>"><i class="fa fa-list-ul"></i>User Listing</a>
+                            <a href="<?php echo site_url('user');?>"><i class="fa fa-list-ul"></i>User Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('team/index');?>"><i class="fa fa-list-ul"></i>Team Listing</a>
+                            <a href="<?php echo site_url('team');?>"><i class="fa fa-list-ul"></i>Team Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('tournament/index');?>"><i class="fa fa-list-ul"></i>tournament Listing</a>
+                            <a href="<?php echo site_url('tournament');?>"><i class="fa fa-list-ul"></i>tournament Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('tournament_team/index');?>"><i class="fa fa-list-ul"></i>tournament team Listing</a>
+                            <a href="<?php echo site_url('tournament_team');?>"><i class="fa fa-list-ul"></i>tournament team Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('tournament_player/index');?>"><i class="fa fa-list-ul"></i>tournament players Listing</a>
+                            <a href="<?php echo site_url('tournament_player');?>"><i class="fa fa-list-ul"></i>tournament players Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('group/index');?>"><i class="fa fa-list-ul"></i>group Listing</a>
+                            <a href="<?php echo site_url('group');?>"><i class="fa fa-list-ul"></i>group Listing</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('group_point/index');?>"><i class="fa fa-list-ul"></i>group_points Listing</a>
+                            <a href="<?php echo site_url('group_point');?>"><i class="fa fa-list-ul"></i>group_points Listing</a>
                         </li>
                     </ul>
                 </section>
@@ -199,7 +200,9 @@
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
         <script src="<?php echo site_url('resources/js/chosen.jquery.js');?>"></script>
 
-        
+      
+
+               
         
         <script>
             var max_selected_options_val = 15;
@@ -229,6 +232,31 @@
                     "orderable": false,
                 } ]
             } );
+
+            var groupColumn = 0;
+                var table = $('#gplDataTable').DataTable({
+                    dom: 'Bfrtip',
+                            "columnDefs": [
+                        { "visible": false, "targets": groupColumn}
+                    ],
+                    "order": [[ groupColumn, 'asc' ]],
+                    "responsive": true,
+                    "drawCallback": function ( settings ) {
+                        var api = this.api();
+                        var rows = api.rows({ page: 'current' }).nodes();
+                        var last=null;
+            
+                        api.column(groupColumn, { page:'current' } ).data().each( function ( group, i ) {
+                            if ( last !== group ) {
+                                $(rows).eq( i ).before(
+                                    '<tr class="group"><td colspan="15" style="font-family:Arial, Helvetica, sans-serif; font-size: 130%; font-weight:bold;">'+group+'</td></tr>'
+                                );
+            
+                                last = group;
+                            }
+                        } );
+                    }
+                });
 
             } );
         </script>

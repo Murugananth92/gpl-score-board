@@ -101,6 +101,7 @@ class Group extends CI_Controller{
         if(isset($group['group_id']))
         {
             $this->Group_model->delete_group($group_id);
+            $this->session->set_flashdata('msg', 'The group is deleted');
             redirect('group/index');
         }
         else

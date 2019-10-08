@@ -47,7 +47,7 @@ class Tournament_team_model extends CI_Model
         $this->db->where('team_id NOT IN( SELECT T1.team_id FROM teams T1 
         INNER JOIN tournament_teams as TT ON TT.team_id = T1.team_id 
         INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active ="T"                              
-       )', NULL, FALSE);
+       ) AND is_active = "T"', NULL, FALSE);
        return $this->db->get('teams as T')->result_array();
     }
         
@@ -56,13 +56,12 @@ class Tournament_team_model extends CI_Model
      */
     function get_all_tournament_teams()
     {
-        $this->db->select('TT.tournament_team_id,TT.team_id,,T.tournament_name,T1.team_name,P.player_name as captain,P.employee_id,P1.player_name as vice_captain');
+        $this->db->select('TT.tournament_team_id,TT.team_id,T.tournament_name,T1.team_name,P.player_name as captain,P.employee_id,P1.player_name as vice_captain');
         $this->db->join('tournaments as T', 'T.tournament_id = TT.tournament_id');
         $this->db->join('teams as T1' , 'TT.team_id = T1.team_id');
         $this->db->join('players as P' , 'TT.captain = P.player_id ');
         $this->db->join('players as P1' , 'TT.vice_captain = P1.player_id ');
-
-        
+        $this->db->where(array('TT.is_active'=>'T'));        
 
         return $this->db->get('tournament_teams as TT')->result_array();
     }
@@ -88,14 +87,19 @@ class Tournament_team_model extends CI_Model
 
     }
 
-    
-    
     /*
      * function to delete tournament_team
      */
     function delete_tournament_team($tournament_team_id)
     {
-        return $this->db->delete('tournament_teams',array('tournament_team_id'=>$tournament_team_id));
+        // $this->db->delete('tournament_teams',array('tournament_team_id'=>$tournament_team_id));
+
+        $this->db->where('tournament_team_id',$tournament_team_id);
+        $this->db->set('is_active','F');
+        return $this->db->update('tournament_teams');
+
+        // $this->db->where('style_id', $style_id)
+        // return $this->db->delete('tournament_players',array('tournament_players_id'=>$tournament_team_id));
     }
 
     function get_captains(){
@@ -103,7 +107,7 @@ class Tournament_team_model extends CI_Model
         $this->db->where('player_id NOT IN ( SELECT captain FROM tournament_teams TT 
         INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T"  )', NULL, FALSE);
         $this->db->where('player_id NOT IN ( SELECT vice_captain FROM tournament_teams TT 
-        INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T"  )', NULL, FALSE);
+        INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T"  ) AND P.is_deleted = 0', NULL, FALSE);
         return $this->db->get('players as P')->result_array();
     }
 
@@ -112,7 +116,7 @@ class Tournament_team_model extends CI_Model
         $this->db->where('player_id NOT IN ( SELECT captain FROM tournament_teams TT 
         INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T" AND TT.tournament_team_id !='.$tournament_team_id.')', NULL, FALSE);
         $this->db->where('player_id NOT IN ( SELECT vice_captain FROM tournament_teams TT 
-        INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T" AND TT.tournament_team_id !='.$tournament_team_id.' )', NULL, FALSE);
+        INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active = "T" AND TT.tournament_team_id !='.$tournament_team_id.' )  AND P.is_deleted = 0', NULL, FALSE);
         return $this->db->get('players as P')->result_array();
     }
 

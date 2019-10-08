@@ -25,7 +25,7 @@ class Player_model extends CI_Model
     function get_all_players()
     {
         $this->db->order_by('player_id', 'desc');
-        return $this->db->get('players')->result_array();
+        return $this->db->get_where('players',array('is_deleted'=>0))->result_array();
     }
         
     /*
@@ -51,6 +51,10 @@ class Player_model extends CI_Model
      */
     function delete_player($player_id)
     {
-        return $this->db->delete('players',array('player_id'=>$player_id));
+        // return $this->db->delete('players',array('player_id'=>$player_id));
+
+        $this->db->where('player_id',$player_id);
+        $this->db->set('is_deleted','1');
+        return $this->db->update('players');
     }
 }

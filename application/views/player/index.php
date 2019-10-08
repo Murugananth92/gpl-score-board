@@ -3,6 +3,12 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Players Listing</h3>
+                <?php if($this->session->flashdata('msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The player has been deleted.
+                    </div>
+                <?php } ?>
             	<div class="box-tools">
                     <a href="<?php echo site_url('player/add'); ?>" class="btn btn-success btn-sm">Add</a> 
                 </div>
@@ -29,7 +35,7 @@
                                 <td><?php echo $p['player_role']; ?></td>
                                 <td>
                                     <a href="<?php echo site_url('player/edit/'.$p['player_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                                    <a href="<?php echo site_url('player/remove/'.$p['player_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                                    <a href="<?php echo site_url('player/remove/'.$p['player_id']);  ?>" onclick="return confirm('Are you sure?')"  class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -40,3 +46,5 @@
         </div>
     </div>
 </div>
+
+

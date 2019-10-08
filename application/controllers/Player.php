@@ -114,6 +114,7 @@ class Player extends CI_Controller{
         if(isset($player['player_id']))
         {
             $this->Player_model->delete_player($player_id);
+            $this->session->set_flashdata('msg', 'The player is deleted');
             redirect('player/index');
         }
         else

@@ -122,6 +122,7 @@ class Group_point extends CI_Controller{
         if(isset($group_point['group_points_id']))
         {
             $this->Group_point_model->delete_group_point($group_points_id);
+            $this->session->set_flashdata('msg', 'The group team is deleted');
             redirect('group_point/index');
         }
         else

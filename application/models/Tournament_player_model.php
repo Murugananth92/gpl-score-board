@@ -25,7 +25,7 @@ class Tournament_player_model extends CI_Model
         $this->db->select('player_id,player_name,employee_id');
         $this->db->where('`player_id` NOT IN( SELECT player_id FROM tournament_players TP INNER JOIN tournament_teams as TT ON TT.tournament_team_id = TP.tournament_team_id 
         INNER JOIN tournaments as T ON T.tournament_id = TT.tournament_id AND T.is_active ="T"                              
-       )', NULL, FALSE);
+       ) AND P.is_deleted =0', NULL, FALSE);
        return $this->db->get('players as P')->result_array();
     }
         
@@ -34,8 +34,8 @@ class Tournament_player_model extends CI_Model
      */
     function get_all_tournament_players()
     {
-        $this->db->select('tournament_players_id,team_name,player_name');
-        $this->db->join('tournament_teams as TT', 'TT.team_id = TP.tournament_team_id');
+        $this->db->select('tournament_players_id,team_name,player_name,employee_id,company');
+        $this->db->join('tournament_teams as TT', 'TT.tournament_team_id = TP.tournament_team_id');
         $this->db->join('tournaments as T', 'T.tournament_id = TT.tournament_id AND T.is_active = "T"');
         $this->db->join('players as P' , 'TP.player_id = P.player_id ');
         $this->db->join('teams as T1' , 'TT.team_id = T1.team_id');

@@ -17,7 +17,6 @@ class Tournament extends CI_Controller{
     function index()
     {
         $data['tournaments'] = $this->Tournament_model->get_all_tournaments();
-        
         $data['_view'] = 'tournament/index';
         $this->load->view('layouts/main',$data);
     }

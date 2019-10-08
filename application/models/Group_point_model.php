@@ -30,7 +30,7 @@ class Group_point_model extends CI_Model
         $this->db->where('team_id NOT IN( SELECT tournament_team_id FROM teams as T 
                                         JOIN group_points as GP
                                         ON GP.tournament_team_id = T.team_id                              
-       )', NULL, FALSE);
+       ) AND is_active = "T"', NULL, FALSE);
        return $this->db->get('teams as T')->result_array();
     }
         
