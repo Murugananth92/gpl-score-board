@@ -44,7 +44,7 @@ class Tournament_team extends CI_Controller{
             );
       
             $tournament_team_id = $this->Tournament_team_model->add_tournament_team($params);
-            
+            $this->session->set_flashdata('add_msg', 'The tournament team is added');
             redirect('tournament_team/index');
         }
         else
@@ -93,8 +93,7 @@ class Tournament_team extends CI_Controller{
 
 
                  $this->Tournament_team_model->update_tournament_team($tournament_team_id,$params);
-                
-                
+                 $this->session->set_flashdata('edit_msg', 'The tournament team detail has been edited');
                 redirect('tournament_team/index');
             }
             else

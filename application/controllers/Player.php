@@ -43,15 +43,15 @@ class Player extends CI_Controller{
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'player_name' => $this->input->post('player_name'),
+				'player_name' => strtoupper($this->input->post('player_name')),
 				'player_email' => $this->input->post('player_email'),
 				'company' => $this->input->post('company'),
 				'employee_id' => $this->input->post('employee_id'),
 				'player_role' => $this->input->post('player_role'),
 				'created_by' => $this->user_data['user_id']
-            );
-            
+            );            
             $player_id = $this->Player_model->add_player($params);
+            $this->session->set_flashdata('add_msg', 'The player has been added');
             redirect('player/index');
         }
         else
@@ -82,7 +82,7 @@ class Player extends CI_Controller{
 			if($this->form_validation->run())     
             {   
                 $params = array(
-					'player_name' => $this->input->post('player_name'),
+					'player_name' => strtoupper($this->input->post('player_name')),
 					'player_email' => $this->input->post('player_email'),
 					'company' => $this->input->post('company'),
 					'employee_id' => $this->input->post('employee_id'),
@@ -90,7 +90,8 @@ class Player extends CI_Controller{
 					'updated_by' => $this->user_data['user_id']
                 );
 
-                $this->Player_model->update_player($player_id,$params);            
+                $this->Player_model->update_player($player_id,$params);  
+                $this->session->set_flashdata('edit_msg', 'The player has been edited');          
                 redirect('player/index');
             }
             else

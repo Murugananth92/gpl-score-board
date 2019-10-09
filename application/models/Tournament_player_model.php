@@ -40,7 +40,22 @@ class Tournament_player_model extends CI_Model
         $this->db->join('players as P' , 'TP.player_id = P.player_id ');
         $this->db->join('teams as T1' , 'TT.team_id = T1.team_id');
         
-        return $this->db->get('tournament_players as TP')->result_array();
+        return $this->db->get_where('tournament_players as TP',array('Tp.is_deleted'=>0))->result_array();
+    }
+
+    /*
+     * Get all tournament_teams
+     */
+    function get_all_tournament_teams()
+    {
+        $this->db->select('TT.tournament_team_id,TT.team_id,T.tournament_name,T1.team_name,P.player_name as captain,P.employee_id,P1.player_name as vice_captain');
+        $this->db->join('tournaments as T', 'T.tournament_id = TT.tournament_id');
+        $this->db->join('teams as T1' , 'TT.team_id = T1.team_id');
+        $this->db->join('players as P' , 'TT.captain = P.player_id ');
+        $this->db->join('players as P1' , 'TT.vice_captain = P1.player_id ');
+        $this->db->where(array('TT.is_active'=>'T','T.is_active'=>'T'));        
+
+        return $this->db->get('tournament_teams as TT')->result_array();
     }
         
     /*
@@ -77,6 +92,11 @@ class Tournament_player_model extends CI_Model
      */
     function delete_tournament_player($tournament_players_id)
     {
-        return $this->db->delete('tournament_players',array('tournament_players_id'=>$tournament_players_id));
+        // return $this->db->delete('tournament_players',array('tournament_players_id'=>$tournament_players_id));
+        
+        $this->db->where('tournament_players_id',$tournament_players_id);
+        $this->db->set('is_deleted',1);
+        return $this->db->update('tournament_players');
+    
     }
 }

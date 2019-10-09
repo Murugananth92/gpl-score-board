@@ -9,6 +9,12 @@
                         <strong>Success!</strong> The tournament player has been deleted.
                     </div>
                 <?php } ?>
+                <?php if($this->session->flashdata('add_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The tournament player has been added.
+                    </div>
+                <?php } ?>
             	<div class="box-tools">
                     <a href="<?php echo site_url('tournament_player/add'); ?>" class="btn btn-success btn-sm">Add</a> 
                 </div>

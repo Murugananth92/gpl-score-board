@@ -9,6 +9,18 @@
                         <strong>Success!</strong> The group has been deleted.
                     </div>
                 <?php } ?>
+                <?php if($this->session->flashdata('edit_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The group detail has been edited.
+                    </div>
+                <?php } ?>
+                <?php if($this->session->flashdata('add_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The group has been added.
+                    </div>
+                <?php } ?>
             	<div class="box-tools">
                     <a href="<?php echo site_url('group/add'); ?>" class="btn btn-success btn-sm">Add</a> 
                 </div>
@@ -30,7 +42,7 @@
                             <td>
                             <a href="<?php echo site_url('group/edit/'.$g['group_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
                             <a href="<?php echo site_url('group/remove/'.$g['group_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
-                            <a href="<?php echo site_url('group_point/add'); ?>" class="btn btn-success btn-xs">Add teams</a>
+                            <a href="<?php echo site_url('group_point/add/'.$g['group_id']); ?>" class="btn btn-success btn-xs">Add teams</a>
                             </td>
                         </tr>
                         <?php } ?>

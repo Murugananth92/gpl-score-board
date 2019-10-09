@@ -10,7 +10,7 @@
                     </div>
                 <?php } ?>
             	<div class="box-tools">
-                    <a href="<?php echo site_url('user/add'); ?>" class="btn btn-success btn-sm">Add</a> 
+                    <!-- <a href="<?php echo site_url('user/add'); ?>" class="btn btn-success btn-sm">Add</a>  -->
                 </div>
             </div>
             <div class="box-body">

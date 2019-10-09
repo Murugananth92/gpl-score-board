@@ -3,6 +3,18 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Tournaments Listing</h3>
+                <?php if($this->session->flashdata('edit_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The tournament detail has been edited.
+                    </div>
+                <?php } ?>
+                <?php if($this->session->flashdata('add_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The tournament has been added.
+                    </div>
+                <?php } ?>
             	<div class="box-tools">
                     <a href="<?php echo site_url('tournament/add'); ?>" class="btn btn-success btn-sm">Add</a> 
                 </div>

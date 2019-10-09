@@ -6,7 +6,19 @@
 				<?php if($this->session->flashdata('msg')) { ?>
                     <div class="alert alert-success alert-dismissible fade in">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Success!</strong> The group team has been deleted.
+                        <strong>Success!</strong> The group point team has been deleted.
+                    </div>
+                <?php } ?>
+				<?php if($this->session->flashdata('edit_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The group point team detai has been edited.
+                    </div>
+                <?php } ?>
+                <?php if($this->session->flashdata('add_msg')) { ?>
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The group point team has been added.
                     </div>
                 <?php } ?>
             	<div class="box-tools">
@@ -14,11 +26,11 @@
                 </div>
             </div>
             <div class="box-body">
-				<table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+				<table id="gplDataTable" class="table table-striped table-bordered" style="width:100%">
 				<thead>
 					<tr>
-						<th>Group Id</th>
-						<th>Tournament Team Id</th>
+						<th>Group Name</th>
+						<th>Tournament Team </th>
 						<th>Net Run Rate</th>
 						<th>Points</th>
 						<th>Wins</th>
@@ -49,4 +61,3 @@
         </div>
     </div>
 </div>
-

@@ -40,12 +40,13 @@ class Tournament_player extends CI_Controller{
             );
 
             $tournament_player_id = $this->Tournament_player_model->add_tournament_player($params);
+            $this->session->set_flashdata('add_msg', 'The tournament player has been added');
             redirect('tournament_player/index');
         }
         else
         {   
-            $this->load->model('Tournament_team_model');
-			$data['all_tournament_teams'] = $this->Tournament_team_model->get_all_tournament_teams();
+            // $this->load->model('Tournament_team_model');
+			$data['all_tournament_teams'] = $this->Tournament_player_model->get_all_tournament_teams();
 
 			$data['all_players'] = $this->Tournament_player_model->get_players();
             
@@ -77,6 +78,7 @@ class Tournament_player extends CI_Controller{
                 );
 
                 $this->Tournament_player_model->update_tournament_player($tournament_players_id,$params);            
+                // $this->session->set_flashdata('edit_msg', 'The tournament team player has been edited');
                 redirect('tournament_player/index');
             }
             else

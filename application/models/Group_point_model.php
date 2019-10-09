@@ -23,15 +23,20 @@ class Group_point_model extends CI_Model
         return $this->db->get_where('group_points as GP',array('group_points_id'=>$group_points_id))->row_array();
     }
 
+  
+
 
     function get_all_tournament_teams()
     {
-        $this->db->select('team_id,team_name');
-        $this->db->where('team_id NOT IN( SELECT tournament_team_id FROM teams as T 
-                                        JOIN group_points as GP
-                                        ON GP.tournament_team_id = T.team_id                              
-       ) AND is_active = "T"', NULL, FALSE);
-       return $this->db->get('teams as T')->result_array();
+    
+       $this->db->select('TT.tournament_team_id,T1.team_name');
+       $this->db->join(' tournaments AS T','T.tournament_id = TT.tournament_id');
+       $this->db->join('teams AS T1','T1.team_id = TT.team_id');
+       $this->db->where(' tournament_team_id NOT IN( SELECT GP.tournament_team_id 
+                        FROM group_points  as GP
+                        JOIN tournament_teams as TT  ON TT.tournament_team_id = GP.tournament_team_id)
+                        AND T.is_active= "T" AND TT.is_active= "T"', NULL, FALSE);
+      return $this->db->get('tournament_teams as TT')->result_array();
     }
         
     /*
@@ -42,12 +47,10 @@ class Group_point_model extends CI_Model
 
         $this->db->select('group_points_id,G.group_name,points,wins,losses,n/r,group_name,team_name,net_run_rate');
         $this->db->join('groups as G', 'G.group_id = GP.group_id');
-        $this->db->join('tournament_teams as TT', 'TT.team_id = GP.tournament_team_id');
+        $this->db->join('tournament_teams as TT', 'TT.tournament_team_id = GP.tournament_team_id');
         $this->db->join('teams as T', 'T.team_id = TT.team_id');
         return $this->db->get('group_points as GP')->result_array();
 
-        // $this->db->order_by('group_points_id', 'desc');
-        // return $this->db->get('group_points')->result_array();
     }
         
     /*
