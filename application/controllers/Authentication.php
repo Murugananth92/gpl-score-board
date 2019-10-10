@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Authentication extends CI_Controller{
     function __construct()
     {
@@ -14,7 +15,6 @@ class Authentication extends CI_Controller{
 
 	public function login() 
 	{
-
         $this->form_validation->set_rules('email','email','required');
         $this->form_validation->set_rules('password','password','required');
 

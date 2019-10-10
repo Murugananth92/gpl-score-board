@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Group Add</h3>
+              	<h3 class="box-title">Add Group</h3>
             </div>
             <?php echo form_open('group/add'); ?>
           	<div class="box-body">

@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tournament Player Add</h3>
+              	<h3 class="box-title">Add Tournament Player</h3>
             </div>
             <?php echo form_open('tournament_player/add'); ?>
           	<div class="box-body">
@@ -10,10 +10,8 @@
 					<div class="col-md-6">
 						<label for="tournament_team_name" class="control-label"><span class="text-danger">*</span>Tournament Team Name</label>
 						<select id="tournament_team_name" name="tournament_team_name" class='form-control'>
-							<option value="">select tournament_team</option>
+							<option value="">select tournament team</option>
 							<?php 
-							
-							
 							foreach($all_tournament_teams as $tournament_team)
 							{
 								$selected = ($tournament_team['tournament_team_id'] == $this->input->post('tournament_team_id')) ? ' selected="selected"' : "";

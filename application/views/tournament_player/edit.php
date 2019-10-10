@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tournament Player Edit</h3>
+              	<h3 class="box-title">Edit Tournament Player</h3>
             </div>
 			<?php echo form_open('tournament_player/edit/'.$tournament_player['tournament_players_id']); ?>
 			<div class="box-body">

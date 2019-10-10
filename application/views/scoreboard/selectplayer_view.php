@@ -5,8 +5,6 @@
 			<div class="box-header with-border">
 				<h3 class="box-title">Select Players</h3>
 			</div>
-			<!-- /.box-header -->
-			<!-- form start -->
 			<form role="form" method="post" action="">
 				<div class="box-body">
 					<?php $i = 1; foreach ($players as $key => $value) { ?>
@@ -19,7 +17,7 @@
 								</thead>
 								<tbody>
 								<tr>
-									<th>Players</th>
+									<th>Players - Employee ID</th>
 									<th>Selected</th>
 								</tr>
 								<?php foreach ($value as $player) { ?>
@@ -50,17 +48,10 @@
 				<input type='hidden' name="toss_options" value="<?php echo $params['toss_options']?>">
 				<input type='hidden' name="overs"  value="<?php echo $params['overs']?>">					
 				<div class="box-footer">
-					<!-- <button type="submit" class="btn btn-primary">Previous</button> -->
-					<!-- <a href="<?= base_url() ?>start_match" class="btn btn-primary">Previous</a> -->
 					<button type="submit" class="btn btn-primary">Previous</button>
 					<button type="button" class="btn btn-primary pull-right" id="startMatch">Start Match</button>
-					<!-- <a href="<?= base_url() ?>start_match_live" class="btn btn-primary pull-right" id="startMatch">Start Match</a> -->
 				</div>
-				
-				<!-- <input type='hidden' name="team1" id="team1"> -->
 				</form>
-				
-				
 		</div>
 	</div>
 </div>

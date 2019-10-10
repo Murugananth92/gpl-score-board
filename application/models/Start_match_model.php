@@ -7,9 +7,6 @@ class Start_match_model extends CI_Model
 		parent::__construct();
 	}
 
-	/**
-	 * @return mixed
-	 */
 	function get_all_match()
 	{
 		$this->db->select('M.match_id,T.team_id as teamid_1, T1.team_id as teamid_2,T.team_name as team_1, T1.team_name as team_2,TO.tournament_name,M.match_date,M.match_venue');
@@ -33,5 +30,3 @@ class Start_match_model extends CI_Model
 		return $this->db->get('tournament_players as TP')->result_array();
 	}
 }
-
-?>

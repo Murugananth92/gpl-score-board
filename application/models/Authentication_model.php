@@ -1,5 +1,4 @@
 <?php
-
 class Authentication_model extends CI_Model 
 {
 	public function get($user_id = null) 
@@ -19,4 +18,3 @@ class Authentication_model extends CI_Model
 		return $query->result_array();
     }
 }
-?>
