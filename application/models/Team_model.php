@@ -25,7 +25,8 @@ class Team_model extends CI_Model
     function get_all_teams()
     {
         $this->db->order_by('team_id', 'desc');
-        return $this->db->get('teams')->result_array();
+        return $this->db->get_where('teams',array('is_active'=>'T'))->result_array();
+        // return $this->db->get('teams')->result_array();
     }
         
     /*
@@ -51,6 +52,10 @@ class Team_model extends CI_Model
      */
     function delete_team($team_id)
     {
-        return $this->db->delete('teams',array('team_id'=>$team_id));
+        // return $this->db->delete('teams',array('team_id'=>$team_id));
+
+        $this->db->where('team_id',$team_id);
+        $this->db->set('is_active','F');
+        $this->db->update('teams');
     }
 }

@@ -9,7 +9,7 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-							<input type="hidden" name="tournament_id" value="<?php echo $all_tournaments[0]['tournament_id'];?>" class="form-control" id="group_name" />
+							<input type="hidden" name="group_id" value="<?php echo $this->uri->segment(3);?>" class="form-control" id="group_id" />
 							<input disabled type="hidden" name="tournament_name" value="<?php $all_tournaments[0]['tournament_id']; print_r($all_tournaments[0]['tournament_name']);?>" class="form-control" id="group_name" />
 						<label for="tournament_team_name" class="control-label"><span class="text-danger">*</span>Tournament Team</label>
 						<select name="tournament_team_name" class="form-control">
@@ -17,9 +17,9 @@
 							<?php 
 							foreach($all_tournament_teams as $tournament_team)
 							{
-								$selected = ($tournament_team['team_id'] == $this->input->post('team_id')) ? ' selected="selected"' : "";
+								$selected = ($tournament_team['tournament_team_id'] == $this->input->post('tournament_team_id')) ? ' selected="selected"' : "";
 
-								echo '<option value="'.$tournament_team['team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
+								echo '<option value="'.$tournament_team['tournament_team_id'].'" '.$selected.'>'.$tournament_team['team_name'].'</option>';
 							} 
 							?>
 						</select>

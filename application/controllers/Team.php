@@ -38,6 +38,7 @@ class Team extends CI_Controller{
             );
             
             $team_id = $this->Team_model->add_team($params);
+            $this->session->set_flashdata('add_msg', 'The team is added');
             redirect('team/index');
         }
         else
@@ -68,6 +69,7 @@ class Team extends CI_Controller{
                 );
 
                 $this->Team_model->update_team($team_id,$params);            
+                $this->session->set_flashdata('edit_msg', 'The team details has been edited');
                 redirect('team/index');
             }
             else
@@ -91,6 +93,7 @@ class Team extends CI_Controller{
         if(isset($team['team_id']))
         {
             $this->Team_model->delete_team($team_id);
+            $this->session->set_flashdata('msg', 'The team is deleted');
             redirect('team/index');
         }
         else
