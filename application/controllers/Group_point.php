@@ -38,7 +38,7 @@ class Group_point extends CI_Controller{
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'group_id' => $this->input->post('tournament_id'),
+				'group_id' => $this->input->post('group_id'),
 				'tournament_team_id' => $this->input->post('tournament_team_name'),
 				'net_run_rate' => $this->input->post('net_run_rate'),
 				'points' => $this->input->post('points'),
@@ -50,6 +50,7 @@ class Group_point extends CI_Controller{
 
             
             $group_point_id = $this->Group_point_model->add_group_point($params);
+            $this->session->set_flashdata('add_msg', 'The group point team is added');
             redirect('group_point/index');
         }
         else
@@ -85,7 +86,6 @@ class Group_point extends CI_Controller{
 			if($this->form_validation->run())     
             {   
                 $params = array(
-					'group_id' => $this->input->post('group_id'),
 					'tournament_team_id' => $this->input->post('tournament_team_id'),
 					'net_run_rate' => $this->input->post('net_run_rate'),
 					'points' => $this->input->post('points'),
@@ -94,7 +94,8 @@ class Group_point extends CI_Controller{
 					'n/r' => $this->input->post('n/r'),
                 );
 
-                $this->Group_point_model->update_group_point($group_points_id,$params);            
+                $this->Group_point_model->update_group_point($group_points_id,$params);
+                $this->session->set_flashdata('edit_msg', 'The group point team has been edited');            
                 redirect('group_point/index');
             }
             else
@@ -122,6 +123,7 @@ class Group_point extends CI_Controller{
         if(isset($group_point['group_points_id']))
         {
             $this->Group_point_model->delete_group_point($group_points_id);
+            $this->session->set_flashdata('msg', 'The group team is deleted');
             redirect('group_point/index');
         }
         else

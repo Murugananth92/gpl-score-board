@@ -17,7 +17,6 @@ class Tournament extends CI_Controller{
     function index()
     {
         $data['tournaments'] = $this->Tournament_model->get_all_tournaments();
-        
         $data['_view'] = 'tournament/index';
         $this->load->view('layouts/main',$data);
     }
@@ -40,6 +39,7 @@ class Tournament extends CI_Controller{
             );
             
             $tournament_id = $this->Tournament_model->add_tournament($params);
+            $this->session->set_flashdata('add_msg', 'The tournament is added');
             redirect('tournament/index');
         }
         else
@@ -72,7 +72,8 @@ class Tournament extends CI_Controller{
 					'tournament_year' => $this->input->post('tournament_year'),
                 );
 
-                $this->Tournament_model->update_tournament($tournament_id,$params);            
+                $this->Tournament_model->update_tournament($tournament_id,$params);
+                $this->session->set_flashdata('edit_msg', 'The tournament details has been edited');            
                 redirect('tournament/index');
             }
             else

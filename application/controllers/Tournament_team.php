@@ -42,26 +42,9 @@ class Tournament_team extends CI_Controller{
 				'captain' => $this->input->post('captain'),
 				'vice_captain' => $this->input->post('vice_captain'),
             );
-
-            // print_r($params);
-            // print_r($this->input->post('team_name'));
-            // die;
-
-            $params1= array('tournament_team_id' => $this->input->post('team_name'),
-                            'player_id' => $this->input->post('captain'), );
-
-            $params2= array('tournament_team_id' => $this->input->post('team_name'),
-                            'player_id' => $this->input->post('vice_captain'), );
-
+      
             $tournament_team_id = $this->Tournament_team_model->add_tournament_team($params);
-
-            $this->load->model('Tournament_player_model');
-            // insert captain in team players table
-            $tournament_team_id = $this->Tournament_player_model->add_tournament_player($params1);
-
-            // insert vice-captain in team players table
-            $tournament_team_id = $this->Tournament_player_model->add_tournament_player($params2);
-            
+            $this->session->set_flashdata('add_msg', 'The tournament team is added');
             redirect('tournament_team/index');
         }
         else
@@ -109,18 +92,8 @@ class Tournament_team extends CI_Controller{
                 );
 
 
-                // $this->Tournament_team_model->update_tournament_team($tournament_team_id,$params);
-
-                $this->load->model('Tournament_player_model');
-
-                $params1[] = ['tournament_team_id' => $this->input->post('team_id'),
-                'player_id' => $this->input->post('captain')];
-                $params1[] = ['tournament_team_id' => $this->input->post('team_id'),
-                'player_id' => $this->input->post('vice_captain')];
-                   
-                $tournament_team_id2 = $this->Tournament_player_model->update_tournament_player($params1,$this->input->post('team_id'),$data['tournament_team']['captain_id'],$data['tournament_team']['vice_captain_id']);
-                
-                
+                 $this->Tournament_team_model->update_tournament_team($tournament_team_id,$params);
+                 $this->session->set_flashdata('edit_msg', 'The tournament team detail has been edited');
                 redirect('tournament_team/index');
             }
             else
@@ -154,6 +127,7 @@ class Tournament_team extends CI_Controller{
         if(isset($tournament_team['tournament_team_id']))
         {
             $this->Tournament_team_model->delete_tournament_team($tournament_team_id);
+            $this->session->set_flashdata('msg', 'The tournament team is deleted');
             redirect('tournament_team/index');
         }
         else

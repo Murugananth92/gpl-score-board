@@ -24,8 +24,11 @@ class User_model extends CI_Model
      */
     function get_all_users()
     {
+        // $this->db->order_by('user_id', 'desc');
+        // return $this->db->get('users')->result_array();
+
         $this->db->order_by('user_id', 'desc');
-        return $this->db->get('users')->result_array();
+        return $this->db->get_where('users',array('is_active'=>'T'))->result_array();
     }
         
     /*
@@ -51,6 +54,10 @@ class User_model extends CI_Model
      */
     function delete_user($user_id)
     {
-        return $this->db->delete('users',array('user_id'=>$user_id));
+        // return $this->db->delete('users',array('user_id'=>$user_id));
+
+        $this->db->where('user_id',$user_id);
+        $this->db->set('is_active','F');
+        return $this->db->update('users');
     }
 }

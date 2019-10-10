@@ -40,6 +40,7 @@ class Group extends CI_Controller{
 
             
             $group_id = $this->Group_model->add_group($params);
+            $this->session->set_flashdata('add_msg', 'The group is added');
             redirect('group/index');
         }
         else
@@ -75,7 +76,8 @@ class Group extends CI_Controller{
 					'tournament_id' => $this->input->post('tournament_id'),
                 );
 
-                $this->Group_model->update_group($group_id,$params);            
+                $this->Group_model->update_group($group_id,$params);  
+                $this->session->set_flashdata('edit_msg', 'The group has been edited');          
                 redirect('group/index');
             }
             else
@@ -101,6 +103,7 @@ class Group extends CI_Controller{
         if(isset($group['group_id']))
         {
             $this->Group_model->delete_group($group_id);
+            $this->session->set_flashdata('msg', 'The group is deleted');
             redirect('group/index');
         }
         else
