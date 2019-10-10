@@ -186,9 +186,11 @@
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo site_url('resources/js/demo.js');?>"></script>
         <!-- DatePicker -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="<?php echo site_url('resources/js/moment.js');?>"></script>
 		<script src="<?php echo site_url('resources/js/bootstrap-datetimepicker.min.js');?>"></script>
 		<script src="<?php echo site_url('resources/select2/dist/js/select2.min.js');?>"></script>
         <script src="<?php echo site_url('resources/js/global.js');?>"></script>
+        <script src="<?php echo site_url('resources/js/common.js');?>"></script>
     </body>
 </html>
