@@ -1,3 +1,47 @@
+<div class="modal fade" id="modal-default" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Select Batsmen & Bowler</h4>
+              </div>
+              <div class="modal-body">
+			  <form role="form" method="post" action=''>
+
+					<label>Select Striker</label>
+					<select class="form-control" name="matches" id="matches">
+						<option value="empty">Select Striker</option>
+						<?php foreach ($team1 as $team1_player) { ?>
+							<option  value=""><?php echo $team1_player; ; ?></option >
+						<?php } ?>
+					</select>
+					<label>Select Non Striker</label>
+					<select class="form-control" name="matches" id="matches">
+						<option value="empty">Select Non Striker</option>
+						<?php foreach ($team1 as $team1_player) { ?>
+							<option  value=""><?php echo $team1_player; ; ?></option >
+						<?php } ?>
+					</select>
+					<label>Select Bowler</label>
+					<select class="form-control" name="matches" id="matches">
+						<option value="empty">Select Bowler</option>
+						<?php foreach ($team2 as $team2_player) { ?>
+							<option  value=""><?php echo $team2_player; ; ?></option >
+						<?php } ?>
+					</select>
+			  </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Start</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div> 
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">  
@@ -12,6 +56,9 @@
 									</div>
 										<!-- /.box-header -->
 									<div class="box-body no-padding">
+									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+										Select Batsmen & Bowler
+									</button>
 										<table class="table table-striped">
 											<tbody>
 												<tr>
@@ -165,3 +212,8 @@
 		</div>
 		</div>
 </div>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#modal-default').modal('show');
+    });
+</script>

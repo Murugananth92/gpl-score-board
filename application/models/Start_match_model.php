@@ -29,4 +29,23 @@ class Start_match_model extends CI_Model
 		$this->db->where_in('TP.tournament_team_id', [$team_id1, $team_id2]);
 		return $this->db->get('tournament_players as TP')->result_array();
 	}
+
+	function get_team_id($team1_toss)
+	{
+		$this->db->select('team_id');
+		return $this->db->get_where('teams1', array('team_name =' => $team1_toss))->row_array();
+	}
+
+	function team_toss_update($params_value,$match_no)
+	{
+				$this->db->where('match_id',$match_no);
+				return $this->db->update('matches',$params_value);
+
+				// $this->db->where('is_active','T');
+				// $this->db->set($params_value);
+				// $this->db->update('matches');
+				
+				// $this->db->insert('tournaments',$params);
+				// return $this->db->insert_id();
+	}
 }
