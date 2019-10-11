@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Groups Listing</h3>
+                <h3 class="box-title">Groups</h3>
 				<?php if($this->session->flashdata('msg')) { ?>
                     <div class="alert alert-success alert-dismissible fade in">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

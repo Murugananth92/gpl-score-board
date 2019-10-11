@@ -2,13 +2,13 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tournament Team Edit</h3>
+              	<h3 class="box-title">Edit Tournament Team</h3>
             </div>
 			<?php echo form_open('tournament_team/edit/'.$tournament_team['tournament_team_id']); ?>
 			<div class="box-body">
           		<div class="row clearfix">
 				  <div class="col-md-12">
-						<label class="control-label">Please add team for</label>  
+						<label class="control-label">Please edit team for</label>  
 						<label class="control-label"><?php echo $active_tournament['tournament_name']; ?> tournament</label>  
 						<input type="hidden" name ="tournament_name" class='form-control' id="tournament_name" value="<?php echo $active_tournament['tournament_id']; ?>" >
 					<span class="text-danger"><?php echo form_error('tournament_name');?></span>

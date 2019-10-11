@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Tournaments Listing</h3>
+                <h3 class="box-title">Tournaments</h3>
                 <?php if($this->session->flashdata('edit_msg')) { ?>
                     <div class="alert alert-success alert-dismissible fade in">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -37,13 +37,11 @@
                         <td><?php echo $t['is_active']; ?></td>
 						<td>
                             <a href="<?php echo site_url('tournament/edit/'.$t['tournament_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <!-- <a href="<?php echo site_url('tournament/remove/'.$t['tournament_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a> -->
                         </td>
                     </tr>
                     <?php } ?>
                 </tbody>
-                </table>
-                                
+                </table>                  
             </div>
         </div>
     </div>

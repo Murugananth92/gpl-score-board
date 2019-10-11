@@ -5,16 +5,13 @@
 			<div class="box-header with-border">
 				<h3 class="box-title">Select Match</h3>
 			</div>
-			<!-- /.box-header -->
-			<!-- form start -->
 			<form role="form" method="post" action="<?= site_url().'start_match/select_players'?>">
 				<div class="box-body">
-
 					<label>Select Match</label>
 					<select class="form-control" name="matches" id="matches">
 						<option value="empty">Select Match</option>
 						<?php foreach ($matches as $m) { ?>
-							<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo $m['team_1'] . ' vs ' . $m['team_2']; ?></option >
+							<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo "Match: ".$m['match_id'].' - '.$m['team_1'] . ' vs ' . $m['team_2']; ?></option >
 						<?php } ?>
 					</select>
 					<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
@@ -76,8 +73,6 @@
 					<input type="text" class="form-control" name="overs" id="overs" placeholder="Overs" value="<?php if(isset($params['overs'])){echo $params['overs'];} ?>">
 					<small class=" <?php if(form_error('overs') != null){echo "text-danger";} ?>" id="oversError"><?php if(form_error('overs') != null){ echo form_error('overs'); }?></small>
 				</div>
-				<!-- /.box-body -->
-
 				<div class="box-footer">
 					<button type="submit" name="select_players" class="btn btn-primary">Select Players</button>
 				</div>
@@ -86,8 +81,6 @@
 		</div>
 	</div>
 </div>
-<!-- jQuery 3.4.1 -->
-<script src="<?php echo site_url('resources/js/jquery.min.js'); ?>"></script>
 <script>
 	$(document).ready(function ()
 	{	
