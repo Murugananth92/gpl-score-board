@@ -13,11 +13,14 @@ $(document).ready(function(){
                 team2Count++;
              }
         });
-        if(team1Count > 11 || team2Count > 11){
+        if(team1Count !== 11 || team2Count !== 11){
             swal("Error", "Each team should select only 11 players", "error");
                 return;
-        }    
-        swal("Success", "Success", "success");
+        }   
+        else{
+            $("#playins_elevens").submit();
+        } 
+    
     });        
     
 });

@@ -5,7 +5,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title">Select Players</h3>
 			</div>
-			<form role="form" method="post" action="">
+			<form role="form" method="post" action="<?= base_url('live_score');?>" id="playins_elevens">
 				<div class="box-body">
 					<?php $i = 1; foreach ($players as $key => $value) { ?>
 						<div class="col-xs-6">
@@ -24,7 +24,7 @@
 									<tr>
 										<td> <?php echo $player['player_name'].' - '.$player['employee_id']; ?> </td>
 										<td>
-											<input type="checkbox" class="team_<?php echo $i;?>" checked value="<?php echo $player['player_id']; ?>">
+											<input type="checkbox" name="players[]" class="team_<?php echo $i;?>" checked value="<?php echo $player['player_id']; ?>">
 										</td>
 									</tr>
 								<?php } ?>
