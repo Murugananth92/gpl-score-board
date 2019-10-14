@@ -30,22 +30,25 @@ class Start_match_model extends CI_Model
 		return $this->db->get('tournament_players as TP')->result_array();
 	}
 
-	function get_team_id($team1_toss)
+	function get_team_id($team)
 	{
 		$this->db->select('team_id');
-		return $this->db->get_where('teams1', array('team_name =' => $team1_toss))->row_array();
+		return $this->db->get_where('teams', array('team_name =' => $team))->row_array();
 	}
 
 	function team_toss_update($params_value,$match_no)
 	{
-				$this->db->where('match_id',$match_no);
-				return $this->db->update('matches',$params_value);
+				$team = $params_value['toss_won'];
+				$team_id = $this->get_team_id($team);
+				foreach($team_id as $teamid) {
+					$team_id = $teamid;
+				}
+				$toss_option = $params_value['toss_option'];
+				$match_overs = $params_value['match_overs'];
 
-				// $this->db->where('is_active','T');
-				// $this->db->set($params_value);
-				// $this->db->update('matches');
-				
-				// $this->db->insert('tournaments',$params);
-				// return $this->db->insert_id();
+				$data = array('toss_won'=>$team_id,'toss_option'=>$toss_option,'match_overs'=>$match_overs);
+
+				$this->db->where('match_id',$match_no);
+				return $this->db->update('matches',$data);
 	}
 }

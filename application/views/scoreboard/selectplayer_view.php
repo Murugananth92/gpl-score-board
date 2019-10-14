@@ -5,7 +5,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title">Select Players</h3>
 			</div>
-			<form role="form" method="post" action="<?= base_url('live_score');?>" id="playins_elevens">
+			<form role="form" method="post" action="<?= base_url('start_match/add_squad');?>" id="playins_elevens">
 				<div class="box-body">
 					<?php $i = 1; foreach ($players as $key => $value) { ?>
 						<div class="col-xs-6">
@@ -33,7 +33,9 @@
 						</div>
 
 					<?php $i++; } ?>
-					
+					<input type='hidden' name="matches" value="<?php echo $params['matches']?>">
+					<input type='hidden' name="teamid_1"  value="<?php echo $params['teamid_1']?>">
+					<input type='hidden' name="teamid_2"  value="<?php echo $params['teamid_2']?>">
 				</div>
 				</form>
 				<form role="form" method="post" action="<?= base_url() ?>start_match">
