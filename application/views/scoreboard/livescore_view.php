@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="modal-default" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -13,21 +14,21 @@
 					<select class="form-control" name="matches" id="matches">
 						<option value="empty">Select Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
-							<option  value=""><?php echo $team1_player; ; ?></option >
+							<option value="<?php echo $team1_player['player_id'];?>"><?php echo $team1_player['player_name']; ?> - <?php echo $team1_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
 					<label>Select Non Striker</label>
 					<select class="form-control" name="matches" id="matches">
 						<option value="empty">Select Non Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
-							<option  value=""><?php echo $team1_player; ; ?></option >
+							<option value="<?php echo $team1_player['player_id'];?>"><?php echo $team1_player['player_name']; ?> - <?php echo $team1_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
 					<label>Select Bowler</label>
 					<select class="form-control" name="matches" id="matches">
 						<option value="empty">Select Bowler</option>
 						<?php foreach ($team2 as $team2_player) { ?>
-							<option  value=""><?php echo $team2_player; ; ?></option >
+							<option  value="<?php echo $team2_player['player_id'];?>"><?php echo $team2_player['player_name']; ?> - <?php echo $team2_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
 			  </form>
