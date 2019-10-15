@@ -8,36 +8,37 @@
                 <h4 class="modal-title">Select Batsmen & Bowler</h4>
               </div>
               <div class="modal-body">
-			  <form role="form" method="post" action=''>
+			  <form role="form" method="post" action='<?= base_url()?>live_score/updateBatBowl'>
 
 					<label>Select Striker</label>
-					<select class="form-control" name="matches" id="matches">
+					<select class="form-control" name="batsman1" id="batsman1">
 						<option value="empty">Select Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
 							<option value="<?php echo $team1_player['player_id'];?>"><?php echo $team1_player['player_name']; ?> - <?php echo $team1_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
 					<label>Select Non Striker</label>
-					<select class="form-control" name="matches" id="matches">
+					<select class="form-control" name="batsman2" id="batsman2">
 						<option value="empty">Select Non Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
 							<option value="<?php echo $team1_player['player_id'];?>"><?php echo $team1_player['player_name']; ?> - <?php echo $team1_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
 					<label>Select Bowler</label>
-					<select class="form-control" name="matches" id="matches">
+					<select class="form-control" name="bowler" id="bowler">
 						<option value="empty">Select Bowler</option>
 						<?php foreach ($team2 as $team2_player) { ?>
 							<option  value="<?php echo $team2_player['player_id'];?>"><?php echo $team2_player['player_name']; ?> - <?php echo $team2_player['employee_id']; ?></option >
 						<?php } ?>
 					</select>
-			  </form>
+			  
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Start</button>
-              </div>
+                <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
+                <button type="submit" class="btn btn-primary">Start</button>
+			  </div>
+			</form>
             </div>
             <!-- /.modal-content -->
           </div>
@@ -57,6 +58,7 @@
 									</div>
 										<!-- /.box-header -->
 									<div class="box-body no-padding">
+									<!-- Temporary button -->
 									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
 										Select Batsmen & Bowler
 									</button>
@@ -163,11 +165,12 @@
               <div class="box-body">
 				<div class="form-group">
 			  <button class="btn btn-info form-control">Undo</button>
-				</div><div class="form-group">
+				</div>
+				<!-- <div class="form-group">
 			  <button class="btn btn-info form-control">Extras</button>
 			  </div><div class="form-group">
 			  <button class="btn btn-info form-control">Partnerships</button>
-			  </div>
+			  </div> -->
 			  </div>
 			</form>
 		</div>
@@ -213,8 +216,4 @@
 		</div>
 		</div>
 </div>
-<script type="text/javascript">
-    $(window).on('load',function(){
-        $('#modal-default').modal('show');
-    });
-</script>
+

@@ -23,6 +23,22 @@ class Live_score_model extends CI_Model
 		$this->db->select('P.player_id as player_id, P.player_name as player_name, P.employee_id as employee_id');
 		$this->db->join('players as P', 'MS.player_id = P.player_id');
 		return $this->db->get_where('match_squads as MS', array('match_id =' => $match_id,'team_id'=>$team))->result_array();
-    }
+	}
+	
+	function insertInnings($innings)
+	{
+		// Static Entries
+		$innings['inning_number'] = 1;
+		$innings['inning_name'] = 'First Innings';
+
+		$this->db->insert('innings',$innings);
+		return $this->db->insert_id();
+	}
+
+	function insertOver($overs)
+	{
+		// Static Entries
+		$overs['over_number'] = 1;
+		return $this->db->insert('over_records',$overs);
+	}
 }
-?>
