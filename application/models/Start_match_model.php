@@ -13,7 +13,7 @@ class Start_match_model extends CI_Model
 		$this->db->join('teams as T', 'M.team_1 = T.team_id');
 		$this->db->join('teams as T1', 'M.team_2 = T1.team_id ');
 		$this->db->join('tournaments as TO', 'TO.tournament_id = M.tournament_id');
-		return $this->db->get('matches as M')->result_array();
+		return $this->db->get_where('matches as M', array('is_completed =' => 0))->result_array();
 	}
 
 	function get_all_player($data)
@@ -33,16 +33,13 @@ class Start_match_model extends CI_Model
 	function get_team_id($team)
 	{
 		$this->db->select('team_id');
-		return $this->db->get_where('teams', array('team_name =' => $team))->row_array();
+		return $this->db->get_where('teams', array('team_name =' => $team))->row();
 	}
 
 	function team_toss_update($params_value,$match_no)
 	{
 				$team = $params_value['toss_won'];
-				$team_id = $this->get_team_id($team);
-				foreach($team_id as $teamid) {
-					$team_id = $teamid;
-				}
+				$team_id = $this->get_team_id($team)->team_id;
 				$toss_option = $params_value['toss_option'];
 				$match_overs = $params_value['match_overs'];
 
