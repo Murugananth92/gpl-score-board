@@ -92,6 +92,9 @@ class Start_match extends CI_Controller
 		$match_id = $this->input->post('matches');
 		$team_1 = $this->input->post('teamid_1');
 		$team_2 = $this->input->post('teamid_2');
+		$toss_won = $this->input->post('team1_toss');
+		$team1_name = $this->input->post('team1');
+		$team2_name = $this->input->post('team2');
 
 		$players=$this->input->post('players');
 
@@ -104,7 +107,7 @@ class Start_match extends CI_Controller
 		$data['team1'] = $this->live_score_model->get_players($match_id, $team_1);
 		$data['team2'] = $this->live_score_model->get_players($match_id, $team_2);
 
-		$match_array = array('match_id'=>$match_id, 'team1'=>$team_1,'team2'=>$team_2); 
+		$match_array = array('match_id'=>$match_id, 'team1'=>$team_1,'team2'=>$team_2, 'team1_name'=>$team1_name, 'team2_name'=>$team2_name, 'toss_won'=>$toss_won); 
 		$this->session->set_userdata($match_array);
 
 		redirect(Live_score);
