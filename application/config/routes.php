@@ -5,3 +5,4 @@ $route['logout'] = 'dashboard/logout';
 $route['default_controller'] = 'authentication';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+

@@ -6,10 +6,10 @@ class Start_match extends CI_Controller
 	{
 		parent::__construct();
 
-		$user_id = $this->session->userdata('user_id');
-		if (!$user_id) {
-			$this->logout();
-		}
+		// $user_id = $this->session->userdata('user_id');
+		// if (!$user_id) {
+		// 	$this->logout();
+		// }
 		$this->load->model('Start_match_model');
 
 	}
@@ -54,9 +54,6 @@ class Start_match extends CI_Controller
 				$params_value=array('toss_won' => $data['params']['team1_toss'],
 									'toss_option' => $data['params']['toss_options'],
 									'match_overs' => $data['params']['overs']);
-
-				// $match_array = array('match_id'=>$match_no, 'team1'=>$data['params']['teamid_1'],'team2'=>$data['params']['teamid_2']); 
-				// $this->session->set_userdata($match_array);
 	
 				$this->Start_match_model->team_toss_update($params_value,$match_no);
 
@@ -96,14 +93,8 @@ class Start_match extends CI_Controller
 		$team_1 = $this->input->post('teamid_1');
 		$team_2 = $this->input->post('teamid_2');
 
-		// echo "<pre>";
-		// print_r($data[params)};
-		// die;
 		$players=$this->input->post('players');
 
-		// $match_id = $this->session->userdata('match_id');
-		// $team_1 = $this->session->userdata('team1');
-		// $team_2 = $this->session->userdata('team2');
 		$team1_players = array_slice($players, 0, 11);
 		$team2_players = array_slice($players, 11, 11);
 
@@ -115,12 +106,8 @@ class Start_match extends CI_Controller
 
 		$match_array = array('match_id'=>$match_id, 'team1'=>$team_1,'team2'=>$team_2); 
 		$this->session->set_userdata($match_array);
-		// echo "<pre>";
-		// print_r($data['team1']);
-		// die;
+
 		redirect(Live_score);
-        // $data['_view'] = 'scoreboard/livescore_view';
-        // $this->load->view('layouts/main',$data);
 	}
 
 }
