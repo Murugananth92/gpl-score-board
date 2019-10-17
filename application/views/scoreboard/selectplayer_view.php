@@ -36,6 +36,9 @@
 					<input type='hidden' name="matches" value="<?php echo $params['matches']?>">
 					<input type='hidden' name="teamid_1"  value="<?php echo $params['teamid_1']?>">
 					<input type='hidden' name="teamid_2"  value="<?php echo $params['teamid_2']?>">
+					<input type='hidden' name="team1_toss" value="<?php echo $params['team1_toss']?>">
+					<input type='hidden' name="team1"  value="<?php echo $params['team1']?>">
+					<input type='hidden' name="team2"  value="<?php echo $params['team2']?>">
 				</div>
 				</form>
 				<form role="form" method="post" action="<?= base_url() ?>start_match">
@@ -57,3 +60,32 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function(){
+    $("#startMatch").click(function(e){
+		
+        var team1Count = 0;
+        $( ".team_1" ).each(function() {
+            if($(this).prop("checked") == true){
+                team1Count++;
+             }
+        });
+        var team2Count = 0;
+        $( ".team_2" ).each(function() {
+            if($(this).prop("checked") == true){
+                team2Count++;
+             }
+        });
+        if(team1Count !== 11 || team2Count !== 11){
+            swal("Error", "Each team should select only 11 players", "error");
+                return;
+        }   
+        else{
+            $("#playins_elevens").submit();
+        } 
+    
+    });        
+    
+});
+
+</script>
