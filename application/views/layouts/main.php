@@ -76,9 +76,14 @@
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
 						</li>
-						<li>
+						<!-- <li>
                             <a href="<?php echo site_url('start_match')?>">
                                 <i class="fa fa-th"></i> <span>Start Match</span>
+                            </a>
+						</li> -->
+                        <li>
+                            <a href="<?php echo site_url('matches')?>">
+                                <i class="fa fa-th"></i> <span>Matches</span>
                             </a>
 						</li>
 						<li>

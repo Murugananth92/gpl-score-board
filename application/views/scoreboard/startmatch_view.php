@@ -1,3 +1,10 @@
+<?php
+// echo "<pre>";
+// 		print_r($matches);
+// 		die;
+
+		?>
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="box box-primary">
@@ -5,57 +12,48 @@
 				<li class="active"><a data-toggle="tab" href="#start_match" id="matchSection">Start_match</a></li>
 				<li><a data-toggle="tab" href="#selct_player" id="playerSection">select_player</a></li>
 			</ul>
-			<form  role="form" method="post" action="<?= site_url('start_match/add_squad') ?>">
+			<form  role="form" method="post" action="<?= base_url('start_match/add_squad') ?>" id="playins_elevens">
 			<div class="tab-content">
 				<div id="start_match" class="tab-pane active">
 					
 						<div class="box-body">
 							<label>Select Match</label>
-							<select class="form-control" name="matches" id="matches">
+							<input readonly type="hidden" class="form-control" name="matches" id="matches" value="<?php echo $matches[0]['match_id']; ?>">
+							<input readonly type="text" class="form-control" name="match1" id="match1" value="<?php echo "Match: ".$matches[0]['match_id'].' - '.$matches[0]['team1'] . ' vs ' . $matches[0]['team2']; ?>">
+							<!-- <select class="form-control" name="matches" id="matches">
 								<option value="empty">Select Match</option>
 								<?php foreach ($matches as $m) { ?>
 									<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo "Match: ".$m['match_id'].' - '.$m['team_1'] . ' vs ' . $m['team_2']; ?></option >
 								<?php } ?>
-							</select>
+							</select> -->
 							<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
 
 							<label>Team 1</label>
-							<input type="hidden" name="teamid_1" id="teamid_1" value="<?php if(isset($params['teamid_1'])){echo $params['teamid_1'];} ?>">
-							<input type="text" class="form-control" placeholder="Team 1" name="team1" id="team1" value="<?php if(isset($params['team1'])){echo $params['team1'];} ?>">
+							<input type="hidden" name="teamid_1" id="teamid_1" value="<?php echo $matches[0]['team_1'] ?>">
+							<input readonly type="text" class="form-control" name="team1" id="team1" value="<?php echo $matches[0]['team1'] ?>">
 							<small class=" <?php if(form_error('team1') != null){echo "text-danger";} ?>" id="team1Error"><?php if(form_error('team1') != null){ echo form_error('team1'); }?></small>
 
 							<label>Team 2</label>
-							<input type="hidden" name="teamid_2" id="teamid_2" value="<?php if(isset($params['teamid_2'])){echo $params['teamid_2'];} ?>">
-							<input type="text" class="form-control" placeholder="Team 2" name="team2" id="team2" value="<?php if(isset($params['team2'])){echo $params['team2'];} ?>">
+							<input type="hidden" name="teamid_2" id="teamid_2" value="<?php echo $matches[0]['team_2'] ?>">
+							<input readonly type="text" class="form-control" placeholder="Team 2" name="team2" id="team2" value="<?php echo $matches[0]['team2'] ?>">
 							<small class=" <?php if(form_error('team2') != null){echo "text-danger";} ?>" id="team2Error"><?php if(form_error('team2') != null){ echo form_error('team2'); }?></small>
 
 							<label>Date:</>
-							<input type="date" class="form-control" name="match_date" id="match_date" value="<?php if(isset($params['match_date'])){echo $params['match_date'];} ?>">
+							<input type="date" class="form-control" name="match_date" id="match_date" value="<?php echo $matches[0]['match_date'] ?>">
 							<small class=" <?php if(form_error('match_date') != null){echo "text-danger";} ?>" id="matchDateError"><?php if(form_error('match_date') != null){ echo form_error('match_date'); }?></small>
 
 							<label>Venue:</label>
-							<input type="text" class="form-control" placeholder="Venue" name="match_venue" id="match_venue" value="<?php if(isset($params['match_venue'])){echo $params['match_venue'];} ?>">
+							<input type="text" class="form-control" placeholder="Venue" name="match_venue" id="match_venue" value="<?php echo $matches[0]['match_venue'] ?>">
 							<small class=" <?php if(form_error('match_venue') != null){echo "text-danger";} ?>" id="matchVenueError"><?php if(form_error('match_venue') != null){ echo form_error('match_venue'); }?></small>
 							<label>Toss won by?</label>
 								<div class="radio">
-							<?php if(isset($params['team1_toss'])) { ?>
 								<label>
-							<input type="radio" <?php echo ($params['team1_toss'] == $params['team1']) ? 'checked' : ''; ?> name="team1_toss" class="team_toss" id="team1_toss" value="<?php echo $params['team1'] ?>">
-							<span id="team1_name"><?php echo $params['team1'] ?></span>
+							<input type="radio" <?php echo  $matches[0]['team1'] ?> name="team1_toss" class="team_toss" id="team1_toss" value="<?php echo $matches[0]['team1'] ?>">
+							<span id="team1_name"><?php echo $matches[0]['team1'] ?></span>
 												</label>
 												<label>
-							<input type="radio" <?php echo ($params['team1_toss'] == $params['team2']) ? 'checked' : ''; ?> name="team1_toss" class="team_toss" id="team2_toss" value="<?php echo $params['team2'] ?>">
-							<span id="team2_name"><?php echo $params['team2'] ?></span>
-							<?php } else { ?>
-								<label>
-							<input type="radio" name="team1_toss" class="team_toss" id="team1_toss" value="">
-							<span id="team1_name"></span>
-												</label>
-												<label>
-							<input type="radio" name="team1_toss" class="team_toss" id="team2_toss" value="">
-							<span id="team2_name"></span>
-							</label>
-							<?php } ?>
+							<input type="radio" <?php echo $matches[0]['team2'] ?> name="team1_toss" class="team_toss" id="team2_toss" value="<?php echo $matches[0]['team2'] ?>">
+							<span id="team2_name"><?php echo $matches[0]['team2'] ?></span>
 								</div>
 								<small class=" <?php if(form_error('team1_toss') != null){echo "text-danger";} ?>" id="team1TossError"><?php if(form_error('team1_toss') != null){ echo form_error('team1_toss'); }?></small>
 
@@ -94,7 +92,7 @@
 								</div>
 									<div class="box-footer">
 										<button type="button" class="btn btn-primary" id="previousStep">Previous</button>
-										<button type="submit" class="btn btn-primary pull-right" id="startMatch">Start Match</button>
+										<button type="button" class="btn btn-primary pull-right" id="startMatch">Start Match</button>
 									</div>
 								
 							</div>
@@ -107,8 +105,8 @@
 	</div>
 </div>
 <script>
-	$(document).ready(function ()
-	{	
+	$(document).ready(function(){
+				
 		var matches = <?php echo json_encode($matches); ?>;
 		var matchId;
 		var teamId1;
@@ -184,6 +182,36 @@
 		$('#previousStep').on('click',function(){
 			$('#matchSection').trigger('click');
 		});
+
+			$("#startMatch").click(function(e){
+				
+				var team1Count = 0;
+				$( ".team_1" ).each(function() {
+					if($(this).prop("checked") == true){
+						team1Count++;
+					}
+				});
+				var team2Count = 0;
+				$( ".team_2" ).each(function() {
+					if($(this).prop("checked") == true){
+						team2Count++;
+					}
+				});
+
+				// console.log(team1Count);
+				// console.log(team2Count);
+
+
+				if(team1Count !== 11 || team2Count !== 11){
+					swal("Error", "Each team should select only 11 players", "error");
+						return;
+				}   
+				else{
+					$("#playins_elevens").submit();
+				} 
+			
+			});        
+    	
 
 	});
 </script>
