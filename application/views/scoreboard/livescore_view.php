@@ -7,7 +7,7 @@
 				<h4 class="modal-title">Select Batsmen & Bowler</h4>
 			</div>
 			<div class="modal-body">
-				<!--			  <form role="form" method="post" action='--><? //= base_url()?><!--live_score/updateBatBowl'>-->
+				<!--<form role="form" method="post" action='--><? //= base_url()?><!--live_score/updateBatBowl'>-->
 				<form role="form" method="post" action='#'>
 
 					<label>Select Striker</label>
@@ -34,6 +34,8 @@
 								- <?php echo $team2_player['employee_id']; ?></option>
 						<?php } ?>
 					</select>
+					<inpu type="hidden" name="is_innings_progressing" id="isInningsProgressing" value="<?php echo $is_innings_progressing; ?>">
+						<inpu type="hidden" name="url" id="url" value="<?php echo site_url(); ?>">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" id="startMatch">Start</button>
@@ -51,11 +53,21 @@
 			</div>
 			<form role="form">
 				<div class="box-body">
-					<h5 class="col-xs-6"> <?php echo $team1_name.' vs '. $team2_name;?>- <span> First Innining</span></h5>
-					<?php foreach($team_playing as $playing) : ?>
-					<h1 class="col-xs-12"> <?php echo $playing; ?> : 0 / 0</h1>
-						<?php endforeach; ?>
-					<h2 class="col-xs-12">Overs : <span>0</span></h2>
+					<table class="table">
+						<tr>
+							<th><?php echo $team1_name . ' vs ' . $team2_name; ?></th>
+							<td>First Innining</td>
+						</tr>
+						<tr>
+							<?php foreach ($team_playing as $playing) : ?>
+								<th><?php echo $playing; ?> : <?php echo isset($match_details['runs']) ? $match_details['runs'] : '0'; ?>/
+									<?php echo isset($match_details['wickets']) ? $match_details['wickets'] : '0'; ?></th>
+							<?php endforeach; ?>
+							<td>Overs : <span><?php echo isset($match_details['over']) ? $match_details['over'] : '0'; ?>.<?php echo isset($match_details['ball']) ? $match_details['ball'] : '0'; ?></td>
+						</tr>
+					</table>
+
+
 					<div class="box-header">
 					</div>
 					<div class="box-body no-padding">
@@ -69,14 +81,14 @@
 								<th style="width: 50px">6s</th>
 							</tr>
 							<tr>
-								<td id="batsman1_name">Batsman 1</td>
+								<td id="batsman1_name"><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></td>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
 							</tr>
 							<tr>
-								<td id="batsman2_name">Batsman 2</td>
+								<td id="batsman2_name"><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></td>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
@@ -85,15 +97,13 @@
 							<tr>
 								<th style="width: 500px">Bowler</th>
 								<th style="width: 50px">Over</th>
-								<th style="width: 50px">Maiden</th>
 								<th style="width: 50px">Runs</th>
 								<th style="width: 50px">Wickets</th>
 							</tr>
 							<tr>
-								<td id="bowler_name">Bowler</td>
+								<td id="bowler_name"><?php echo isset($match_details['bowler']) ? $match_details['bowler'] : 'Bowler'; ?></td>
 								<td>0.0</td>
 								<td>0</td>
-								<td>0.0</td>
 								<td>0</td>
 							</tr>
 							</tbody>
@@ -210,50 +220,14 @@
 		</div>
 	</div>
 </div>
-<script src="<?php echo site_url('resources/js/live_score.js');?>"></script>
+<script src="<?php echo site_url('resources/js/live_score.js'); ?>"></script>
+
 <script>
-	$('document').ready(function ()
-	{	
-		if(localStorage.batsman_name1 != "" && localStorage.batsman_name2 != "" && localStorage.bowler_name1 != "")
-		{
-			$('#batsman1_name').text(localStorage.batsman_name1);
-			$('#batsman2_name').text(localStorage.batsman_name2);
-			$('#bowler_name').text(localStorage.bowler_name1);
-		}
-		var batsman1_name;
-		var batsman2_name;
-		var bowler_name;
-
-		var matchStatus = '<?php echo $match_data; ?>';
-		if (parseInt(matchStatus) === 0) {
-			$('#modal-selectplayer').modal('show');
-		}
-
-		$('#startMatch').on('click', function ()
-		{
-			var batsman1 = $('#batsman1').val();
-			var batsman2 = $('#batsman2').val();
-			var bowler = $('#bowler').val();
-
-			localStorage.batsman_name1 = $('#batsman1 option:selected').attr('data-batsman1');
-			localStorage.batsman_name2 = $('#batsman2 option:selected').attr('data-batsman2');
-			localStorage.bowler_name1 = $('#bowler option:selected').attr('data-bowler');
-
-			var request = $.ajax({
-				url: "<?php echo site_url('Live_score/start_innings'); ?>",
-				type: "POST",
-				data: {batsman1: batsman1, batsman2: batsman2, bowler: bowler},
-				success: function (data)
-				{
-					$('#modal-selectplayer').modal('hide');
-					$('#inningId').val(data.inning_id);
-					$('#overId').val(data.over_id);
-					$('#batsman1_name').text(localStorage.batsman_name1);
-					$('#batsman2_name').text(localStorage.batsman_name2);
-					$('#bowler_name').text(localStorage.bowler_name1);
-				}
-			});
-		})
+	$(document).ready(function ()
+	{
+		LiveScore.init();
 	});
 </script>
+
+
 

@@ -27,60 +27,67 @@ class Live_score_model extends CI_Model
 		return $this->db->get_where('match_squads as MS', array('match_id =' => $match_id, 'team_id' => $team))->result_array();
 	}
 
-	function insertInnings($innings)
+	function get_match_details()
 	{
-		// Static Entries
-		$innings['inning_number'] = 1;
-		$innings['inning_name'] = 'First Innings';
+		$this->db->select('T.team_name as team1,T1.team_name as team2,P.player_name as strike_batsman, P1.player_name as batsman,
+						   P2.player_name as bowler,ML.over,ML.ball,ML.runs,ML.wickets');
+		$this->db->join('match_logs as ML', 'M.match_id = ML.match_id');
+		$this->db->join('tournament_teams as TT', 'M.team_1 = TT.team_id');
+		$this->db->join('tournament_teams as TT1', 'M.team_2 = TT1.team_id');
+		$this->db->join('teams as T', 'T.team_id = TT1.team_id');
+		$this->db->join('teams as T1', 'T1.team_id = TT.team_id');
+		$this->db->join('tournament_players as TP', 'TP.player_id = ML.batsman_onstrike');
+		$this->db->join('tournament_players as TP1', 'TP1.player_id = ML.batsman');
+		$this->db->join('tournament_players as TP2', 'TP2.player_id = ML.bowler');
+		$this->db->join('players as P', 'P.player_id = TP.player_id');
+		$this->db->join('players as P1', 'P1.player_id = TP1.player_id');
+		$this->db->join('players as P2', 'P2.player_id = TP2.player_id');
+		$this->db->where('ML.match_id', $this->session->userdata('match_id'));
+		return $this->db->get('matches as M')->row_array();
+	}
 
-		$this->db->insert('innings', $innings);
+	function insert_innings($inningsData)
+	{
+		$this->db->insert('innings', $inningsData);
 		return $this->db->insert_id();
 	}
 
-	function insertOver($overs)
+	function insertOver($overData)
 	{
-		// Static Entries
-		$overs['over_number'] = 1;
-		return $this->db->insert('over_records', $overs);
+		$this->db->insert('over_records', $overData);
+		return $this->db->insert_id();
 	}
 
-	function get_match_status()
+	function insertLog($logData)
 	{
-		$this->db->select('inning_id');
-		$this->db->where('match_id', $this->session->userdata('match_id'));
-		$query = $this->db->get('innings');
-		return $query->num_rows();
+		$this->db->insert('match_logs', $logData);
 	}
 
-	function insert_innings($data)
-	{
-		$inningsData = array('match_id' => $this->session->userdata('match_id'),
-			'batting_team' => $this->session->userdata('team1'),
-			'bowling_team' => $this->session->userdata('team2'),
-			'batsman_1' => $this->input->post('batsman1'),
-			'batsman_2' => $this->input->post('batsman2'),
-			'bowler' => $this->input->post('bowler'),
-			'inning_number' => 1,
-			'inning_name' => 'First Innings'
-		);
-
-		$this->db->insert('innings', $inningsData);
-		$inning_id = $this->db->insert_id();
-
-		$overs['inning_id'] = $inning_id;
-		$overs['over_number'] = 1;
-		$overs['bowler'] = $this->input->post('bowler');
-		$this->db->insert('over_records', $overs);
-		$over_id = $this->db->insert_id();
-
-		return array('inning_id' => $inning_id, 'over_id' => $over_id);
-	}
-
-	function get_playingTeam($match_id)
+	function get_playingTeam($match_id, $team_1)
 	{
 		$this->db->select('T.team_name');
-		$this->db->join('teams as T', 'M.toss_won = T.team_id');
+		$this->db->join('teams as T', 'T.team_id =' . $team_1);
 		return $this->db->get_where('matches as M', array('match_id =' => $match_id))->row_array();
+	}
+
+	function get_innings()
+	{
+		$this->db->where('match_id', $this->session->userdata('match_id'));
+		$this->db->order_by("inning_id", "desc");
+		$data = $this->db->get('innings')->row_array();
+
+		switch (true) {
+			case empty($data):
+				$status = false;
+				break;
+			case (!empty($data) AND $data['is_completed'] == 0):
+				$status = true;
+				break;
+			default:
+				$status = false;
+		}
+
+		return $status;
 	}
 
 }

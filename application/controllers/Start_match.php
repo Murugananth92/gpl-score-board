@@ -16,6 +16,14 @@ class Start_match extends CI_Controller
 
 	function index()
 	{
+		$match_id = $this->uri->segment(3, 0);
+		$this->load->model('matches_model');
+		$data['matches'] = $this->matches_model->get_match_details($match_id);
+		// echo "<pre>";
+		// print_r($data['matches']);
+		// die;
+		
+
 		$data['params'] = [];
 		if ($this->input->post('matches') != null) {
 			
@@ -24,7 +32,7 @@ class Start_match extends CI_Controller
 			$data['params'] =  1;
 
 		}
-		$data['matches'] = $this->Start_match_model->get_all_match();
+		// $data['matches'] = $this->Start_match_model->get_all_match();
 		$data['_view'] = 'scoreboard/startmatch_view';
 		$this->load->view('layouts/main', $data);
 	}
@@ -108,12 +116,10 @@ class Start_match extends CI_Controller
 
 		$this->Start_match_model->team_toss_update($params_value,$match_id);
 
-		print_r($this->input->post('team1_toss'));
 
+		$team1_name = $this->Start_match_model->get_team_name($team_1)->team_name;
+		$team2_name = $this->Start_match_model->get_team_name($team_2)->team_name;
 
-
-
-		
 
 		$team1_players = array_slice($players, 0, 11);
 		$team2_players = array_slice($players, 11, 11);
@@ -136,16 +142,7 @@ class Start_match extends CI_Controller
 			$bowling_team_id=$toss_won_by;
 		}
 
-		// echo "toss_won_by".$toss_won_by;
-		// echo "team1".$team_1;
-		// echo "team2".$team_2;
-		// die;
-
-
-		// $data['team1'] = $this->live_score_model->get_players($match_id, $batting_team_id);
-		// $data['team2'] = $this->live_score_model->get_players($match_id, $bowling_team_id);
-
-		$match_array = array('match_id'=>$match_id, 'team1'=>$batting_team_id,'team2'=>$bowling_team_id); 
+		$match_array = array('match_id'=>$match_id, 'team1'=>$batting_team_id,'team2'=>$bowling_team_id, 'team1_name' => $team1_name, 'team2_name'=>$team2_name); 
 		$this->session->set_userdata($match_array);
 
 		redirect(Live_score);
