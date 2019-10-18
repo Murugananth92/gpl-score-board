@@ -142,7 +142,9 @@ class Start_match extends CI_Controller
 			$bowling_team_id=$toss_won_by;
 		}
 
+
 		$match_array = array('match_id'=>$match_id, 'team1'=>$batting_team_id,'team2'=>$bowling_team_id, 'team1_name' => $team1_name, 'team2_name'=>$team2_name); 
+
 		$this->session->set_userdata($match_array);
 
 		redirect(Live_score);
