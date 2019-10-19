@@ -33,6 +33,7 @@
                 </div>
             </div>
             <div class="box-body">
+                
                 <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                             <tr>
@@ -55,13 +56,14 @@
                                 <td><?php echo $m['match_venue']; ?></td>
                                 <td><?php echo "not_started"; ?></td>
                                 <td>
-                                    <a href="<?php echo site_url('matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Delete</a>
+                                    <a href="<?php echo site_url('matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-pencil"></span> Delete</a>
                                     <a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Start match</a> 
                                 </td>
                             </tr>
                         <?php } ?>
                     </tbody>
-                </table>                     
+                </table>      
+                              
             </div>
         </div>
     </div>

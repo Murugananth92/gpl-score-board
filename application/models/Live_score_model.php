@@ -78,15 +78,15 @@ class Live_score_model extends CI_Model
 
 		switch (true) {
 			case empty($data):
-				$status = false;
+				$status = 0;
 				break;
 			case (!empty($data) AND $data['is_completed'] == 0):
-				$status = true;
+				$status = 1;
 				break;
 			default:
-				$status = false;
+				$status = 0;
 		}
-
+		
 		return $status;
 	}
 

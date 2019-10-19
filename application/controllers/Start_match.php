@@ -23,7 +23,6 @@ class Start_match extends CI_Controller
 		// print_r($data['matches']);
 		// die;
 		
-
 		$data['params'] = [];
 		if ($this->input->post('matches') != null) {
 			
@@ -41,8 +40,15 @@ class Start_match extends CI_Controller
 
 		$data['teamid_1'] = $this->input->post('teamId1');
 		$data['teamid_2'] = $this->input->post('teamId2');
-		$players = $this->Start_match_model->get_all_player($data);
-		$players = $this->arrangePlayers($players);
+
+		$team1_name = $this->Start_match_model->get_team_name($data['teamid_1'])->team_name;
+		$team2_name = $this->Start_match_model->get_team_name($data['teamid_2'])->team_name;
+
+		$team1 = $this->Start_match_model->get_all_player($data['teamid_1']);
+		$team2 = $this->Start_match_model->get_all_player($data['teamid_2']);
+		$players = array();
+		$players[$team1_name] = $team1;
+		$players[$team2_name] = $team2;
 		echo json_encode($players,TRUE);
 	}
 
@@ -141,6 +147,12 @@ class Start_match extends CI_Controller
 			$batting_team_id=($team_1 == $toss_won_by) ? $team_2 : $team_1;
 			$bowling_team_id=$toss_won_by;
 		}
+
+		// echo "<pre>";
+		// echo $batting_team_id.'--';
+		// echo "<pre>";
+		// print_r($bowling_team_id);
+		// die;
 
 
 		$match_array = array('match_id'=>$match_id, 'team1'=>$batting_team_id,'team2'=>$bowling_team_id, 'team1_name' => $team1_name, 'team2_name'=>$team2_name); 

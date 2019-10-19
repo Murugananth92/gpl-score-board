@@ -14,12 +14,15 @@
         <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
         <link rel="stylesheet" href="<?php echo site_url('resources/css/chosen.css');?>"> 
+        <link rel="stylesheet" type="text/css" href="<?php echo site_url('resources/css/style.css');?>">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/1.0.4/css/dataTables.responsive.css">
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
          <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+         
         <div class="wrapper">
             <header class="main-header">
-                <a href="" class="logo">
+                <a href="javascript:;" class="logo hidden-xs">
                     <span class="logo-mini">GPL</span>
                     <span class="logo-lg">GPL</span>
                 </a>
@@ -76,11 +79,11 @@
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
 						</li>
-						<!-- <li>
-                            <a href="<?php echo site_url('start_match')?>">
-                                <i class="fa fa-th"></i> <span>Start Match</span>
+						<li>
+                            <a href="<?php echo site_url('livescore_display')?>">
+                                <i class="fa fa-th"></i> <span>Live score</span>
                             </a>
-						</li> -->
+						</li>
                         <li>
                             <a href="<?php echo site_url('matches')?>">
                                 <i class="fa fa-th"></i> <span>Matches</span>
@@ -146,6 +149,7 @@
         <script src="<?php echo site_url('resources/js/global.js');?>"></script>
 		<script src="<?php echo site_url('resources/js/common.js');?>"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.4/js/dataTables.responsive.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
         <script src="<?php echo site_url('resources/js/chosen.jquery.js');?>"></script>
         <script>
@@ -168,11 +172,17 @@
 
                 $(document).ready( function () {
 
-                $('#dataTable').dataTable( {
+                /*$('#dataTable').dataTable( {
                     "columnDefs": [ {
                     "targets": 'no-sort',
                     "orderable": false,
+                    "responsive": true
                 } ]
+
+            } );*/
+
+            $('#dataTable').DataTable( {
+                responsive: true
             } );
 
             var groupColumn = 0;
