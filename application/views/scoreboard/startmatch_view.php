@@ -20,12 +20,6 @@
 							<label>Select Match</label>
 							<input readonly type="hidden" class="form-control" name="matches" id="matches" value="<?php echo $matches[0]['match_id']; ?>">
 							<input readonly type="text" class="form-control" name="match1" id="match1" value="<?php echo "Match: ".$matches[0]['match_id'].' - '.$matches[0]['team1'] . ' vs ' . $matches[0]['team2']; ?>">
-							<!-- <select class="form-control" name="matches" id="matches">
-								<option value="empty">Select Match</option>
-								<?php foreach ($matches as $m) { ?>
-									<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo "Match: ".$m['match_id'].' - '.$m['team_1'] . ' vs ' . $m['team_2']; ?></option >
-								<?php } ?>
-							</select> -->
 							<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
 
 							<label>Team 1</label>
@@ -60,11 +54,11 @@
 							<label>Opted to?</label>
 							<div class="radio" value="<?php if(isset($params['toss_options'])){echo $params['toss_options'];} ?>">
 							<label>
-							<input type="radio" name="toss_options" id="toss_options1" value="bat" <?php if(isset($params['toss_options']) && $params['toss_options']=='bat'){ echo'checked';} else {' ';} ?> >
+							<input type="radio" name="toss_options" id="toss_options1" value="bat">
 							Bat
 												</label>
 												<label>
-							<input type="radio" name="toss_options" id="toss_options2" value="bowl" <?php if(isset($params['toss_options']) && $params['toss_options']=='bowl'){ echo'checked';} else {' ';} ?> >
+							<input type="radio" name="toss_options" id="toss_options2" value="bowl">
 							Bowl
 							</label>
 								</div>
@@ -139,23 +133,53 @@
 		
 		$('#selectPlayers').on('click', function ()
 		{
-			teamId1 = $('#teamid_1').val();
-			teamId2 = $('#teamid_2').val();
-
-			if(teamId1 !== undefined && teamId2 !== undefined){
-				var request = $.ajax({
-				url: "<?php echo site_url('Start_match/select_players'); ?>",
-				type: "POST",
-				data: {teamId1: teamId1, teamId2: teamId2},
-				success: function (data)
-					{
-						var response = JSON.parse(data);
-						getPlayers(response);
-						
-					}
-				});
-			}
+			if(validateStartMatch()){
+				teamId1 = $('#teamid_1').val();
+				teamId2 = $('#teamid_2').val();
+				if(teamId1 !== undefined && teamId2 !== undefined){
+					var request = $.ajax({
+					url: "<?php echo site_url('Start_match/select_players'); ?>",
+					type: "POST",
+					data: {teamId1: teamId1, teamId2: teamId2},
+					success: function (data)
+						{
+							var response = JSON.parse(data);
+							getPlayers(response);
+						}
+					});
+				}
+			}		
+			
 		});
+
+		function validateStartMatch(){
+			var errorCount = 0;
+			if($("#match_date").val() ===''){
+				swal("Error", "Match date is required", "error");
+				errorCount++;	
+			}
+			else if($("#match_venue").val() ===''){
+				swal("Error", "Match venue is required", "error");
+				errorCount++;	
+			}
+			else if($('input[name="team1_toss"]:checked').length  == 0){
+				swal("Error", "select the toss won by option", "error");
+				errorCount++;	
+			}
+			else if($('input[name="toss_options"]:checked').length  == 0){
+				swal("Error", "select the toss option", "error");
+				errorCount++;	
+			}
+			else if($("#overs").val() ===''){
+				swal("Error", "overs is required", "error");
+				errorCount++;	
+			}
+			
+			if(errorCount ===0){
+				return true;
+			}
+				return false;
+		}
 
 		function getPlayers(response){
 			var htmlData ='';
