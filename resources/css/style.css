@@ -1,0 +1,65 @@
+.run_button button:hover{
+	background: #00a65a;
+	color: #fff;
+}
+.run_button button{
+	margin-right: 5px;
+	border-radius: 50% !important;
+	background: transparent;
+	border: 1px solid #00a65a;
+	color: #000;
+}
+.run_button{
+	margin-bottom: 10px;
+}
+
+@media(max-width: 767px){
+	.live_match {
+	    font-size: 10px;
+	}
+	.extras_field input[type="checkbox"], .extras_field input[type="radio"]{
+		margin-top: 0;
+	}
+	.this_over h4{
+		margin: 0;
+		font-size: 12px;
+	}
+	.this_over h4 span{
+		border: 1px solid #ddd;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		line-height: 17px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+	.extras_field .box-footer{
+		padding: 0;
+	}
+	.live_match .box{
+		margin-bottom: 5px;
+	}
+	.this_over h4 b{
+		margin-right: 10px;
+	}
+	.undo-btn .form-group, .extras_field .form-group{
+		margin-bottom: 0;
+	}
+	.box-footer button.btn-success, .box-body button.btn-info{
+		width: 120px;
+	}
+	.box-footer button.btn-success:first-child, .box-body button.btn-info:first-child{
+		margin-right: 10px;
+	}
+	#playersDetails .players-table table tr td:first-child{
+		width: 300px;
+	}
+
+}
+
+@media(max-width: 575px){
+	.col-xs-6.players-table{
+		width: 100%;
+	}
+}

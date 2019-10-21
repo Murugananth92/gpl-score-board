@@ -25,17 +25,14 @@ class Start_match_model extends CI_Model
 		return $this->db->get_where('matches as M', array('is_completed =' => 0))->result_array();
 	}
 
-	function get_all_player($data)
+	function get_all_player($team_id)
 	{
-		$team_id1 = $data['teamid_1'];
-		$team_id2 = $data['teamid_2'];
-
 		$this->db->select('P.player_id, P.player_name as player_name,P.employee_id,T1.team_name as team,T1.team_id');
 		$this->db->join('players as P', 'TP.player_id = P.player_id');
 		$this->db->join('tournament_teams as TT', 'TT.tournament_team_id = TP.tournament_team_id');
 		$this->db->join('teams as T1', 'T1.team_id = TT.team_id');
 		$this->db->join('teams as T2', 'T2.team_id = TT.team_id');
-		$this->db->where_in('TP.tournament_team_id', [$team_id1, $team_id2]);
+		$this->db->where('TP.tournament_team_id', $team_id);
 		return $this->db->get('tournament_players as TP')->result_array();
 	}
 

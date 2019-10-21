@@ -162,7 +162,7 @@
 			var i=1;
 				$.each(response,function(key,value){
 					
-					htmlData += '<div class="col-xs-6"><table class="table table-striped">';
+					htmlData += '<div class="col-xs-6 col-md-6 players-table"><table class="table table-striped">';
 					htmlData +='<thead><tr><th>'+key+'</th></tr></thead><tbody>';
 					htmlData +=	'<tr><th>Players - Employee ID</th><th>Selected</th></tr>';
 					
