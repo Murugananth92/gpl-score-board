@@ -38,18 +38,26 @@ class Start_match extends CI_Controller
 
 	function select_players(){
 
-		$data['teamid_1'] = $this->input->post('teamId1');
-		$data['teamid_2'] = $this->input->post('teamId2');
+		// $this->form_validation->set_rules('match_date', 'Match Date', 'required');
+		// $this->form_validation->set_rules('match_venue', 'Match Venue', 'required');
+		// $this->form_validation->set_rules('team1_toss', 'Team Toss', 'required');
+		// $this->form_validation->set_rules('toss_options', 'Toss Options', 'required');
+		// $this->form_validation->set_rules('overs', 'Overs', 'required');
+		// if ($this->form_validation->run()) 
+		// 	{
+				$data['teamid_1'] = $this->input->post('teamId1');
+				$data['teamid_2'] = $this->input->post('teamId2');
 
-		$team1_name = $this->Start_match_model->get_team_name($data['teamid_1'])->team_name;
-		$team2_name = $this->Start_match_model->get_team_name($data['teamid_2'])->team_name;
+				$team1_name = $this->Start_match_model->get_team_name($data['teamid_1'])->team_name;
+				$team2_name = $this->Start_match_model->get_team_name($data['teamid_2'])->team_name;
 
-		$team1 = $this->Start_match_model->get_all_player($data['teamid_1']);
-		$team2 = $this->Start_match_model->get_all_player($data['teamid_2']);
-		$players = array();
-		$players[$team1_name] = $team1;
-		$players[$team2_name] = $team2;
-		echo json_encode($players,TRUE);
+				$team1 = $this->Start_match_model->get_all_player($data['teamid_1']);
+				$team2 = $this->Start_match_model->get_all_player($data['teamid_2']);
+				$players = array();
+				$players[$team1_name] = $team1;
+				$players[$team2_name] = $team2;
+				echo json_encode($players,TRUE);
+			// }
 	}
 
 
