@@ -26,17 +26,17 @@
 									<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo "Match: ".$m['match_id'].' - '.$m['team_1'] . ' vs ' . $m['team_2']; ?></option >
 								<?php } ?>
 							</select> -->
-							<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
+							<!-- <small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small> -->
 
 							<label>Team 1</label>
 							<input type="hidden" name="teamid_1" id="teamid_1" value="<?php echo $matches[0]['team_1'] ?>">
 							<input readonly type="text" class="form-control" name="team1" id="team1" value="<?php echo $matches[0]['team1'] ?>">
-							<small class=" <?php if(form_error('team1') != null){echo "text-danger";} ?>" id="team1Error"><?php if(form_error('team1') != null){ echo form_error('team1'); }?></small>
+							<!-- <small class=" <?php if(form_error('team1') != null){echo "text-danger";} ?>" id="team1Error"><?php if(form_error('team1') != null){ echo form_error('team1'); }?></small> -->
 
 							<label>Team 2</label>
 							<input type="hidden" name="teamid_2" id="teamid_2" value="<?php echo $matches[0]['team_2'] ?>">
 							<input readonly type="text" class="form-control" placeholder="Team 2" name="team2" id="team2" value="<?php echo $matches[0]['team2'] ?>">
-							<small class=" <?php if(form_error('team2') != null){echo "text-danger";} ?>" id="team2Error"><?php if(form_error('team2') != null){ echo form_error('team2'); }?></small>
+							<!-- <small class=" <?php if(form_error('team2') != null){echo "text-danger";} ?>" id="team2Error"><?php if(form_error('team2') != null){ echo form_error('team2'); }?></small> -->
 
 							<label>Date:</>
 							<input type="date" class="form-control" name="match_date" id="match_date" value="<?php echo $matches[0]['match_date'] ?>">
@@ -139,23 +139,53 @@
 		
 		$('#selectPlayers').on('click', function ()
 		{
-			teamId1 = $('#teamid_1').val();
-			teamId2 = $('#teamid_2').val();
+			if(validateStartMatch()){
+				teamId1 = $('#teamid_1').val();
+				teamId2 = $('#teamid_2').val();
 
-			if(teamId1 !== undefined && teamId2 !== undefined){
-				var request = $.ajax({
-				url: "<?php echo site_url('Start_match/select_players'); ?>",
-				type: "POST",
-				data: {teamId1: teamId1, teamId2: teamId2},
-				success: function (data)
-					{
-						var response = JSON.parse(data);
-						getPlayers(response);
-						
-					}
-				});
+				if(teamId1 !== undefined && teamId2 !== undefined){
+					var request = $.ajax({
+					url: "<?php echo site_url('Start_match/select_players'); ?>",
+					type: "POST",
+					data: {teamId1: teamId1, teamId2: teamId2},
+					success: function (data)
+						{
+							var response = JSON.parse(data);
+							getPlayers(response);	
+						}
+					});
+				}
 			}
 		});
+
+		function validateStartMatch(){
+			var errorCount = 0;
+			if($("#match_date").val() ===''){
+				swal("Error", "Match date is required", "error");
+				errorCount++;	
+			}
+			else if($("#match_venue").val() ===''){
+				swal("Error", "Match venue is required", "error");
+				errorCount++;	
+			}
+			else if($('input[name="team1_toss"]:checked').length  == 0){
+				swal("Error", "select the toss won by option", "error");
+				errorCount++;	
+			}
+			else if($('input[name="toss_options"]:checked').length  == 0){
+				swal("Error", "select the toss option", "error");
+				errorCount++;	
+			}
+			else if($("#overs").val() ===''){
+				swal("Error", "overs is required", "error");
+				errorCount++;	
+			}
+			
+			if(errorCount ===0){
+				return true;
+			}
+				return false;
+		}
 
 		function getPlayers(response){
 			var htmlData ='';

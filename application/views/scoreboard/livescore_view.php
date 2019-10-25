@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="modal-selectplayer" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -79,14 +80,16 @@
 								<th style="width: 50px">6s</th>
 							</tr>
 							<tr>
-								<td id="batsman1_name"><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></td>
+								<td id="batsman1_highlight"><span id="batsman1_name"><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></span><span id="batsman1_onstrike"></span></td>
+								<input type='hidden' id="batsman1_id" value=0>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
 							</tr>
 							<tr>
-								<td id="batsman2_name"><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></td>
+								<td id="batsman2_highlight"><span id="batsman2_name"><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></span><span id="batsman2_onstrike"></span></td>
+								<input type='hidden' id="batsman2_id" value=0>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
@@ -100,6 +103,7 @@
 							</tr>
 							<tr>
 								<td id="bowler_name"><?php echo isset($match_details['bowler']) ? $match_details['bowler'] : 'Bowler'; ?></td>
+								<input type='hidden' id="bowler_id" value=0>
 								<td>0.0</td>
 								<td>0</td>
 								<td>0</td>
@@ -134,20 +138,18 @@
 						<!-- <h5><b>Extras</b></h5> -->
 						<div class="row">
 							<div class="col-md-4 col-xs-4">
-								<div class="radio">							
-									
+								<!-- <div class="radio">							 -->
 									<div class="radio">
-									  <label><input type="radio" name="extrasoption" id="wideoption" checked>Wide</label>
+									  <label><input type="radio" name="extras" id="wideoption" value="wide">Wide</label>
 									</div>
 									<div class="radio">
-									  <label><input type="radio" name="extrasoption" id="noballoption">No Ball</label>
+									  <label><input type="radio" name="extras" id="noballoption" value="noball">No Ball</label>
 									</div>
-								</div>
 							</div>
 							<div class="col-md-4 col-xs-4">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox">
+										<input type="checkbox" name="byes" id="byes">
 										Byes
 									</label>
 								</div>
@@ -155,7 +157,7 @@
 							<div class="col-md-4 col-xs-4">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox">
+										<input type="checkbox" name="wicket" id="wicket">
 										Wicket
 									</label>
 								</div>
@@ -195,47 +197,64 @@
 				<div class="box-body">
 					<!-- <div class="radio">
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios1" value="option1" checked="">
 							
 							<span class="run_score">0</span>
 						</label>
 
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios2" value="option2">
 							<span class="run_score">1</span>
 						</label>
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios3" value="option3">
 							<span class="run_score">2</span>
 						</label>
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios3" value="option3">
 							<span class="run_score">3</span>
 						</label>
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios3" value="option3">
 							<span class="run_score">4</span>
 						</label>
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios3" value="option3">
 							<span class="run_score">5</span>
 						</label>
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+							<input type="radio" name="optionsRadios" class="runs_options" id="optionsRadios3" value="option3">
 							<span class="run_score">6</span>
 						</label>
 					</div> -->
-					<div class="run_button">
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary">0</button>
-							<button type="button" class="btn btn-primary">1</button>
-							<button type="button" class="btn btn-primary">2</button>
-							<button type="button" class="btn btn-primary">3</button>
-							<button type="button" class="btn btn-primary">4</button>
-							<button type="button" class="btn btn-primary">5</button>
-							<button type="button" class="btn btn-primary">6</button>
-						</div>
+					<div class="radio run_button">
+					<input type="radio" id="runs0" class="runs" name="runs" value="0">
+					<label for="runs0">0</label>
+					<input type="radio" id="runs1" class="runs" name="runs" value="1">
+					<label for="runs1">1</label>
+					<input type="radio" id="runs2" class="runs" name="runs" value="2">
+					<label for="runs2">2</label>
+					<input type="radio" id="runs3" class="runs" name="runs" value="3">
+					<label for="runs3">3</label>
+					<input type="radio" id="runs4" class="runs" name="runs" value="4">
+					<label for="runs4">4</label>
+					<input type="radio" id="runs5" class="runs" name="runs" value="5">
+					<label for="runs5">5</label> 
+					<input type="radio" id="runs6" class="runs" name="runs" value="6">
+       				<label for="runs6">6</label>   
 					</div>
+					
+					<!-- <div class="run_button">
+						<div class="btn-group">
+							<button type="button" class=" runs btn btn-primary" value="0">0</button>
+							<button type="button" class=" runs btn btn-primary" value="1">1</button>
+							<button type="button" class=" runs btn btn-primary" value="2">2</button>
+							<button type="button" class=" runs btn btn-primary" value="3">3</button>
+							<button type="button" class=" runs btn btn-primary" value="4">4</button>
+							<button type="button" class=" runs btn btn-primary" value="5">5</button>
+							<button type="button" class=" runs btn btn-primary" value="6">6</button>
+						</div>
+					</div> -->
 
 					<button class="btn btn-info">Others</button>
 					<button class="btn btn-info">Undo</button>
@@ -248,6 +267,7 @@
 </section>
 
 <script src="<?php echo site_url('resources/js/live_score.js'); ?>"></script>
+<script src="<?php echo site_url('resources/js/live_score2.js'); ?>"></script>
 
 <script>
 	$(document).ready(function ()

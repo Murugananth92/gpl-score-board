@@ -84,5 +84,15 @@ class Live_score extends CI_Controller
 		}
 	}
 
+	function insertBallRecords() {
+		$data['balls'] = $_POST;
+		// echo "<pre>";
+		// print_r($data['balls']);	
+		// echo "hi";
+		// die;
+		$ball_record = $this->live_score_model->insert_ball_record($data['balls']);
+
+	}
+
 
 }
