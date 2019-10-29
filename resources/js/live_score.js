@@ -14,6 +14,9 @@ var LiveScore = function ()
 	var batsmanField1;
 	var batsmanField2;
 	var bowlerField;
+	var bowlerid;
+	var batsman1id;
+	var batsman2id;
 
 	function init()
 	{
@@ -27,6 +30,9 @@ var LiveScore = function ()
 		batsmanField1 = $('#batsman1_name');
 		batsmanField2 = $('#batsman2_name');
 		bowlerField = $('#bowler_name');
+		
+		
+		
 
 		if (parseInt(isInningsProgressing) === 0) {
 			liveScoreModal.modal({backdrop: 'static', keyboard: false, show: true});
@@ -42,6 +48,9 @@ var LiveScore = function ()
 			batsman1 = $('#batsman1').val();
 			batsman2 = $('#batsman2').val();
 			bowler = $('#bowler').val();
+			bowlerid = $('#bowler_id');
+			batsman1id = $('#batsman1_id');
+			batsman2id = $('#batsman2_id');
 
 			batsmanName1 = $('#batsman1 option:selected').attr('data-batsman1');
 			batsmanName2 = $('#batsman2 option:selected').attr('data-batsman2');
@@ -65,6 +74,12 @@ var LiveScore = function ()
 				batsmanField1.text(batsmanName1);
 				batsmanField2.text(batsmanName2);
 				bowlerField.text(bowlerName);
+				bowlerid.val(bowler);
+				batsman1id.val(batsman1);
+				batsman2id.val(batsman2);
+				console.log(bowlerid.val());
+				console.log(batsman1id.val());
+				console.log(batsman2id.val());
 			}
 		});
 	}

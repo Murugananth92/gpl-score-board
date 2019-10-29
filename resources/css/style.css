@@ -1,17 +1,43 @@
-.run_button button:hover{
+/* .run_button button:hover{
 	background: #00a65a;
 	color: #fff;
-}
-.run_button button{
+} */
+/* .run_button button{
 	margin-right: 5px;
 	border-radius: 50% !important;
 	background: transparent;
 	border: 1px solid #00a65a;
 	color: #000;
-}
+} */
 .run_button{
-	margin-bottom: 10px;
+	margin-bottom: 15px;
+} 
+
+input[name=runs] {
+    display:none; 
+    margin:10px;
 }
+
+input[name=runs] + label {
+    display:inline-block;
+	margin:-2px;
+	margin-right: 5px;
+    padding: 4px 12px;
+	background: transparent;
+	border-radius: 100px;
+	border: 1px solid #00a65a;
+}
+
+input[name=runs]:checked + label { 
+   background-image: none;
+   background: #00a65a;
+   color: #fff;
+}
+input[name=runs]:hover + label { 
+	background-image: none;
+	background: #00a65a;
+	color: #fff;
+ }
 
 @media(max-width: 767px){
 	.live_match {

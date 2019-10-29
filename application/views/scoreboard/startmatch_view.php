@@ -20,17 +20,19 @@
 							<label>Select Match</label>
 							<input readonly type="hidden" class="form-control" name="matches" id="matches" value="<?php echo $matches[0]['match_id']; ?>">
 							<input readonly type="text" class="form-control" name="match1" id="match1" value="<?php echo "Match: ".$matches[0]['match_id'].' - '.$matches[0]['team1'] . ' vs ' . $matches[0]['team2']; ?>">
+
 							<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
+
 
 							<label>Team 1</label>
 							<input type="hidden" name="teamid_1" id="teamid_1" value="<?php echo $matches[0]['team_1'] ?>">
 							<input readonly type="text" class="form-control" name="team1" id="team1" value="<?php echo $matches[0]['team1'] ?>">
-							<small class=" <?php if(form_error('team1') != null){echo "text-danger";} ?>" id="team1Error"><?php if(form_error('team1') != null){ echo form_error('team1'); }?></small>
+							<!-- <small class=" <?php if(form_error('team1') != null){echo "text-danger";} ?>" id="team1Error"><?php if(form_error('team1') != null){ echo form_error('team1'); }?></small> -->
 
 							<label>Team 2</label>
 							<input type="hidden" name="teamid_2" id="teamid_2" value="<?php echo $matches[0]['team_2'] ?>">
 							<input readonly type="text" class="form-control" placeholder="Team 2" name="team2" id="team2" value="<?php echo $matches[0]['team2'] ?>">
-							<small class=" <?php if(form_error('team2') != null){echo "text-danger";} ?>" id="team2Error"><?php if(form_error('team2') != null){ echo form_error('team2'); }?></small>
+							<!-- <small class=" <?php if(form_error('team2') != null){echo "text-danger";} ?>" id="team2Error"><?php if(form_error('team2') != null){ echo form_error('team2'); }?></small> -->
 
 							<label>Date:</>
 							<input type="date" class="form-control" name="match_date" id="match_date" value="<?php echo $matches[0]['match_date'] ?>">
@@ -136,6 +138,7 @@
 			if(validateStartMatch()){
 				teamId1 = $('#teamid_1').val();
 				teamId2 = $('#teamid_2').val();
+
 				if(teamId1 !== undefined && teamId2 !== undefined){
 					var request = $.ajax({
 					url: "<?php echo site_url('Start_match/select_players'); ?>",
@@ -144,12 +147,13 @@
 					success: function (data)
 						{
 							var response = JSON.parse(data);
-							getPlayers(response);
+
+							getPlayers(response);	
 						}
 					});
 				}
-			}		
-			
+			}
+
 		});
 
 		function validateStartMatch(){

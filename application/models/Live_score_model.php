@@ -90,4 +90,11 @@ class Live_score_model extends CI_Model
 		return $status;
 	}
 
+	function insert_ball_record($ball_record)
+	{
+		$aaa = $this->db->insert('ball_records', $ball_record);
+		echo $aaa;
+	}
+
+
 }
