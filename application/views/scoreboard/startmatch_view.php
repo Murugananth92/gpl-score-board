@@ -20,13 +20,9 @@
 							<label>Select Match</label>
 							<input readonly type="hidden" class="form-control" name="matches" id="matches" value="<?php echo $matches[0]['match_id']; ?>">
 							<input readonly type="text" class="form-control" name="match1" id="match1" value="<?php echo "Match: ".$matches[0]['match_id'].' - '.$matches[0]['team1'] . ' vs ' . $matches[0]['team2']; ?>">
-							<!-- <select class="form-control" name="matches" id="matches">
-								<option value="empty">Select Match</option>
-								<?php foreach ($matches as $m) { ?>
-									<option <?php if(isset($params['matches']) && $params['matches'] == $m['match_id']){echo "selected='selected'";}?> value="<?php echo $m['match_id']; ?>"><?php echo "Match: ".$m['match_id'].' - '.$m['team_1'] . ' vs ' . $m['team_2']; ?></option >
-								<?php } ?>
-							</select> -->
-							<!-- <small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small> -->
+
+							<small class=" <?php if(form_error('matches') != null){echo "text-danger";} ?>" id="matchesError"><?php if(form_error('matches') != null){ echo form_error('matches'); }?></small>
+
 
 							<label>Team 1</label>
 							<input type="hidden" name="teamid_1" id="teamid_1" value="<?php echo $matches[0]['team_1'] ?>">
@@ -60,11 +56,11 @@
 							<label>Opted to?</label>
 							<div class="radio" value="<?php if(isset($params['toss_options'])){echo $params['toss_options'];} ?>">
 							<label>
-							<input type="radio" name="toss_options" id="toss_options1" value="bat" <?php if(isset($params['toss_options']) && $params['toss_options']=='bat'){ echo'checked';} else {' ';} ?> >
+							<input type="radio" name="toss_options" id="toss_options1" value="bat">
 							Bat
 												</label>
 												<label>
-							<input type="radio" name="toss_options" id="toss_options2" value="bowl" <?php if(isset($params['toss_options']) && $params['toss_options']=='bowl'){ echo'checked';} else {' ';} ?> >
+							<input type="radio" name="toss_options" id="toss_options2" value="bowl">
 							Bowl
 							</label>
 								</div>
@@ -151,11 +147,13 @@
 					success: function (data)
 						{
 							var response = JSON.parse(data);
+
 							getPlayers(response);	
 						}
 					});
 				}
 			}
+
 		});
 
 		function validateStartMatch(){

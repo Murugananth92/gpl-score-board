@@ -32,6 +32,7 @@
 <script>
     $(document).ready(function ()
 		{
+            alert('hii1');
                 function getScore(){
                     $.ajax({
                     // alert('hii');
