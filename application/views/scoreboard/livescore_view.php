@@ -81,7 +81,7 @@
 							</tr>
 							<tr>
 								<td id="batsman1_highlight"><span id="batsman1_name"><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></span><span id="batsman1_onstrike"></span></td>
-								<input type='hidden' id="batsman1_id" value=0>
+								<input type='hidden' id="batsman1_id" value=1>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
@@ -89,7 +89,7 @@
 							</tr>
 							<tr>
 								<td id="batsman2_highlight"><span id="batsman2_name"><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></span><span id="batsman2_onstrike"></span></td>
-								<input type='hidden' id="batsman2_id" value=0>
+								<input type='hidden' id="batsman2_id" value=1>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
@@ -103,7 +103,7 @@
 							</tr>
 							<tr>
 								<td id="bowler_name"><?php echo isset($match_details['bowler']) ? $match_details['bowler'] : 'Bowler'; ?></td>
-								<input type='hidden' id="bowler_id" value=0>
+								<input type='hidden' id="bowler_id" value=1>
 								<td>0.0</td>
 								<td>0</td>
 								<td>0</td>
@@ -161,7 +161,7 @@
 										Wicket
 									</label>
 								</div>
-							</div>	
+							</div>
 						
 							<div class="col-md-12 col-xs-12">					
 								<div class="box-footer">
@@ -172,6 +172,50 @@
 						</div>
 				</div>
 			</form>
+		</div>
+	</div>
+</section>
+
+<section id='wicket-options'>
+	<div class="col-md-12">
+		<div class="box box-secondary">
+			<div class="box-body">
+				<div id="wicket-dropdown">
+					<label>Select Wicket Option</label>
+					<select  class="form-control">
+						<option value="" >--Select--</option>
+						<option value="bowled">Bowled</option>
+						<option value="catchout">Catch Out</option>
+						<option value="runout">Run Out</option>
+						<option value="stumped" >Stumped</option>
+						<option value="hitwicket">Hit Wicket</option>
+						<option value="ballhandled">Ball Handled</option>
+						<option value="fieldobstruction">Field Obstruction</option>
+					</select>
+				</div>
+
+				<div id="wicket-involved">
+				<label>Select Player Involved</label>
+					<select class="form-control" name="wicketInvolved" id="wicketInvolved">
+						<option value="">--Select--</option>
+						<?php foreach ($team2all as $team2_player_all) { ?>
+							<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
+								- <?php echo $team2_player_all['employee_id']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+
+				<div id="new-batsman">
+				<label>Select New Batsman</label>
+					<select class="form-control" name="newBatsman" id="newBatsman">
+						<option value="">--Select--</option>
+						<?php foreach ($team1 as $team1_player) { ?>
+							<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>"><?php echo $team1_player['player_name']; ?>
+								- <?php echo $team1_player['employee_id']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -273,6 +317,37 @@
 	$(document).ready(function ()
 	{
 		LiveScore.init();
+
+		$('#batsman1').on('change', function() {
+        var batsman1 = $(this).val();
+        $("#batsman2 option").attr('disabled', 'disabled')
+            .siblings().removeAttr('disabled');
+        $("#batsman2 option[value='" + batsman1 + "']").attr('disabled', true);
+    	});
+
+		$('#batsman2').on('change', function() {
+			var batsman2 = $(this).val();
+			$("#batsman1 option").attr('disabled', 'disabled')
+				.siblings().removeAttr('disabled');
+			$("#batsman1 option[value='" + batsman2 + "']").attr('disabled', true);
+		});
+
+		$('#wicket-involved').hide();
+		var selectedWicket='';
+
+		$('input[name=wicket]').on('click init-post-format', function() {
+			$('#wicket-options').toggle($('#wicket').prop('checked'));
+			}).trigger('init-post-format');
+
+			$('#wicket-dropdown').change(function(){
+				var selectedWicket = $('#wicket-dropdown option:selected').val();
+				if(selectedWicket == 'catchout' || selectedWicket == 'runout' || selectedWicket == 'stumped') {
+				$('#wicket-involved').show();
+			} else {
+				$('#wicket-involved').hide();
+			}	
+			});
+			
 	});
 </script>
 
