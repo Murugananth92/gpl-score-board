@@ -27,6 +27,14 @@ class Live_score_model extends CI_Model
 		return $this->db->get_where('match_squads as MS', array('match_id =' => $match_id, 'team_id' => $team))->result_array();
 	}
 
+	//Working 
+	function get_players_all($team)
+	{
+		$this->db->select('P.player_id as player_id, P.player_name as player_name, P.employee_id as employee_id');
+		$this->db->join('players as P', 'TP.player_id = P.player_id');
+		return $this->db->get_where('tournament_players as TP', array('tournament_team_id' => $team))->result_array();
+	}
+
 	function get_match_details()
 	{
 		$this->db->select('T.team_name as team1,T1.team_name as team2,P.player_name as strike_batsman, P1.player_name as batsman,
@@ -90,10 +98,14 @@ class Live_score_model extends CI_Model
 		return $status;
 	}
 
-	function insert_ball_record($ball_record)
+	function insert_ball_record($ball)
 	{
-		$aaa = $this->db->insert('ball_records', $ball_record);
-		echo $aaa;
+
+		// $data['balls'] = $_POST;
+		// print_r($data['balls']);	
+		// die;
+		$aaa = $this->db->insert('ball_records', $ball);
+		// echo $aaa;
 	}
 
 

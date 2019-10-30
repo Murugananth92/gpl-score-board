@@ -21,6 +21,10 @@ class Live_score extends CI_Controller
 
 		$data['team1'] = $this->live_score_model->get_players($match_id, $team_1);
 		$data['team2'] = $this->live_score_model->get_players($match_id, $team_2);
+
+		//Working
+		$data['team2all'] = $this->live_score_model->get_players_all($team_2);
+
 		$data['team_playing'] = $this->live_score_model->get_playingTeam($match_id, $team_1);
 		$data['match_details'] = $this->live_score_model->get_match_details();
 		$data['is_innings_progressing'] = $this->live_score_model->get_innings();
@@ -85,13 +89,25 @@ class Live_score extends CI_Controller
 	}
 
 	function insertBallRecords() {
-		$data['balls'] = $_POST;
-		// echo "<pre>";
-		// print_r($data['balls']);	
-		// echo "hi";
-		// die;
-		$ball_record = $this->live_score_model->insert_ball_record($data['balls']);
+		$data = $_POST;
+		
+		$ball = ['over_id'=>$data['over_id'], 'ball_number'=>$data['ball_number'], 'bowler'=>$data['bowler'], 'runs_scored'=>$data['runs_scored'], 'batsman'=>$data['batsman1']];
 
+		if(array_key_exists('wide', $data)) {
+			$ball['is_extra'] = 'T';
+			$ball['extra_type'] = 'wide';
+		} else if(array_key_exists('noball', $data)) {
+			$ball['is_extra'] = 'T';
+			$ball['extra_type'] = 'no_ball';
+		} else {
+			$ball['is_extra'] = 'F';
+			$ball['extra_type'] = 'none';
+		}
+
+		// print_r($ball);	
+		// die;
+		$ball_record = $this->live_score_model->insert_ball_record($ball);
+		// echo $ball_record;
 	}
 
 
