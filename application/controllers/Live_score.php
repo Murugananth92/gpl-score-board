@@ -107,7 +107,58 @@ class Live_score extends CI_Controller
 		// print_r($ball);	
 		// die;
 		$ball_record = $this->live_score_model->insert_ball_record($ball);
+		$get_batsman_record = $this->live_score_model->get_batsman_record($match_id);
+		$get_team_score = $this->live_score_model->get_team_score($match_id);
+		$get_bowler_score = $this->live_score_model->get_bowler_score($match_id);
+		$get_current_batsman = $this->live_score_model->get_current_batsman();
+
+		$this->checkCurrentBatsman($get_current_batsman,$get_batsman_record);
 		// echo $ball_record;
+	}
+
+	function checkCurrentBatsman($get_current_batsman,$get_batsman_record) {
+		
+		$strike="";
+		if($get_current_batsman['ball_number']==6)
+		{
+			if($get_current_batsman['runs_scored']%2==0)
+			{
+				$this->test($get_batsman_record,$get_current_batsman['batsman'],'0');
+			}
+			else{
+				$this->test($get_batsman_record,$get_current_batsman['batsman'],'1');
+			}
+		}
+		else{
+			if($get_current_batsman['runs_scored']%2==0)
+			{
+				$this->test($get_batsman_record,$get_current_batsman['batsman'],'1');
+			}
+			else{
+				$this->test($get_batsman_record,$get_current_batsman['batsman'],'0');
+			}
+		}
+		
+	}
+
+	function test($batsman_data,$current_batsman,$status)
+	{
+		$final=[];
+		foreach($batsman_data as $key => $data)
+		{
+			$final[$key]=$data;
+			// $final[$key]['is_onstrike']='1';
+			if($data['batsman_id']==$current_batsman && $status == '1')
+			{
+				$final[$key]['is_onstrike']='1';
+			}
+			else if($data['batsman_id']!=$current_batsman && $status == '0')
+			{
+				$final[$key]['is_onstrike']='0';
+			}
+		}
+		print_r($final);
+		die;
 	}
 
 
