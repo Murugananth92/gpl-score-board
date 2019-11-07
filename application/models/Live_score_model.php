@@ -169,6 +169,7 @@ class Live_score_model extends CI_Model
 		 
 		return $result->row_array();
 	}
+
 	function insertBatsmanInnings($batsmanData)
 	{
 		$this->db->insert('batsman_innings', $batsmanData);
@@ -213,5 +214,8 @@ class Live_score_model extends CI_Model
 		$this->db->where('over_id',$over_id);
 	 	$this->db->update('over_records',$over);
 	}
+
+
+
 
 }

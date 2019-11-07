@@ -160,10 +160,14 @@ class Live_score extends CI_Controller
 		print_r($final);
 		die;
 	}
+
 	function undoBall() {
 		$data = $_POST;
 		$ball = $data['ballid'];
 		$this->live_score_model->delete_ball_record($ball);
 	}
+
+
+
 
 }
