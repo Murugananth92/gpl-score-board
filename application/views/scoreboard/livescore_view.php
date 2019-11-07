@@ -45,7 +45,7 @@
 		</div>
 	</div>
 </div>
-
+<div class="loader"></div>
 <section class="live_match">
 <div class="row">
 	<div class="col-md-12">
@@ -59,6 +59,9 @@
 						<tr>
 							<th><?php echo $team1_name . ' vs ' . $team2_name; ?></th>
 							<td>First Innining</td>
+							<!-- Static values -->
+							<input type='hidden' id='inningId' name='inningId' value="18">
+							<input type='hidden' id='overId' name='overId' value="18">
 						</tr>
 						<tr>
 							<?php foreach ($team_playing as $playing) : ?>
@@ -89,7 +92,7 @@
 							</tr>
 							<tr>
 								<td id="batsman2_highlight"><span id="batsman2_name"><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></span><span id="batsman2_onstrike"></span></td>
-								<input type='hidden' id="batsman2_id" value=1>
+								<input type='hidden' id="batsman2_id" value=2>
 								<td>0</td>
 								<td>0</td>
 								<td>0</td>
@@ -115,7 +118,7 @@
 			</form>
 		</div>
 	</div>
-
+	<input type='hidden' id='ballid' name='ballid' value='1'>							
 <section class="this_over">	
 	<div class="col-md-12">
 		<div class="box box-warning">
@@ -138,7 +141,7 @@
 						<!-- <h5><b>Extras</b></h5> -->
 						<div class="row">
 							<div class="col-md-4 col-xs-4">
-								<!-- <div class="radio">							 -->
+								<!-- <div class="radio">-->
 									<div class="radio">
 									  <label><input type="radio" name="extras" id="wideoption" value="wide">Wide</label>
 									</div>
@@ -182,7 +185,7 @@
 			<div class="box-body">
 				<div id="wicket-dropdown">
 					<label>Select Wicket Option</label>
-					<select  class="form-control">
+					<select class="form-control" id='wicket-type'>
 						<option value="" >--Select--</option>
 						<option value="bowled">Bowled</option>
 						<option value="catchout">Catch Out</option>
@@ -203,6 +206,27 @@
 								- <?php echo $team2_player_all['employee_id']; ?></option>
 						<?php } ?>
 					</select>
+				</div>
+
+				<div id="wicket-involved2">
+				<label>Select Player Involved 2</label>
+					<select class="form-control" name="wicketInvolved2" id="wicketInvolved2">
+						<option value="">--Select--</option>
+						<?php foreach ($team2all as $team2_player_all) { ?>
+							<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
+								- <?php echo $team2_player_all['employee_id']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+
+				<div id="out-batsman">
+				<label>Select Out Batsman</label>
+					<div class="radio">
+						<label><input type="radio" name="outBatsman" id="batsman1-out" value=1><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></label>
+						</div>
+						<div class="radio">
+						<label><input type="radio" name="outBatsman" id="batsman2-out" value=2><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></label>
+					</div>
 				</div>
 
 				<div id="new-batsman">
@@ -288,20 +312,9 @@
        				<label for="runs6">6</label>   
 					</div>
 					
-					<!-- <div class="run_button">
-						<div class="btn-group">
-							<button type="button" class=" runs btn btn-primary" value="0">0</button>
-							<button type="button" class=" runs btn btn-primary" value="1">1</button>
-							<button type="button" class=" runs btn btn-primary" value="2">2</button>
-							<button type="button" class=" runs btn btn-primary" value="3">3</button>
-							<button type="button" class=" runs btn btn-primary" value="4">4</button>
-							<button type="button" class=" runs btn btn-primary" value="5">5</button>
-							<button type="button" class=" runs btn btn-primary" value="6">6</button>
-						</div>
-					</div> -->
 
 					<button class="btn btn-info">Others</button>
-					<button class="btn btn-info">Undo</button>
+					<button class="btn btn-info" id="undoRecord">Undo</button>
 				</div>
 			</form>
 		</div>
@@ -309,13 +322,12 @@
 </section>
 </div>
 </section>
-
 <script src="<?php echo site_url('resources/js/live_score.js'); ?>"></script>
 <script src="<?php echo site_url('resources/js/live_score2.js'); ?>"></script>
 
 <script>
 	$(document).ready(function ()
-	{
+	{	
 		LiveScore.init();
 
 		$('#batsman1').on('change', function() {
@@ -333,6 +345,7 @@
 		});
 
 		$('#wicket-involved').hide();
+		$('#wicket-involved2').hide();
 		var selectedWicket='';
 
 		$('input[name=wicket]').on('click init-post-format', function() {
@@ -341,13 +354,42 @@
 
 			$('#wicket-dropdown').change(function(){
 				var selectedWicket = $('#wicket-dropdown option:selected').val();
-				if(selectedWicket == 'catchout' || selectedWicket == 'runout' || selectedWicket == 'stumped') {
+				if(selectedWicket == 'catchout' || selectedWicket == 'stumped') {
 				$('#wicket-involved').show();
-			} else {
-				$('#wicket-involved').hide();
-			}	
+				$('#wicket-involved2').hide();
+				} else if(selectedWicket == 'runout') {
+					$('#wicket-involved').show();
+					$('#wicket-involved2').show();
+				} else {
+					$('#wicket-involved').hide();
+					$('#wicket-involved2').hide();
+				}	
 			});
-			
+
+			var res = {
+				loader: $('<div />', { class: 	'loading-bar'}),
+				container: $('.live_match')
+			}
+
+			$('#undoRecord').on('click', function(e) {
+				e.preventDefault();
+				var ballid = $('#ballid').val();
+				$.ajax({
+				url: url + 'Live_score/undoBall',
+				type: "POST",
+				data: {ballid: ballid},
+				async: false,
+				beforeSend: function(){
+					// $('.spinner-load').show();
+					// res.container.append(res.loader);
+				},
+				success: function(data) {
+					$('#undoRecord').prop('disabled', true);
+					// $('.spinner-load').hide();
+					}
+   				});
+				
+			});
 	});
 </script>
 
