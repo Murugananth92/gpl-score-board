@@ -170,6 +170,52 @@ class Live_score_model extends CI_Model
 		return $result->row_array();
 	}
 
+	function insertBatsmanInnings($batsmanData)
+	{
+		$this->db->insert('batsman_innings', $batsmanData);
+		return $this->db->insert_id();
+	}
+	function insertBowlerInnings($bowlerData)
+	{
+		$this->db->insert('bowler_innings', $bowlerData);
+		return $this->db->insert_id();
+	}
+	// function getInningsID($match_id)
+	// {
+	// 	$this->db->select('I.inning_id');
+	// 	return $this->db->get_where('innings as I', array('match_id =' => $match_id))->row()->inning_id;
+	// }
+	function delete_ball_record($ball)
+	{	
+		$this->db->where('ball_id', $ball);
+		$this->db->delete('ball_records');
+		$this->db->where('ball_id', $ball);
+		$this->db->delete('batsman_ball_records');
+	}
+	
+	function insert_batsman_ball_records($bat_ball) {
+		$this->db->insert('batsman_ball_records', $bat_ball);
+		return $this->db->insert_id();
+	}
+
+	function getOver($over_id) {
+		$query = "SELECT SUM(CASE WHEN `is_byes`=0 THEN `runs_scored` ELSE 0 END) as runs,
+		SUM(CASE WHEN `is_wide`=1 THEN `is_wide` ELSE 0 END) as wide,
+		SUM(CASE WHEN `is_noball`=1 THEN `is_noball` ELSE 0 END) as noball,
+		SUM(CASE WHEN `is_byes`=1 THEN `runs_scored` ELSE 0 END) as byes,
+		SUM(CASE WHEN `is_wicket`= 1 THEN `is_wicket` ELSE 0 END) as wicket,
+		(SELECT COUNT(`ball_id`) FROM `ball_records` AS BR WHERE BR.`over_id` = 14 AND BR.`runs_scored`=0 AND BR.`is_wide`=0 AND BR.`is_noball`=0 GROUP BY BR.`over_id` ) as dots 
+		FROM `ball_records` WHERE `over_id` ='".$over_id."' GROUP BY `over_id`";
+		return $this->db->query($query)->row_array();
+		
+	}
+
+	function updateOverDetails($over, $over_id) {
+		$this->db->where('over_id',$over_id);
+	 	$this->db->update('over_records',$over);
+	}
+
+
 
 
 }
