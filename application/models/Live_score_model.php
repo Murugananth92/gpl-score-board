@@ -100,12 +100,8 @@ class Live_score_model extends CI_Model
 
 	function insert_ball_record($ball)
 	{
-
-		// $data['balls'] = $_POST;
-		// print_r($data['balls']);	
-		// die;
-		$aaa = $this->db->insert('ball_records', $ball);
-		// echo $aaa;
+		$this->db->insert('ball_records', $ball);
+		return $this->db->insert_id();
 	}
 
 	function get_batsman_record($match_id)
