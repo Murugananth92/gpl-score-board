@@ -17,6 +17,7 @@ var LiveScore = function ()
 	var bowlerid;
 	var batsman1id;
 	var batsman2id;
+	var loader;
 
 	function init()
 	{
@@ -25,7 +26,7 @@ var LiveScore = function ()
 		inningId = $('#inningId');
 		overId = $('#overId');
 		isInningsProgressing = $('#isInningsProgressing').val();
-
+		loader = $('.loader');
 		batsmanField1 = $('#batsman1_name');
 		batsmanField2 = $('#batsman2_name');
 		bowlerField = $('#bowler_name');
@@ -56,14 +57,25 @@ var LiveScore = function ()
 		});
 	}
 
+	function load(){
+		loader.show();
+	}
+	function unLoad(){
+		loader.hide();
+	}
+
 	function setInnings(batsman1, batsman2, bowler)
 	{
 		return $.ajax({
 			url: url + 'Live_score/start_innings',
 			type: "POST",
 			data: {batsman1: batsman1, batsman2: batsman2, bowler: bowler},
+			beforeSend: function () {
+				load();
+			},
 			success: function (data)
 			{
+				unLoad();
 				var response = JSON.parse(data);
 				liveScoreModal.modal('hide');
 				inningId.val(response.inning_id);

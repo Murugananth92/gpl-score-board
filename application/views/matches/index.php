@@ -54,11 +54,21 @@
                                 <td><?php echo $m['team2']; ?></td>
                                 <td><?php echo $m['match_date']; ?></td>
                                 <td><?php echo $m['match_venue']; ?></td>
-                                <td><?php echo "not_started"; ?></td>
-                                <td>
-                                    <a href="<?php echo site_url('matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-pencil"></span> Delete</a>
-                                    <a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Start match</a> 
-                                </td>
+								<td><?php echo $m['match_status']; ?></td>
+								<td>
+									<?php
+									switch($m['match_status']){
+										case "Not started": ?>
+											<a href="<?php echo site_url('matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-pencil"></span> Delete</a>
+											<a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Start match</a>
+											<?php  break;
+										case "In Progress": ?>
+											<a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Continue match</a>
+											<?php  break;
+									}
+									?>
+
+								</td>
                             </tr>
                         <?php } ?>
                     </tbody>

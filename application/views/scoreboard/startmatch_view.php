@@ -159,23 +159,48 @@
 		function validateStartMatch(){
 			var errorCount = 0;
 			if($("#match_date").val() ===''){
-				swal("Error", "Match date is required", "error");
+				Swal.fire({
+					icon: 'error',
+					text: 'Match date is required',
+					showCloseButton: true
+				});
+				//swal("Error", "Match date is required", "error");
 				errorCount++;	
 			}
 			else if($("#match_venue").val() ===''){
-				swal("Error", "Match venue is required", "error");
+				Swal.fire({
+					icon: 'error',
+					text: 'Match venue is required',
+					showCloseButton: true
+				});
+				//swal("Error", "Match venue is required", "error");
 				errorCount++;	
 			}
 			else if($('input[name="team1_toss"]:checked').length  == 0){
-				swal("Error", "select the toss won by option", "error");
+				Swal.fire({
+					icon: 'error',
+					text: 'select the toss won by option',
+					showCloseButton: true
+				});
+				//swal("Error", "select the toss won by option", "error");
 				errorCount++;	
 			}
 			else if($('input[name="toss_options"]:checked').length  == 0){
-				swal("Error", "select the toss option", "error");
+				Swal.fire({
+					icon: 'error',
+					text: 'select the toss option',
+					showCloseButton: true
+				});
+				//swal("Error", "select the toss option", "error");
 				errorCount++;	
 			}
 			else if($("#overs").val() ===''){
-				swal("Error", "overs is required", "error");
+				Swal.fire({
+					icon: 'error',
+					text: 'overs is required',
+					showCloseButton: true
+				});
+				//swal("Error", "overs is required", "error");
 				errorCount++;	
 			}
 			
@@ -231,7 +256,12 @@
 
 
 				if(team1Count !== 11 || team2Count !== 11){
-					swal("Error", "Each team should select only 11 players", "error");
+					Swal.fire({
+						icon: 'error',
+						text: 'Each team should select only 11 players',
+						showCloseButton: true
+					});
+					//swal("Error", "Each team should select only 11 players", "error");
 						return;
 				}   
 				else{
