@@ -47,14 +47,16 @@ var LiveScore2 = function ()
 
 	/* END */
 
+	var newBowlerModal;
+
 	function init()
 	{
 		url = $('#url').val();
-
+		newBowlerModal = $('#selectBowlermodal');
 		scoreRuns();
+		undoFunction();
 
 		// Highlight batsman 1 by default
-		$('#batsman1_onstrike').html('*');
 		$('#batsman1_highlight').css('font-weight', 'bold');
 
 
@@ -92,6 +94,7 @@ var LiveScore2 = function ()
 		totalWickets = $('#totalWickets');
 		displayOver = $('#displayOver');
 		displayBalls = $('#displayBalls');
+		highlightStrike();
 
 	}
 
@@ -122,7 +125,14 @@ var LiveScore2 = function ()
 			var perball = {};
 
 			perball['inning_id'] = inning_id;
+			perball['runs_scored'] = parseInt(runs);
+			perball['byes'] = 0;
+			perball['noball'] = 0;
+			perball['runout'] = 0;
+			perball['wicket'] = 0;
+			perball['wide'] = 0;
 
+			console.log(wicketInvolved);
 			if (!is_extras && !is_wicket) {
 				if (is_byes) {
 					perball['byes'] = parseInt(runs);
@@ -141,7 +151,7 @@ var LiveScore2 = function ()
 					}
 					if (is_wicket) {
 						perball['wicket_type'] = how_out;
-						if (how_out === 'runout') {
+						if (how_out === 'Run Out') {
 							perball['runout'] = 1;
 							perball['wicket_assist'] = wicketInvolved;
 							if (!wicketInvolved2 == '') {
@@ -150,7 +160,7 @@ var LiveScore2 = function ()
 							perball['out_batsman'] = outBatsman;
 							perball['new_batsman'] = newBatsman;
 						}
-						else if (how_out === 'catchout' || how_out === 'stumped') {
+						else if (how_out === 'Catch Out' || how_out === 'Stumped') {
 							perball['wicket'] = 1;
 							perball['wicket_assist'] = wicketInvolved;
 							perball['out_batsman'] = outBatsman;
@@ -173,7 +183,7 @@ var LiveScore2 = function ()
 					}
 					if (is_wicket) {
 						perball['wicket_type'] = how_out;
-						if (how_out === 'runout') {
+						if (how_out === 'Run Out') {
 							perball['runout'] = 1;
 							perball['wicket_assist'] = wicketInvolved;
 							if (!wicketInvolved2 == '') {
@@ -182,7 +192,7 @@ var LiveScore2 = function ()
 							perball['out_batsman'] = outBatsman;
 							perball['new_batsman'] = newBatsman;
 						}
-						else if (how_out === 'catchout' || how_out === 'stumped') {
+						else if (how_out === 'Catch Out' || how_out === 'Stumped') {
 							perball['wicket'] = 1;
 							perball['wicket_assist'] = wicketInvolved;
 							perball['out_batsman'] = outBatsman;
@@ -199,7 +209,7 @@ var LiveScore2 = function ()
 			else {
 				perball['runs_scored'] = parseInt(runs);
 				perball['wicket_type'] = how_out;
-				if (how_out === 'runout') {
+				if (how_out === 'Run Out') {
 					perball['runout'] = 1;
 					perball['wicket_assist'] = wicketInvolved;
 					if (!wicketInvolved2 == '') {
@@ -223,27 +233,16 @@ var LiveScore2 = function ()
 			}
 
 			perball['ballnumber'] = ballnumber;
-			//perball['overnumber'] = overnumber;
-
 			perball['onstrike'] = onstrike;
 			perball['onstrikeid'] = onstrikeid;
-			//nextstrike = on_strike(parseInt(runs));
-
-			//highlightStrike(nextstrike);
-
-			// perball['nextstrike'] = nextstrike;
 
 			var bowler = $('#bowler_id').val();
-
-
 			perball['bowler'] = bowler;
 			perball['batsman1'] = batsman1id;
 			perball['batsman2'] = batsman2id;
 
-
 			// Function to insert Ball records
 			insertBallRecords(perball);
-
 			// Reset to default
 			resetDefault();
 
@@ -261,19 +260,16 @@ var LiveScore2 = function ()
 		$('#wicket-options').hide();
 	}
 
-	function highlightStrike(nextstrike)
+	function highlightStrike()
 	{
-		if (onstrike == batsman1) {
+		$('.highlight-batsman').css('font-weight', '');
+
+		if (onStrikeField.val() == batsmanId1Field.val()) {
 			$('#batsman1_highlight').css('font-weight', 'bold');
-			$('#batsman1_onstrike').html('*');
-			$('#batsman2_highlight').css('font-weight', 'normal');
-			$('#batsman2_onstrike').html('');
 		}
-		else {
+
+		if (onStrikeField.val() == batsmanId2Field.val()) {
 			$('#batsman2_highlight').css('font-weight', 'bold');
-			$('#batsman2_onstrike').html('*');
-			$('#batsman1_highlight').css('font-weight', 'normal');
-			$('#batsman1_onstrike').html('');
 		}
 	}
 
@@ -290,12 +286,122 @@ var LiveScore2 = function ()
 			success: function (data)
 			{
 				var response = JSON.parse(data);
-				onstrikeid
-				console.log(response);
-				//ballid.val(res.ball_id);
+				updateScoreData(response);
+				verifyBallNumber();
+				highlightStrike();
 			}
 		});
+	}
 
+	function updateScoreData(res)
+	{
+		batsmanId1Field.val(res.batsman1);
+		batsmanId2Field.val(res.batsman2);
+		onStrikeField.val(res.on_strike_batsman);
+
+		batsman1NameField.text(res.batsman_record[0].player_name);
+		batsman1Runs.text(res.batsman_record[0].runs == null ? 0 : res.batsman_record[0].runs);
+		batsman1balls.text(res.batsman_record[0].balls);
+
+		batsman1Fours.text(res.batsman_record[0].total_4 == null ? 0 : res.batsman_record[0].total_4);
+		batsman1Sixes.text(res.batsman_record[0].total_6 == null ? 0 : res.batsman_record[0].total_6);
+
+		batsman2NameField.text(res.batsman_record[1].player_name);
+		batsman2Runs.text(res.batsman_record[1].runs == null ? 0 : res.batsman_record[1].runs);
+		batsman2balls.text(res.batsman_record[1].balls);
+		batsman2Fours.text(res.batsman_record[1].total_4 == null ? 0 : res.batsman_record[1].total_4);
+		batsman2Sixes.text(res.batsman_record[1].total_6 == null ? 0 : res.batsman_record[1].total_6);
+
+		updateBowlerRecords(res);
+
+		ballNumberField.val(res.ballnumber);
+		inningIdField.val(res.team_score.inning_id);
+		overIdField.val(res.team_score.over_id);
+		ballidField.val(res.team_score.ball_id);
+		overNumberField.val(res.team_score.overs);
+
+		totalScore.text(res.team_score.total_team_score);
+		totalWickets.text(res.team_score.wickets);
+		displayOver.text(res.team_score.overs);
+		displayBalls.text(res.team_score.balls);
+
+		var overRuns = displayCurrentOverRuns(res.current_over_records);
+		currentOverRuns.text(overRuns);
+
+	}
+
+	function updateBowlerRecords(res)
+	{
+		bowlerIdField.val(res.bowler_record.bowler);
+		bowlerName.text(res.bowler_record.player_name);
+		bowledOver.text(res.bowler_record.over_number + '.' + res.bowler_record.ball_number);
+		bowlerRuns.text(res.bowler_record.bowler_runs_gave == null ? 0 : res.bowler_record.bowler_runs_gave);
+		bowlerWickets.text(res.bowler_record.bowler_wickets == null ? 0 : res.bowler_record.bowler_wickets);
+	}
+
+
+	function displayCurrentOverRuns(data)
+	{
+		var overRuns = '';
+		$.each(data, function (key, value)
+		{
+			overRuns += ' ' + value.runs;
+		});
+		return overRuns;
+	}
+
+	function verifyBallNumber()
+	{
+		var currentBall = ballNumberField.val();
+		if (parseInt(currentBall) == 6) {
+			newBowlerModal.modal({backdrop: 'static', keyboard: false, show: true});
+			$('#selectNewBowler').on('click', function ()
+			{
+				var newBowler = $('#newBowler').val();
+				return $.ajax({
+					url: url + 'Live_score/new_over',
+					type: "POST",
+					data: {'bowler': newBowler, 'inning_id': inningIdField.val()},
+					success: function (data)
+					{
+						newBowlerModal.modal('hide');
+						ballNumberField.val(0)
+						var response = JSON.parse(data);
+						if (response.innings_status != 'completed') {
+							overIdField.val(response.over_id);
+							updateBowlerRecords(response);
+						}
+						else {
+							alert('Inning completed');
+						}
+
+					}
+				});
+
+
+			});
+		}
+
+	}
+
+	function undoFunction()
+	{
+		$('#undoRecord').on('click', function (e)
+		{
+			e.preventDefault();
+			var ballid = $('#ballid').val();
+			$.ajax({
+				url: url + 'Live_score/undoBall',
+				type: "POST",
+				data: {ballid: ballid},
+				success: function (data)
+				{
+					var response = JSON.parse(data);
+					updateScoreData(response);
+				}
+			});
+
+		});
 	}
 
 	return {

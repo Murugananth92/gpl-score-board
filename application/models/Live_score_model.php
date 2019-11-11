@@ -102,27 +102,55 @@ class Live_score_model extends CI_Model
 
 	function get_team_score($match_id)
 	{
-		$sql = "SELECT I.inning_id,ORS.over_id,BR.ball_id,sum(BR.runs_scored) AS total_team_score,ORS.wickets AS wickets,(MAX(ORS.over_number)-1) AS overs,(SELECT ball_number FROM ball_records ORDER BY ball_id DESC LIMIT 1) as balls 
-				FROM `over_records` AS ORS 
-				INNER JOIN innings AS I ON I.inning_id = ORS.inning_id 
-				LEFT JOIN ball_records AS BR ON ORS.over_id = BR.over_id 
-				WHERE I.`match_id` = $match_id
-				GROUP BY I.`match_id` ORDER BY ORS.over_id DESC LIMIT 1";
+		$sql = "SELECT ORS.over_number,ORS.inning_id,BRS.* FROM ball_records BRS 
+				INNER JOIN over_records as ORS ON BRS.over_id = ORS.over_id
+				WHERE ORS.inning_id = (SELECT inning_id FROM innings WHERE match_id = $match_id ORDER BY inning_id DESC LIMIT 1)";
 
 		$result = $this->db->query($sql);
+		$data = $result->result_array();
 
-		return $result->row_array();
+		$sql1 = "SELECT ORS.* FROM over_records ORS 
+				WHERE ORS.inning_id = (SELECT inning_id FROM innings WHERE match_id = $match_id ORDER BY inning_id DESC LIMIT 1)
+				ORDER BY ORS.over_id DESC LIMIT 1 ";
+
+		$result1 = $this->db->query($sql1);
+		$data1 = $result1->row_array();
+
+		return $this->team_score($data, $data1);
+	}
+
+	function team_score($data, $data1)
+	{
+		if (empty($data)) {
+			return array('total_team_score' => 0, 'wickets' => 0, 'overs' => 0, 'balls' => 0, 'ball_id' => 0, 'inning_id' => $data1['inning_id'], 'over_id' => $data1['over_id']);
+		}
+
+		$runs = $wickets = 0;
+		foreach ($data as $d) {
+			$runs += $d['runs_scored'] + $d['is_wide'] + $d['is_noball'];
+			$wickets += $d['is_wicket'];
+		}
+
+		$last_array = end($data);
+		$over_bowled = ($last_array['over_number'] - 1);
+		$balls_bowled = $last_array['ball_number'];
+		$ball_id = $last_array['ball_id'];
+		$inning_id = $last_array['inning_id'];
+
+		if ($last_array['ball_number'] == 6) {
+			$over_bowled = $last_array['over_number'];
+			$balls_bowled = 0;
+		}
+
+		return array('total_team_score' => $runs, 'wickets' => $wickets, 'overs' => $over_bowled, 'balls' => $balls_bowled,
+			'ball_id' => $ball_id, 'inning_id' => $inning_id, 'over_id' => $data1['over_id']);
 	}
 
 	function get_bowler_score($match_id)
 	{
-		$sql = "SELECT P.player_name,(ORS.over_number-1) as over_number,MAX(BR.ball_number) as ball_number,ORS.bowler,sum(BR.runs_scored) AS bowler_runs_gave,ORS.wickets AS bowler_wickets
-		FROM `over_records` AS ORS 
-		INNER JOIN players as P ON P.player_id = ORS.bowler
-		LEFT JOIN ball_records AS BR ON ORS.over_id = BR.over_id
-		INNER JOIN innings AS I ON I.inning_id = ORS.inning_id
-		WHERE I.`match_id` = $match_id AND ORS.over_id = (SELECT over_id FROM over_records ORDER BY over_id DESC LIMIT 1)
-		GROUP BY ORS.bowler";
+		$sql = "SELECT P.player_name,ORS.* FROM over_records ORS 
+				INNER JOIN players as P ON P.player_id = ORS.bowler
+				WHERE ORS.inning_id = (SELECT inning_id FROM innings WHERE match_id =$match_id ORDER BY inning_id DESC LIMIT 1) ORDER BY over_id DESC LIMIT 1";
 
 		$result = $this->db->query($sql);
 
@@ -160,11 +188,7 @@ class Live_score_model extends CI_Model
 		$this->db->insert('bowler_innings', $bowlerData);
 		return $this->db->insert_id();
 	}
-	// function getInningsID($match_id)
-	// {
-	// 	$this->db->select('I.inning_id');
-	// 	return $this->db->get_where('innings as I', array('match_id =' => $match_id))->row()->inning_id;
-	// }
+
 	function delete_ball_record($ball)
 	{
 		$this->db->where('ball_id', $ball);
@@ -181,13 +205,15 @@ class Live_score_model extends CI_Model
 
 	function getOver($over_id)
 	{
-		$query = "SELECT SUM(CASE WHEN `is_byes`=0 THEN `runs_scored` ELSE 0 END) as runs,
-		SUM(CASE WHEN `is_wide`=1 THEN `is_wide` ELSE 0 END) as wide,
-		SUM(CASE WHEN `is_noball`=1 THEN `is_noball` ELSE 0 END) as noball,
-		SUM(CASE WHEN `is_byes`=1 THEN `runs_scored` ELSE 0 END) as byes,
-		SUM(CASE WHEN `is_wicket`= 1 THEN `is_wicket` ELSE 0 END) as wicket,
-		(SELECT COUNT(`ball_id`) FROM `ball_records` AS BR WHERE BR.`over_id` = 14 AND BR.`runs_scored`=0 AND BR.`is_wide`=0 AND BR.`is_noball`=0 GROUP BY BR.`over_id` ) as dots 
-		FROM `ball_records` WHERE `over_id` ='" . $over_id . "' GROUP BY `over_id`";
+		$query = "SELECT BRS.bowler,ORS.inning_id,SUM(CASE WHEN BRS.`is_byes`=0 THEN BRS.`runs_scored` ELSE 0 END) as runs,
+		SUM(CASE WHEN BRS.`is_wide`=1 THEN BRS.`is_wide` ELSE 0 END) as wide,
+		SUM(CASE WHEN BRS.`is_noball`=1 THEN BRS.`is_noball` ELSE 0 END) as noball,
+		SUM(CASE WHEN BRS.`is_byes`=1 THEN BRS.`runs_scored` ELSE 0 END) as byes,
+		SUM(CASE WHEN BRS.`is_wicket`= 1 THEN BRS.`is_wicket` ELSE 0 END) as wicket,
+		(SELECT COUNT(`ball_id`) FROM `ball_records` AS BR WHERE BR.`over_id` = '" . $over_id . "' AND BR.`runs_scored`=0 AND BR.`is_wide`=0 AND BR.`is_noball`=0 GROUP BY BR.`over_id` ) as dots
+		FROM `ball_records` as BRS
+		INNER JOIN over_records as ORS ON ORS.over_id = BRS.over_id 
+		WHERE BRS.`over_id` ='" . $over_id . "' GROUP BY BRS.`over_id`";
 		return $this->db->query($query)->row_array();
 
 	}
@@ -198,5 +224,101 @@ class Live_score_model extends CI_Model
 		$this->db->update('over_records', $over);
 	}
 
+	function getLastOver($inning_id)
+	{
+		$sql = "SELECT * FROM over_records WHERE inning_id='" . $inning_id . "' ORDER BY over_id DESC LIMIT 1";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+	function getTotalOvers($inning_id)
+	{
+		$this->db->select('M.match_overs');
+		$this->db->join('innings as I', 'I.match_id = M.match_id');
+		return $this->db->get_where('matches as M', array('inning_id =' => $inning_id))->row_array();
+	}
+
+	function get_bowler_details($over_id)
+	{
+		$this->db->select('P.player_name,ORS.bowler');
+		$this->db->join('players as p', 'I.player_id = ORS.bowler');
+		return $this->db->get_where('over_records as ORS', array('over_id =' => $over_id))->row_array();
+	}
+
+	function getBowlerOverDetails($bowler, $inning_id)
+	{
+		$this->db->select('BR.*');
+		$this->db->join('over_records as ORS', 'BR.over_id = ORS.over_id');
+		return $this->db->get_where('ball_records as BR', array('BR.bowler =' => $bowler, 'ORS.inning_id' => $inning_id))->result_array();
+	}
+
+	function getBowlerInnings($data, $inning_id, $bowler)
+	{
+		if (empty($data)) {
+			return array('runs_gave' => 0, 'overs_bowled' => 0, 'balls_bowled' => 0, 'wickets' => 0, 'wides' => 0, 'no_balls' => 0);
+		}
+
+		$runs = $wickets = $wide = $no_ball = 0;
+
+		foreach ($data as $d) {
+			$runs += $d['runs_scored'] + $d['is_wide'] + $d['is_noball'];
+			$wickets += $d['is_wicket'];
+			$wide += $d['is_wide'];
+			$no_ball += $d['is_noball'];
+		}
+
+		$last_array = end($data);
+		$over_bowled = $this->oversBowled($inning_id, $bowler);
+		$balls_bowled = $last_array['ball_number'];
+		if ($last_array['ball_number'] == 6) {
+			$balls_bowled = 0;
+		}
+
+		return array('runs_gave' => $runs, 'overs_bowled' => $over_bowled, 'balls_bowled' => $balls_bowled, 'wickets' => $wickets, 'wides' => $wide, 'no_balls' => $no_ball);
+
+	}
+
+	function oversBowled($inning_id, $bowler)
+	{
+		$this->db->select('(CASE WHEN is_completed =1 THEN SUM(is_completed) ELSE 0 END) as overs');
+		$data = $this->db->get_where('over_records', array('inning_id =' => $inning_id, 'bowler' => $bowler))->row_array();
+		return $data['overs'];
+	}
+
+	function updateBowlerInnings($data, $bowler, $inning_id)
+	{
+		$this->db->where('bowler', $bowler);
+		$this->db->where('inning_id', $inning_id);
+		$this->db->update('bowler_innings', $data);
+	}
+
+	function getBowlerStatus($inning_id, $bowler)
+	{
+		$this->db->select('*');
+		return $this->db->get_where('bowler_innings', array('bowler =' => $bowler, 'inning_id' => $inning_id))->row_array();
+	}
+
+	function get_batsman_innings($inning_id, $batsman)
+	{
+		$sql = "SELECT SUM(runs_scored) as runs, SUM(is_4) as fours,SUM(is_6) as sixes,COUNT(`batsman_ball_record_id`) as ball_faced 
+				FROM batsman_ball_records
+				WHERE `batsman_id` ='" . $batsman . "'  AND inning_id ='" . $inning_id . "' ";
+
+		return $this->db->query($sql)->row_array();
+	}
+
+	function update_batsman_innings($inning_id, $batsman, $data)
+	{
+
+		$this->db->where('batsman', $batsman);
+		$this->db->where('inning_id', $inning_id);
+		$this->db->update('batsman_innings', $data);
+	}
+
+	function insert_fall_of_wickets($data)
+	{
+		$this->db->insert('fall_of_wickets', $data);
+
+	}
 
 }

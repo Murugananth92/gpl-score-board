@@ -65,7 +65,6 @@ var LiveScore = function ()
 			success: function (data)
 			{
 				var response = JSON.parse(data);
-				console.log(response);
 				liveScoreModal.modal('hide');
 				inningId.val(response.inning_id);
 				overId.val(response.over_id);
