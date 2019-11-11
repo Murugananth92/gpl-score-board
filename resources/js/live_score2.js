@@ -8,6 +8,7 @@ var LiveScore2 = function ()
 	var onstrike;
 	var onstrikeid;
 	var url;
+	var loader;
 
 	/* Fields*/
 	var batsmanId1Field;
@@ -55,6 +56,7 @@ var LiveScore2 = function ()
 		newBowlerModal = $('#selectBowlermodal');
 		scoreRuns();
 		undoFunction();
+		loader = $('.loader');
 
 		// Highlight batsman 1 by default
 		$('#batsman1_highlight').css('font-weight', 'bold');
@@ -96,6 +98,13 @@ var LiveScore2 = function ()
 		displayBalls = $('#displayBalls');
 		highlightStrike();
 
+	}
+
+	function load(){
+		loader.show();
+	}
+	function unLoad(){
+		loader.hide();
 	}
 
 	function scoreRuns()
@@ -275,22 +284,46 @@ var LiveScore2 = function ()
 
 	function insertBallRecords(perball)
 	{
-		// temp value for over_id and batsman_id
-		perball['over_id'] = $('#overId	').val();
-		var ballid = $('#ballid');
+		try{
+			// temp value for over_id and batsman_id
+			perball['over_id'] = $('#overId	').val();
+			var ballid = $('#ballid');
 
-		$.ajax({
-			url: url + 'Live_score/insertBallRecords',
-			type: "POST",
-			data: perball,
-			success: function (data)
-			{
-				var response = JSON.parse(data);
-				updateScoreData(response);
-				verifyBallNumber();
-				highlightStrike();
-			}
-		});
+			$.ajax({
+				url: url + 'Live_score/insertBallRecords',
+				type: "POST",
+				data: perball,
+				beforeSend:function(){
+					load();
+				},
+				success: function (data)
+				{
+					unLoad();
+					var response = JSON.parse(data);
+					updateScoreData(response);
+					verifyBallNumber();
+					highlightStrike();
+				},
+				error: function (error) {
+					unLoad();
+					Swal.fire({
+						icon: 'error',
+						html:
+						'Status : ' +error.status+
+						'<br> Error :'+ error.statusText,
+						showCloseButton: true
+					});
+				}
+			});
+		}
+		catch(err) {
+			Swal.fire({
+				icon: 'error',
+				text: err.message,
+				showCloseButton: true
+			});
+		}
+
 	}
 
 	function updateScoreData(res)
@@ -362,8 +395,12 @@ var LiveScore2 = function ()
 					url: url + 'Live_score/new_over',
 					type: "POST",
 					data: {'bowler': newBowler, 'inning_id': inningIdField.val()},
+					beforeSend:function () {
+						load();
+					},
 					success: function (data)
 					{
+						unLoad();
 						newBowlerModal.modal('hide');
 						ballNumberField.val(0)
 						var response = JSON.parse(data);
