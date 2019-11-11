@@ -117,8 +117,8 @@
 									<th style="width: 50px">4s</th>
 									<th style="width: 50px">6s</th>
 								</tr>
-								<tr>
-									<td id="batsman1_highlight"><span id="batsman1_name"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></span><span id="batsman1_onstrike"></span>
+								<tr class="highlight-batsman" id="batsman1_highlight">
+									<td><span id="batsman1_name"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></span>
 									</td>
 									<input type='hidden' id="batsman1_id" value="<?php echo isset($batsman_record[0]['batsman']) ? $batsman_record[0]['batsman'] : 0 ?>">
 									<td id="batsman1_runs"><?php echo isset($batsman_record[0]['runs']) ? $batsman_record[0]['runs'] : 0 ?></td>
@@ -126,8 +126,8 @@
 									<td id="batsman1_fours"><?php echo isset($batsman_record[0]['total_4']) ? $batsman_record[0]['total_4'] : 0 ?></td>
 									<td id="batsman1_sixes"><?php echo isset($batsman_record[0]['total_6']) ? $batsman_record[0]['total_6'] : 0 ?></td>
 								</tr>
-								<tr>
-									<td id="batsman2_highlight"><span id="batsman2_name"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 2'; ?></span><span id="batsman2_onstrike"></span>
+								<tr class="highlight-batsman" id="batsman2_highlight">
+									<td><span id="batsman2_name"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 2'; ?></span>
 									</td>
 									<input type='hidden' id="batsman2_id" value="<?php echo isset($batsman_record[1]['batsman']) ? $batsman_record[1]['batsman'] : 0 ?>">
 									<td id="batsman2_runs"><?php echo isset($batsman_record[1]['runs']) ? $batsman_record[1]['runs'] : 0 ?></td>
@@ -223,13 +223,13 @@
 							<label>Select Wicket Option</label>
 							<select class="form-control" id='wicket-type'>
 								<option value="">--Select--</option>
-								<option value="bowled">Bowled</option>
-								<option value="catchout">Catch Out</option>
-								<option value="runout">Run Out</option>
-								<option value="stumped">Stumped</option>
-								<option value="hitwicket">Hit Wicket</option>
-								<option value="ballhandled">Ball Handled</option>
-								<option value="fieldobstruction">Field Obstruction</option>
+								<option value="Bowled">Bowled</option>
+								<option value="Catch Out">Catch Out</option>
+								<option value="Run Out">Run Out</option>
+								<option value="Stumped">Stumped</option>
+								<option value="Hit Wicket">Hit Wicket</option>
+								<option value="Ball Handled">Ball Handled</option>
+								<option value="Field Obstruction">Field Obstruction</option>
 							</select>
 						</div>
 
@@ -237,7 +237,7 @@
 							<label>Select Player Involved</label>
 							<select class="form-control" name="wicketInvolved" id="wicketInvolved">
 								<option value="">--Select--</option>
-								<?php foreach (team2_all as $team2_player_all) { ?>
+								<?php foreach ($team2_all as $team2_player_all) { ?>
 									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
 										- <?php echo $team2_player_all['employee_id']; ?></option>
 								<?php } ?>
@@ -258,10 +258,10 @@
 						<div id="out-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out" value=1><?php echo isset($match_details['strike_batsman']) ? $match_details['strike_batsman'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $batsman_record[0]['batsman']; ?>"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out" value=2><?php echo isset($match_details['batsman']) ? $match_details['batsman'] : 'Batsman 2'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $batsman_record[1]['batsman']; ?>"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 1'; ?></label>
 							</div>
 						</div>
 
@@ -347,11 +347,11 @@
 		$('#wicket-dropdown').change(function ()
 		{
 			var selectedWicket = $('#wicket-dropdown option:selected').val();
-			if (selectedWicket == 'catchout' || selectedWicket == 'stumped') {
+			if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
 				$('#wicket-involved').show();
 				$('#wicket-involved2').hide();
 			}
-			else if (selectedWicket == 'runout') {
+			else if (selectedWicket == 'Run Out') {
 				$('#wicket-involved').show();
 				$('#wicket-involved2').show();
 			}
@@ -366,28 +366,7 @@
 			container: $('.live_match')
 		}
 
-		$('#undoRecord').on('click', function (e)
-		{
-			e.preventDefault();
-			var ballid = $('#ballid').val();
-			$.ajax({
-				url: url + 'Live_score/undoBall',
-				type: "POST",
-				data: {ballid: ballid},
-				async: false,
-				beforeSend: function ()
-				{
-					// $('.spinner-load').show();
-					// res.container.append(res.loader);
-				},
-				success: function (data)
-				{
-					$('#undoRecord').prop('disabled', true);
-					// $('.spinner-load').hide();
-				}
-			});
 
-		});
 	});
 </script>
 

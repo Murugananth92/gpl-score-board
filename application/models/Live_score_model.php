@@ -247,14 +247,19 @@ class Live_score_model extends CI_Model
 
 	function getBowlerOverDetails($bowler, $inning_id)
 	{
-		$this->db->select('ORS.over_number,BR.*');
+		$this->db->select('BR.*');
 		$this->db->join('over_records as ORS', 'BR.over_id = ORS.over_id');
 		return $this->db->get_where('ball_records as BR', array('BR.bowler =' => $bowler, 'ORS.inning_id' => $inning_id))->result_array();
 	}
 
-	function getBowlerInnings($data)
+	function getBowlerInnings($data, $inning_id, $bowler)
 	{
+		if (empty($data)) {
+			return array('runs_gave' => 0, 'overs_bowled' => 0, 'balls_bowled' => 0, 'wickets' => 0, 'wides' => 0, 'no_balls' => 0);
+		}
+
 		$runs = $wickets = $wide = $no_ball = 0;
+
 		foreach ($data as $d) {
 			$runs += $d['runs_scored'] + $d['is_wide'] + $d['is_noball'];
 			$wickets += $d['is_wicket'];
@@ -263,14 +268,21 @@ class Live_score_model extends CI_Model
 		}
 
 		$last_array = end($data);
-		$over_bowled = ($last_array['over_number'] - 1);
+		$over_bowled = $this->oversBowled($inning_id, $bowler);
 		$balls_bowled = $last_array['ball_number'];
 		if ($last_array['ball_number'] == 6) {
-			$over_bowled = $last_array['over_number'];
 			$balls_bowled = 0;
 		}
+
 		return array('runs_gave' => $runs, 'overs_bowled' => $over_bowled, 'balls_bowled' => $balls_bowled, 'wickets' => $wickets, 'wides' => $wide, 'no_balls' => $no_ball);
 
+	}
+
+	function oversBowled($inning_id, $bowler)
+	{
+		$this->db->select('(CASE WHEN is_completed =1 THEN SUM(is_completed) ELSE 0 END) as overs');
+		$data = $this->db->get_where('over_records', array('inning_id =' => $inning_id, 'bowler' => $bowler))->row_array();
+		return $data['overs'];
 	}
 
 	function updateBowlerInnings($data, $bowler, $inning_id)
@@ -286,5 +298,27 @@ class Live_score_model extends CI_Model
 		return $this->db->get_where('bowler_innings', array('bowler =' => $bowler, 'inning_id' => $inning_id))->row_array();
 	}
 
+	function get_batsman_innings($inning_id, $batsman)
+	{
+		$sql = "SELECT SUM(runs_scored) as runs, SUM(is_4) as fours,SUM(is_6) as sixes,COUNT(`batsman_ball_record_id`) as ball_faced 
+				FROM batsman_ball_records
+				WHERE `batsman_id` ='" . $batsman . "'  AND inning_id ='" . $inning_id . "' ";
+
+		return $this->db->query($sql)->row_array();
+	}
+
+	function update_batsman_innings($inning_id, $batsman, $data)
+	{
+
+		$this->db->where('batsman', $batsman);
+		$this->db->where('inning_id', $inning_id);
+		$this->db->update('batsman_innings', $data);
+	}
+
+	function insert_fall_of_wickets($data)
+	{
+		$this->db->insert('fall_of_wickets', $data);
+
+	}
 
 }
