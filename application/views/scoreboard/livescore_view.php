@@ -44,6 +44,36 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="selectBowlermodal" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">Select Bowler</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" method="post" action='#'>
+					<label>Select Bowler</label>
+					<select class="form-control" name="new_bowler" id="newBowler">
+						<option value="empty">Select Bowler</option>
+						<?php foreach ($team2 as $team2_player) { ?>
+							<option value="<?php echo $team2_player['player_id']; ?>" data-bowler="<?php echo $team2_player['player_name']; ?>"><?php echo $team2_player['player_name']; ?>
+								- <?php echo $team2_player['employee_id']; ?></option>
+						<?php } ?>
+					</select>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="selectNewBowler">Start</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <div class="loader"></div>
 <section class="live_match">
 	<div class="row">
