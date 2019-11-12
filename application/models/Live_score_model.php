@@ -157,12 +157,13 @@ class Live_score_model extends CI_Model
 		return $result->row_array();
 	}
 
-	function get_current_batsman()
+	function get_current_batsman($match_id)
 	{
-		$sql = "SELECT ball_number,bowler,runs_scored,batsman FROM ball_records ORDER BY ball_id DESC LIMIT 1";
-
+		$sql = "SELECT BRS.ball_number,BRS.bowler,BRS.runs_scored,BRS.batsman FROM ball_records AS BRS 
+				INNER JOIN over_records AS ORS ON ORS.over_id = BRS.over_id 
+				WHERE ORS.inning_id = (SELECT inning_id FROM innings WHERE match_id =$match_id ORDER BY inning_id DESC LIMIT 1) 
+				ORDER BY BRS.ball_id DESC LIMIT 1";
 		$result = $this->db->query($sql);
-
 		return $result->row_array();
 	}
 

@@ -32,11 +32,11 @@ class Live_score extends CI_Controller
 
 		$current_over_records = $this->live_score_model->get_current_over_records($data['team_score']['over_id']);
 		$data['current_over_records'] = $this->lastOverRecords($current_over_records);
-		$data['current_batsman'] = $this->live_score_model->get_current_batsman();
-
+		$current_batsman = $this->live_score_model->get_current_batsman($match_id);
 		if (count($data['batsman_record']) > 0) {
-			$data['on_strike_batsman'] = $this->checkCurrentBatsman($data['current_batsman'], $data['batsman_record']);
+			$data['on_strike_batsman'] = $this->checkCurrentBatsman($current_batsman, $data['batsman_record']);
 		}
+		//echo '<pre>';print_r($data);exit;
 		$data['is_innings_progressing'] = $this->live_score_model->get_innings();
 		$data['_view'] = 'scoreboard/livescore_view';
 		$this->load->view('layouts/main', $data);
@@ -90,7 +90,7 @@ class Live_score extends CI_Controller
 
 		$ball['runs_scored'] = $data['runs_scored'];
 
-		if ($data['byes'] == 1) {
+		if ($data['byes'] != 0) {
 			$ball['is_byes'] = 1;
 			$ball['runs_scored'] = $data['byes'];
 		}
@@ -136,6 +136,10 @@ class Live_score extends CI_Controller
 				$bat_ball['is_out'] = 1;
 			}
 
+			if ($data['byes'] != 0) {
+				$bat_ball['runs_scored'] = 0;
+			}
+
 			// Inserting into batsman ball records
 			$this->live_score_model->insert_batsman_ball_records($bat_ball);
 		}
@@ -177,7 +181,7 @@ class Live_score extends CI_Controller
 
 		$current_over_records = $this->live_score_model->get_current_over_records($data['team_score']['over_id']);
 		$data['current_over_records'] = $this->lastOverRecords($current_over_records);
-		$data['current_batsman'] = $this->live_score_model->get_current_batsman();
+		$data['current_batsman'] = $this->live_score_model->get_current_batsman($match_id);
 		$data['on_strike_batsman'] = $this->checkCurrentBatsman($data['current_batsman'], $data['batsman_record']);
 
 		echo json_encode($data, true);
@@ -245,7 +249,7 @@ class Live_score extends CI_Controller
 
 		$current_over_records = $this->live_score_model->get_current_over_records($data['team_score']['over_id']);
 		$data['current_over_records'] = $this->lastOverRecords($current_over_records);
-		$data['current_batsman'] = $this->live_score_model->get_current_batsman();
+		$data['current_batsman'] = $this->live_score_model->get_current_batsman($match_id);
 		$data['on_strike_batsman'] = $this->checkCurrentBatsman($data['current_batsman'], $data['batsman_record']);
 
 		echo json_encode($data, true);
