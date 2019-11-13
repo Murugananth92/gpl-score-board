@@ -54,6 +54,7 @@ var LiveScore2 = function ()
 	var newBowlerModal;
 	var swapBatsmanModal;
 	var WicketModal;
+
 	function init()
 	{
 		url = $('#url').val();
