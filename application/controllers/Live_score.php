@@ -103,9 +103,11 @@ class Live_score extends CI_Controller
 			$ball['is_runout'] = 1;
 		}
 
-		if ($data['wicket'] == 1) {
+		if ($data['wicket'] == 1 && $data['wicket_type'] != 'Retired') {
 			$ball['is_wicket'] = 1;
 		}
+
+		
 
 		// Inserting into ball records and returning the inserted ball_id
 		$ball_id = $this->live_score_model->insert_ball_record($ball);
@@ -143,9 +145,15 @@ class Live_score extends CI_Controller
 
 			$get_batsman_innings = $this->live_score_model->get_batsman_innings($data['inning_id'], $data['out_batsman']);
 
-			$batsman_inning_data = array('runs_scored' => $get_batsman_innings['runs'], 'total_4' => $get_batsman_innings['fours'], 'total_6' => $get_batsman_innings['sixes'],
+			if ($data['wicket_type'] == 'Retired') {
+				$batsman_inning_data = array('runs_scored' => $get_batsman_innings['runs'], 'total_4' => $get_batsman_innings['fours'], 'total_6' => $get_batsman_innings['sixes'],
+				'balls_faced' => $get_batsman_innings['ball_faced'], 'is_out' => 0,'is_retired' => 1, 'wicket_type' => 'Retired', 'wicket_assist1' => $data['wicket_assist1'],
+				'wicket_assist2' => $data['wicket_assist2'], 'bowler' => $data['bowler']);
+			} else {
+				$batsman_inning_data = array('runs_scored' => $get_batsman_innings['runs'], 'total_4' => $get_batsman_innings['fours'], 'total_6' => $get_batsman_innings['sixes'],
 				'balls_faced' => $get_batsman_innings['ball_faced'], 'is_out' => 1, 'wicket_type' => $data['wicket_type'], 'wicket_assist1' => $data['wicket_assist1'],
 				'wicket_assist2' => $data['wicket_assist2'], 'bowler' => $data['bowler']);
+			}
 
 			$this->live_score_model->update_batsman_innings($data['inning_id'], $data['out_batsman'], $batsman_inning_data);
 
