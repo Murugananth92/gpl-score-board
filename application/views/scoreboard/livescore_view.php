@@ -74,6 +74,33 @@
 	</div>
 </div>
 
+<div id="swap-batsman" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Select Batsman On Strike</h4>
+			</div>
+			<div class="modal-body">
+
+				<div id="strike-batsman">
+					<label>Select Out Batsman</label>
+					<div class="radio">
+						<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value=""><span></span></label>
+					</div>
+					<div class="radio">
+						<label><input type="radio" name="strikeBatsman" id="strikeBatsman2" value=""><span></span></label>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="changeStrike">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="loader"></div>
 <section class="live_match">
 	<div class="row">
@@ -88,21 +115,24 @@
 							<tr>
 								<th><?php echo $team1_name . ' vs ' . $team2_name; ?></th>
 								<td>First Innining</td>
-								<input type='hidden' id='inningId' name='inningId' value="<?php echo isset($team_score['inning_id']) ? $team_score['inning_id'] : 0 ?>">
-								<input type='hidden' id='overId' name='overId' value="<?php echo isset($team_score['over_id']) ? $team_score['over_id'] : 0 ?>">
-								<input type='hidden' id='ballid' name='ballid' value="<?php echo isset($team_score['ball_id']) ? $team_score['ball_id'] : 0 ?>">
-								<input type='hidden' id='ballNumber' name='ballNumber' value="<?php echo isset($team_score['balls']) ? $team_score['balls'] : 0 ?>">
-								<input type='hidden' id='overNumber' name='overNumber' value="<?php echo isset($team_score['overs']) ? $team_score['overs'] : 0 ?>">
-								<input type='hidden' id='on_strike_batsman' name='on_strike_batsman' value="<?php echo isset($on_strike_batsman) ? $on_strike_batsman : 0; ?>">
+								<input type='hidden' id='inningId' name='inningId' value="<?php echo isset($match['team_score']['inning_id']) ? $match['team_score']['inning_id'] : 0 ?>">
+								<input type='hidden' id='overId' name='overId' value="<?php echo isset($match['team_score']['over_id']) ? $match['team_score']['over_id'] : 0 ?>">
+								<input type='hidden' id='ballid' name='ballid' value="<?php echo isset($match['team_score']['ball_id']) ? $match['team_score']['ball_id'] : 0 ?>">
+								<input type='hidden' id='ballNumber' name='ballNumber' value="<?php echo isset($match['team_score']['balls']) ? $match['team_score']['balls'] : 0 ?>">
+								<input type='hidden' id='overNumber' name='overNumber' value="<?php echo isset($match['team_score']['overs']) ? $match['team_score']['overs'] : 0 ?>">
+								<input type='hidden' id='on_strike_batsman' name='on_strike_batsman' value="<?php echo isset($match['on_strike_batsman']) ? $match['on_strike_batsman'] : 0; ?>">
+								<input type='hidden' id='current_over_status' name='current_over_status' value="<?php echo isset($match['over']['is_completed']) ? $match['over']['is_completed'] : 0; ?>">
+								<input type='hidden' id='total_overs' name='total_overs' value="<?php echo isset($match['totalOver']['match_overs']) ? $match['totalOver']['match_overs'] : 0; ?>">
 
 							</tr>
 							<tr>
 								<?php foreach ($team_playing as $playing) : ?>
-									<th><?php echo $playing; ?> : <span id="totalScore"><?php echo isset($team_score['total_team_score']) ? $team_score['total_team_score'] : '0'; ?> </span>/
-										<span id="totalWickets"><?php echo isset($team_score['wickets']) ? $team_score['wickets'] : '0'; ?></span></th>
+									<th><?php echo $playing; ?> : <span id="totalScore"><?php echo isset($match['team_score']['total_team_score']) ? $match['team_score']['total_team_score'] : '0'; ?> </span>/
+										<span id="totalWickets"><?php echo isset($match['team_score']['wickets']) ? $match['team_score']['wickets'] : '0'; ?></span></th>
 								<?php endforeach; ?>
 								<td>Overs :
-									<span id="displayOver"><?php echo isset($team_score['overs']) ? $team_score['overs'] : '0'; ?></span>.<span id="displayBalls"><?php echo isset($team_score['balls']) ? $team_score['balls'] : '0'; ?></span>
+									<span id="displayOver"><?php echo isset($match['team_score']['overs']) ? $match['team_score']['overs'] : '0'; ?></span>.
+									<span id="displayBalls"><?php echo isset($match['team_score']['balls']) ? $match['team_score']['balls'] : '0'; ?></span>
 								</td>
 							</tr>
 						</table>
@@ -117,23 +147,23 @@
 									<th style="width: 50px">4s</th>
 									<th style="width: 50px">6s</th>
 								</tr>
-								<tr class="highlight-batsman" id="batsman1_highlight">
-									<td><span id="batsman1_name"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></span>
+								<tr class="" id="batsman1_strike">
+									<td><span id="batsman1_name"><?php echo isset($match['batsman_record'][0]['player_name']) ? $match['batsman_record'][0]['player_name'] : 'Batsman 1'; ?></span>
 									</td>
-									<input type='hidden' id="batsman1_id" value="<?php echo isset($batsman_record[0]['batsman']) ? $batsman_record[0]['batsman'] : 0 ?>">
-									<td id="batsman1_runs"><?php echo isset($batsman_record[0]['runs']) ? $batsman_record[0]['runs'] : 0 ?></td>
-									<td id="batsman1_balls"><?php echo isset($batsman_record[0]['balls']) ? $batsman_record[0]['balls'] : 0 ?></td>
-									<td id="batsman1_fours"><?php echo isset($batsman_record[0]['total_4']) ? $batsman_record[0]['total_4'] : 0 ?></td>
-									<td id="batsman1_sixes"><?php echo isset($batsman_record[0]['total_6']) ? $batsman_record[0]['total_6'] : 0 ?></td>
+									<input type='hidden' id="batsman1_id" value="<?php echo isset($match['batsman_record'][0]['batsman']) ? $match['batsman_record'][0]['batsman'] : 0 ?>">
+									<td id="batsman1_runs"><?php echo isset($match['batsman_record'][0]['runs']) ? $match['batsman_record'][0]['runs'] : 0 ?></td>
+									<td id="batsman1_balls"><?php echo isset($match['batsman_record'][0]['balls']) ? $match['batsman_record'][0]['balls'] : 0 ?></td>
+									<td id="batsman1_fours"><?php echo isset($match['batsman_record'][0]['total_4']) ? $match['batsman_record'][0]['total_4'] : 0 ?></td>
+									<td id="batsman1_sixes"><?php echo isset($match['batsman_record'][0]['total_6']) ? $match['batsman_record'][0]['total_6'] : 0 ?></td>
 								</tr>
-								<tr class="highlight-batsman" id="batsman2_highlight">
-									<td><span id="batsman2_name"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 2'; ?></span>
+								<tr class="" id="batsman2_strike">
+									<td><span id="batsman2_name"><?php echo isset($match['batsman_record'][1]['player_name']) ? $match['batsman_record'][1]['player_name'] : 'Batsman 2'; ?></span>
 									</td>
-									<input type='hidden' id="batsman2_id" value="<?php echo isset($batsman_record[1]['batsman']) ? $batsman_record[1]['batsman'] : 0 ?>">
-									<td id="batsman2_runs"><?php echo isset($batsman_record[1]['runs']) ? $batsman_record[1]['runs'] : 0 ?></td>
-									<td id="batsman2_balls"><?php echo isset($batsman_record[1]['balls']) ? $batsman_record[1]['balls'] : 0 ?></td>
-									<td id="batsman2_fours"><?php echo isset($batsman_record[1]['total_4']) ? $batsman_record[1]['total_4'] : 0 ?></td>
-									<td id="batsman2_sixes"><?php echo isset($batsman_record[1]['total_6']) ? $batsman_record[1]['total_6'] : 0 ?></td>
+									<input type='hidden' id="batsman2_id" value="<?php echo isset($match['batsman_record'][1]['batsman']) ? $match['batsman_record'][1]['batsman'] : 0 ?>">
+									<td id="batsman2_runs"><?php echo isset($match['batsman_record'][1]['runs']) ? $match['batsman_record'][1]['runs'] : 0 ?></td>
+									<td id="batsman2_balls"><?php echo isset($match['batsman_record'][1]['balls']) ? $match['batsman_record'][1]['balls'] : 0 ?></td>
+									<td id="batsman2_fours"><?php echo isset($match['batsman_record'][1]['total_4']) ? $match['batsman_record'][1]['total_4'] : 0 ?></td>
+									<td id="batsman2_sixes"><?php echo isset($match['batsman_record'][1]['total_6']) ? $match['batsman_record'][1]['total_6'] : 0 ?></td>
 								</tr>
 								<tr>
 									<th style="width: 500px">Bowler</th>
@@ -142,12 +172,12 @@
 									<th style="width: 50px">Wickets</th>
 								</tr>
 								<tr>
-									<td id="bowler_name"><?php echo isset($bowler_record['player_name']) ? $bowler_record['player_name'] : 'Bowler'; ?></td>
-									<input type='hidden' id="bowler_id" value="<?php echo isset($bowler_record['bowler']) ? $bowler_record['bowler'] : 0 ?>">
-									<td id="bowled_over"><?php echo isset($bowler_record['over_number']) ? $bowler_record['over_number'] : 0; ?>.
-										<?php echo isset($bowler_record['ball_number']) ? $bowler_record['ball_number'] : 0; ?></td>
-									<td id="bowler_runs"><?php echo isset($bowler_record['bowler_runs_gave']) ? $bowler_record['bowler_runs_gave'] : 0; ?></td>
-									<td id="bowler_wickets"><?php echo isset($bowler_record['bowler_wickets']) ? $bowler_record['bowler_wickets'] : 0; ?></td>
+									<td id="bowler_name"><?php echo isset($match['bowler_record']['player_name']) ? $match['bowler_record']['player_name'] : 'Bowler'; ?></td>
+									<input type='hidden' id="bowler_id" value="<?php echo isset($match['bowler_record']['bowler']) ? $match['bowler_record']['bowler'] : 0 ?>">
+									<td id="bowled_over"><?php echo isset($match['bowler_record']['over_number']) ? $match['bowler_record']['over_number'] : 0; ?>.
+										<?php echo isset($match['bowler_record']['ball_number']) ? $match['bowler_record']['ball_number'] : 0; ?></td>
+									<td id="bowler_runs"><?php echo isset($match['bowler_record']['bowler_runs_gave']) ? $match['bowler_record']['bowler_runs_gave'] : 0; ?></td>
+									<td id="bowler_wickets"><?php echo isset($match['bowler_record']['bowler_wickets']) ? $match['bowler_record']['bowler_wickets'] : 0; ?></td>
 								</tr>
 								</tbody>
 							</table>
@@ -160,15 +190,16 @@
 		<section class="this_over">
 			<div class="col-md-12">
 				<div class="box box-warning">
-					<form role="form">
-						<div class="box-body">
-							<h4><b>This Over: </b><span id="currentOverRuns"><?php if (!empty($current_over_records)) {
-										foreach ($current_over_records as $r) {
-											echo $r['runs'] . '&nbsp';
-										}
-									} ?> </span></h4>
-						</div>
-					</form>
+					<div class="box-body">
+						<strong>This Over : </strong>
+						<p id="currentOverRuns">
+							<?php if (!empty($match['current_over_records'])) {
+								foreach ($match['current_over_records'] as $r) {
+									echo $r['runs'] . '&nbsp';
+								}
+							} ?>
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -205,7 +236,7 @@
 									<div class="col-md-12 col-xs-12">
 										<div class="box-footer">
 											<button class="btn btn-success">Retire</button>
-											<button class="btn btn-success">Swap Batsman</button>
+											<button class="btn btn-success" id="changeStrikeBatsman">Swap Batsman</button>
 										</div>
 									</div>
 								</div>
@@ -380,7 +411,7 @@
 							<label>Select Player Involved 2</label>
 							<select class="form-control" name="wicketInvolved2" id="wicketInvolved2">
 								<option value="">--Select--</option>
-								<?php foreach (team2_all as $team2_player_all) { ?>
+								<?php foreach ($team2_all as $team2_player_all) { ?>
 									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
 										- <?php echo $team2_player_all['employee_id']; ?></option>
 								<?php } ?>
@@ -390,10 +421,16 @@
 						<div id="out-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $batsman_record[0]['batsman']; ?>"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman1-out"
+											  value="<?php echo isset($match['batsman_record'][0]['batsman']) ? $match['batsman_record'][0]['batsman'] : 0; ?>">
+									<?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?>
+								</label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $batsman_record[1]['batsman']; ?>"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman2-out"
+											  value="<?php echo isset($match['batsman_record'][1]['batsman']) ? $match['batsman_record'][1]['batsman'] : 0; ?>">
+									<?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 2'; ?>
+								</label>
 							</div>
 						</div>
 
@@ -402,7 +439,8 @@
 							<select class="form-control" name="newBatsman" id="newBatsman">
 								<option value="">--Select--</option>
 								<?php foreach ($team1 as $team1_player) { ?>
-									<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>"><?php echo $team1_player['player_name']; ?>
+									<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>">
+										<?php echo $team1_player['player_name']; ?>
 										- <?php echo $team1_player['employee_id']; ?></option>
 								<?php } ?>
 							</select>
@@ -448,7 +486,12 @@
 </section>
 <script src="<?php echo site_url('resources/js/live_score.js'); ?>"></script>
 <script src="<?php echo site_url('resources/js/live_score2.js'); ?>"></script>
-
+<style>
+	.highlight {
+		color: green;
+		font-weight: bold;
+	}
+</style>
 <script>
 	$(document).ready(function ()
 	{

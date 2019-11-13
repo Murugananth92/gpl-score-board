@@ -52,15 +52,17 @@ var LiveScore = function ()
 			batsmanName1 = $('#batsman1 option:selected').attr('data-batsman1');
 			batsmanName2 = $('#batsman2 option:selected').attr('data-batsman2');
 			bowlerName = $('#bowler option:selected').attr('data-bowler');
-
 			setInnings(batsman1, batsman2, bowler);
 		});
 	}
 
-	function load(){
+	function load()
+	{
 		loader.show();
 	}
-	function unLoad(){
+
+	function unLoad()
+	{
 		loader.hide();
 	}
 
@@ -70,7 +72,8 @@ var LiveScore = function ()
 			url: url + 'Live_score/start_innings',
 			type: "POST",
 			data: {batsman1: batsman1, batsman2: batsman2, bowler: bowler},
-			beforeSend: function () {
+			beforeSend: function ()
+			{
 				load();
 			},
 			success: function (data)
@@ -89,6 +92,7 @@ var LiveScore = function ()
 				bowlerid.val(bowler);
 				batsman1id.val(batsman1);
 				batsman2id.val(batsman2);
+				$('#batsman1_strike').addClass('highlight');
 			}
 		});
 	}
