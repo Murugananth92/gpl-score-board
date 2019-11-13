@@ -309,8 +309,7 @@ class Live_score_model extends CI_Model
 	}
 
 	function update_batsman_innings($inning_id, $batsman, $data)
-	{
-
+	{	
 		$this->db->where('batsman', $batsman);
 		$this->db->where('inning_id', $inning_id);
 		$this->db->update('batsman_innings', $data);

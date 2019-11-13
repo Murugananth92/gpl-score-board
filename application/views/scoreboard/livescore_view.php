@@ -246,7 +246,139 @@
 			</div>
 		</section>
 
-		<section id='wicket-options'>
+
+		<div class="modal fade" id="selectBowlermodal" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">Select Bowler</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" method="post" action='#'>
+							<label>Select Bowler</label>
+							<select class="form-control" name="new_bowler" id="newBowler">
+								<option value="empty">Select Bowler</option>
+								<?php foreach ($team2 as $team2_player) { ?>
+									<option value="<?php echo $team2_player['player_id']; ?>" data-bowler="<?php echo $team2_player['player_name']; ?>"><?php echo $team2_player['player_name']; ?>
+										- <?php echo $team2_player['employee_id']; ?></option>
+								<?php } ?>
+							</select>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="selectNewBowler">Start</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="wicket-options" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Select Wicket Options</h4>
+					</div>
+					<div class="modal-body">
+					<div id="wicket-dropdown">
+							<label>Select Wicket Option</label>
+							<select class="form-control" id='wicket-type'>
+								<option value="">--Select--</option>
+								<option value="Bowled">Bowled</option>
+								<option value="Catch Out">Catch Out</option>
+								<option value="Run Out">Run Out</option>
+								<option value="Stumped">Stumped</option>
+								<option value="Hit Wicket">Hit Wicket</option>
+								<option value="Ball Handled">Ball Handled</option>
+								<option value="Field Obstruction">Field Obstruction</option>
+							</select>
+						</div>
+
+						<div id="wicket-involved">
+							<label>Select Player Involved</label>
+							<select class="form-control" name="wicketInvolved" id="wicketInvolved">
+								<option value="">--Select--</option>
+								<?php foreach ($team2_all as $team2_player_all) { ?>
+									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
+										- <?php echo $team2_player_all['employee_id']; ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						
+						<div id="wicket-involved2">
+							<label>Select Player Involved 2</label>
+							<select class="form-control" name="wicketInvolved2" id="wicketInvolved2">
+								<option value="">--Select--</option>
+								<?php foreach ($team2_all as $team2_player_all) { ?>
+									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
+										- <?php echo $team2_player_all['employee_id']; ?></option>
+								<?php } ?>
+							</select>
+						</div>
+
+						<div id="out-batsman">
+							<label>Select Out Batsman</label>
+							<div class="radio">
+								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $batsman_record[0]['batsman']; ?>"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></label>
+							</div>
+							<div class="radio">
+								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $batsman_record[1]['batsman']; ?>"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 1'; ?></label>
+							</div>
+						</div>
+
+						<div id="new-batsman">
+							<label>Select New Batsman</label>
+							<select class="form-control" name="newBatsman" id="newBatsman">
+								<option value="">--Select--</option>
+								<?php foreach ($team1 as $team1_player) { ?>
+									<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>"><?php echo $team1_player['player_name']; ?>
+										- <?php echo $team1_player['employee_id']; ?></option>
+								<?php } ?>
+							</select>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Proceed</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="swap-batsman" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Select Batsman On Strike</h4>
+					</div>
+					<div class="modal-body">
+					
+					<div id="strike-batsman">
+							<label>Select Out Batsman</label>
+							<div class="radio">
+								<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value=""><</label>
+							</div>
+							<div class="radio">
+								<label><input type="radio" name="strikeBatsman" id="strikeBatsman2"  value=""></label>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- <section id='wicket-options'>
 			<div class="col-md-12">
 				<div class="box box-secondary">
 					<div class="box-body">
@@ -316,7 +448,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 		<section class="runs_scored">
 			<div class="col-md-12">
@@ -338,6 +470,10 @@
 								<label for="runs5">5</label>
 								<input type="radio" id="runs6" class="runs" name="runs" value="6">
 								<label for="runs6">6</label>
+								<input type="radio" id="runs7" class="runs" name="runs" value="7">
+								<label for="runs7">7</label>
+								<input type="radio" id="runs8" class="runs" name="runs" value="8">
+								<label for="runs8">8</label>
 							</div>
 							<button class="btn btn-info">Others</button>
 							<button class="btn btn-info" id="undoRecord">Undo</button>
@@ -378,31 +514,31 @@
 			$("#batsman1 option[value='" + batsman2 + "']").attr('disabled', true);
 		});
 
-		$('#wicket-involved').hide();
-		$('#wicket-involved2').hide();
-		var selectedWicket = '';
+		// $('#wicket-involved').hide();
+		// $('#wicket-involved2').hide();
+		// var selectedWicket = '';
 
-		$('input[name=wicket]').on('click init-post-format', function ()
-		{
-			$('#wicket-options').toggle($('#wicket').prop('checked'));
-		}).trigger('init-post-format');
+		// $('input[name=wicket]').on('click init-post-format', function ()
+		// {
+		// 	$('#wicket-options').toggle($('#wicket').prop('checked'));
+		// }).trigger('init-post-format');
 
-		$('#wicket-dropdown').change(function ()
-		{
-			var selectedWicket = $('#wicket-dropdown option:selected').val();
-			if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
-				$('#wicket-involved').show();
-				$('#wicket-involved2').hide();
-			}
-			else if (selectedWicket == 'Run Out') {
-				$('#wicket-involved').show();
-				$('#wicket-involved2').show();
-			}
-			else {
-				$('#wicket-involved').hide();
-				$('#wicket-involved2').hide();
-			}
-		});
+		// $('#wicket-dropdown').change(function ()
+		// {
+		// 	var selectedWicket = $('#wicket-dropdown option:selected').val();
+		// 	if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
+		// 		$('#wicket-involved').show();
+		// 		$('#wicket-involved2').hide();
+		// 	}
+		// 	else if (selectedWicket == 'Run Out') {
+		// 		$('#wicket-involved').show();
+		// 		$('#wicket-involved2').show();
+		// 	}
+		// 	else {
+		// 		$('#wicket-involved').hide();
+		// 		$('#wicket-involved2').hide();
+		// 	}
+		// });
 
 		var res = {
 			loader: $('<div />', {class: 'loading-bar'}),

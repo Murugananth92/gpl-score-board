@@ -53,11 +53,13 @@ var LiveScore2 = function ()
 
 	var newBowlerModal;
 	var swapBatsmanModal;
+	var WicketModal;
 
 	function init()
 	{
 		url = $('#url').val();
 		newBowlerModal = $('#selectBowlermodal');
+		WicketModal = $('#wicket-options');
 		swapBatsmanModal = $('#swap-batsman');
 		scoreRuns();
 		undoFunction();
@@ -103,6 +105,10 @@ var LiveScore2 = function ()
 		totalOvers = $('#total_overs');
 
 		highlightStrike();
+
+		//Custom Function - Check Wicket
+		checkWicket();
+
 		swapBatsman()
 	}
 
@@ -120,156 +126,192 @@ var LiveScore2 = function ()
 	{
 		$('.runs').click(function ()
 		{
-			batsman1 = $('#batsman1_name').html();
-			batsman2 = $('#batsman2_name').html();
-			batsman1id = $('#batsman1_id').val();
-			batsman2id = $('#batsman2_id').val();
-			ballnumber = $('#ballNumber').val();
-			onstrike = batsman1;
-			onstrikeid = $('#on_strike_batsman').val();
-			if (onstrikeid !== batsman1id && onstrikeid !== batsman2id) {
-				Swal.fire({
-					icon: 'error',
-					text: 'Please select on strike batsman',
-					showCloseButton: true
-				});
-				resetDefault();
-				return;
-			}
+			if($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true){
+				// $('#wicket-options').modal('show');
+				WicketModal.modal({backdrop: 'static', keyboard: false, show: true});
+			} else {
+				batsman1 = $('#batsman1_name').html();
+				batsman2 = $('#batsman2_name').html();
+				batsman1id = $('#batsman1_id').val();
+				batsman2id = $('#batsman2_id').val();
+				ballnumber = $('#ballNumber').val();
+				onstrike = batsman1;
+				onstrikeid = $('#on_strike_batsman').val();
 
-			var runs = $("input[name='runs']:checked").val();
-			var extras = $("input[name='extras']:checked").val();
-			var is_extras = $('input[name="extras"]').is(':checked') ? true : false;
-			var is_byes = $('input[name="byes"]').is(':checked') ? true : false;
-			var is_wicket = $('input[name="wicket"]').is(':checked') ? true : false;
-			var how_out = $('#wicket-type').val();
-			var wicketInvolved = $('#wicketInvolved').val();
-			var wicketInvolved2 = $('#wicketInvolved2').val();
-			var outBatsman = $("input[name='outBatsman']:checked").val();
-			var newBatsman = $('#newBatsman').val();
-			var inning_id = $('#inningId').val();
-			var perball = {};
 
-			perball['inning_id'] = inning_id;
-			perball['runs_scored'] = parseInt(runs);
-			perball['byes'] = 0;
-			perball['noball'] = 0;
-			perball['runout'] = 0;
-			perball['wicket'] = 0;
-			perball['wide'] = 0;
+				var runs = $("input[name='runs']:checked").val();
+				var extras = $("input[name='extras']:checked").val();
+				var is_extras = $('input[name="extras"]').is(':checked') ? true : false;
+				var is_byes = $('input[name="byes"]').is(':checked') ? true : false;
+				var is_wicket = $('input[name="wicket"]').is(':checked') ? true : false;
+				var how_out = $('#wicket-type').val();
+				var wicketInvolved = $('#wicketInvolved').val();
+				var wicketInvolved2 = $('#wicketInvolved2').val();
+				var outBatsman = $("input[name='outBatsman']:checked").val();
+				var newBatsman = $('#newBatsman').val();
+				var inning_id = $('#inningId').val();
+				var perball = {};
 
-			if (!is_extras && !is_wicket) {
-				if (is_byes) {
-					perball['byes'] = parseInt(runs);
-					ballnumber++;
-				}
-				else {
-					perball['runs_scored'] = parseInt(runs);
-					ballnumber++;
-				}
-			}
-			else if (is_extras) {
-				if (extras == 'wide') {
-					perball['wide'] = 1;
-					if (runs > 0) {
-						perball['byes'] = parseInt(runs);
-					}
-					if (is_wicket) {
-						perball['wicket_type'] = how_out;
-						if (how_out === 'Run Out') {
-							perball['runout'] = 1;
-							perball['wicket_assist'] = wicketInvolved;
-							if (!wicketInvolved2 == '') {
-								perball['wicket_assist2'] = wicketInvolved2;
-							}
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
-						}
-						else if (how_out === 'Catch Out' || how_out === 'Stumped') {
-							perball['wicket'] = 1;
-							perball['wicket_assist'] = wicketInvolved;
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
-						}
-						else {
-							perball['wicket'] = 1;
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
-						}
-					}
-				}
-				else {
-					perball['noball'] = 1;
+				perball['inning_id'] = inning_id;
+				perball['runs_scored'] = parseInt(runs);
+				perball['byes'] = 0;
+				perball['noball'] = 0;
+				perball['runout'] = 0;
+				perball['wicket'] = 0;
+				perball['wide'] = 0;
+				perball['wicket_assist1'] = 0;
+				perball['wicket_assist2'] = 0;
+
+				console.log(wicketInvolved);
+				if (!is_extras && !is_wicket) {
 					if (is_byes) {
 						perball['byes'] = parseInt(runs);
+						ballnumber++;
 					}
 					else {
 						perball['runs_scored'] = parseInt(runs);
+						ballnumber++;
 					}
-					if (is_wicket) {
-						perball['wicket_type'] = how_out;
-						if (how_out === 'Run Out') {
-							perball['runout'] = 1;
-							perball['wicket_assist'] = wicketInvolved;
+				}
+				else if (is_extras) {
+					if (extras == 'wide') {
+						perball['wide'] = 1;
+						if (runs > 0) {
+							perball['byes'] = parseInt(runs);
+						}
+						if (is_wicket) {
+							perball['wicket_type'] = how_out;
+							if (how_out === 'Run Out') {
+								perball['runout'] = 1;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+								if (!wicketInvolved2 == '') {
+									perball['wicket_assist2'] = wicketInvolved2;
+								}
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+							}
+							else if (how_out === 'Catch Out' || how_out === 'Stumped') {
+								perball['wicket'] = 1;
+								perball['wicket_assist1'] = wicketInvolved;
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+							}
+							else {
+								perball['wicket'] = 1;
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+								if (!wicketInvolved2 == '') {
+									perball['wicket_assist2'] = wicketInvolved2;
+								}
+							}
+						}
+					}
+					else {
+						perball['noball'] = 1;
+						if (is_byes) {
+							perball['byes'] = parseInt(runs);
+						}
+						else {
+							perball['runs_scored'] = parseInt(runs);
+						}
+						if (is_wicket) {
+							perball['wicket_type'] = how_out;
+							if (how_out === 'Run Out') {
+								perball['runout'] = 1;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+								if (!wicketInvolved2 == '') {
+									perball['wicket_assist2'] = wicketInvolved2;
+								}
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+							}
+							else if (how_out === 'Catch Out' || how_out === 'Stumped') {
+								perball['wicket'] = 1;
+								perball['wicket_assist1'] = wicketInvolved;
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+							}
+							else {
+								perball['wicket'] = 1;
+								perball['out_batsman'] = outBatsman;
+								perball['new_batsman'] = newBatsman;
+								if(wicketInvolved != '') {
+									perball['wicket_assist1'] = wicketInvolved;
+								}
+								if (!wicketInvolved2 == '') {
+									perball['wicket_assist2'] = wicketInvolved2;
+								}
+							}
+						}
+					}
+				}
+				else {
+					perball['runs_scored'] = parseInt(runs);
+					perball['wicket_type'] = how_out;
+					if (how_out === 'Run Out') {
+						perball['runout'] = 1;
+
+							if(wicketInvolved != '') {
+								perball['wicket_assist1'] = wicketInvolved;
+							}
 							if (!wicketInvolved2 == '') {
 								perball['wicket_assist2'] = wicketInvolved2;
 							}
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
-						}
-						else if (how_out === 'Catch Out' || how_out === 'Stumped') {
-							perball['wicket'] = 1;
-							perball['wicket_assist'] = wicketInvolved;
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
-						}
-						else {
-							perball['wicket'] = 1;
-							perball['out_batsman'] = outBatsman;
-							perball['new_batsman'] = newBatsman;
+						perball['out_batsman'] = outBatsman;
+						perball['new_batsman'] = newBatsman;
+					}
+					else if (how_out === 'Catch Out' || how_out === 'Stumped') {
+						perball['wicket'] = 1;
+						perball['wicket_assist1'] = wicketInvolved;
+						perball['out_batsman'] = outBatsman;
+						perball['new_batsman'] = newBatsman;
+						if(wicketInvolved != '') {
+							perball['wicket_assist1'] = wicketInvolved;
 						}
 					}
-				}
-			}
-			else {
-				perball['runs_scored'] = parseInt(runs);
-				perball['wicket_type'] = how_out;
-				if (how_out === 'Run Out') {
-					perball['runout'] = 1;
-					perball['wicket_assist'] = wicketInvolved;
-					if (!wicketInvolved2 == '') {
-						perball['wicket_assist2'] = wicketInvolved2;
+					else {
+						perball['wicket'] = 1;
+						perball['out_batsman'] = outBatsman;
+						perball['new_batsman'] = newBatsman;
+						if(wicketInvolved != '') {
+							perball['wicket_assist1'] = wicketInvolved;
+						}
+						if (!wicketInvolved2 == '') {
+							perball['wicket_assist2'] = wicketInvolved2;
+						}
 					}
-					perball['out_batsman'] = outBatsman;
-					perball['new_batsman'] = newBatsman;
+					ballnumber++;
 				}
-				else if (how_out === 'catchout' || how_out === 'stumped') {
-					perball['wicket'] = 1;
-					perball['wicket_assist'] = wicketInvolved;
-					perball['out_batsman'] = outBatsman;
-					perball['new_batsman'] = newBatsman;
-				}
-				else {
-					perball['wicket'] = 1;
-					perball['out_batsman'] = outBatsman;
-					perball['new_batsman'] = newBatsman;
-				}
-				ballnumber++;
-			}
 
-			perball['ballnumber'] = ballnumber;
-			perball['onstrike'] = onstrike;
-			perball['onstrikeid'] = onstrikeid;
 
-			var bowler = $('#bowler_id').val();
-			perball['bowler'] = bowler;
-			perball['batsman1'] = batsman1id;
-			perball['batsman2'] = batsman2id;
+				perball['ballnumber'] = ballnumber;
+				perball['onstrike'] = onstrike;
+				perball['onstrikeid'] = onstrikeid;
 
-			// Function to insert Ball records
+				var bowler = $('#bowler_id').val();
+				perball['bowler'] = bowler;
+				perball['batsman1'] = batsman1id;
+				perball['batsman2'] = batsman2id;
+				console.log(perball);
+				// Function to insert Ball records
 			insertBallRecords(perball);
 			// Reset to default
 			resetDefault();
+			}
+
 
 		});
 	}
@@ -282,7 +324,7 @@ var LiveScore2 = function ()
 		$('#wicketInvolved').prop('selectedIndex', 0);
 		$('#wicketInvolved2').prop('selectedIndex', 0);
 		$('#newBatsman').prop('selectedIndex', 0);
-		$('#wicket-options').hide();
+		$('#WicketModal').modal('hide');
 	}
 
 	function highlightStrike()
@@ -483,6 +525,38 @@ var LiveScore2 = function ()
 				highlightStrike();
 			});
 
+		});
+	}
+
+	// Closing Wicket Modal
+	$('#wicket-options').on('hidden.bs.modal', function () {
+		console.log($("input[name='runs']:checked"));
+		$("input[name='runs']:checked").trigger('click');
+	  });
+
+	function checkWicket() {
+
+		var selectedWicket;
+
+		// By Default
+		$('#wicket-involved').hide();
+		$('#wicket-involved2').hide();
+
+		$('#wicket-dropdown').change(function ()
+		{
+			var selectedWicket = $('#wicket-dropdown option:selected').val();
+			if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
+				$('#wicket-involved').show();
+				$('#wicket-involved2').hide();
+			}
+			else if (selectedWicket == 'Run Out') {
+				$('#wicket-involved').show();
+				$('#wicket-involved2').show();
+			}
+			else {
+				$('#wicket-involved').hide();
+				$('#wicket-involved2').hide();
+			}
 		});
 	}
 
