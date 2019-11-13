@@ -66,7 +66,7 @@ var LiveScore2 = function ()
 		loader = $('.loader');
 
 		// Highlight batsman 1 by default
-		$('#batsman1_highlight').css('font-weight', 'bold');
+		// $('#batsman1_highlight').css('font-weight', 'bold');
 
 		batsmanId1Field = $('#batsman1_id');
 		batsmanId2Field = $('#batsman2_id');
@@ -106,7 +106,6 @@ var LiveScore2 = function ()
 
 		highlightStrike();
 
-		//Custom Function - Check Wicket
 		checkWicket();
 
 		swapBatsman()
@@ -126,9 +125,12 @@ var LiveScore2 = function ()
 	{
 		$('.runs').click(function ()
 		{
+			setOutBatsman();
+
 			if($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true){
-				// $('#wicket-options').modal('show');
+				
 				WicketModal.modal({backdrop: 'static', keyboard: false, show: true});
+				
 			} else {
 				batsman1 = $('#batsman1_name').html();
 				batsman2 = $('#batsman2_name').html();
@@ -138,6 +140,9 @@ var LiveScore2 = function ()
 				onstrike = batsman1;
 				onstrikeid = $('#on_strike_batsman').val();
 
+				if(checkStrikeBatsman() === false) {
+					return false;
+				}
 
 				var runs = $("input[name='runs']:checked").val();
 				var extras = $("input[name='extras']:checked").val();
@@ -360,6 +365,7 @@ var LiveScore2 = function ()
 					unLoad();
 					var response = JSON.parse(data);
 					updateScoreData(response);
+					checkStrikeBatsman();
 					verifyOverStatus();
 					highlightStrike();
 				},
@@ -534,11 +540,20 @@ var LiveScore2 = function ()
 		$("input[name='runs']:checked").trigger('click');
 	  });
 
+	function setOutBatsman() {
+		$('#batsman1-out').val(batsmanId1Field.val());
+		$('#batsman2-out').val(batsmanId2Field.val());
+
+		$('#batsman1-out').next().text(batsman1NameField.text());
+		$('#batsman2-out').next().text(batsman2NameField.text());
+	}
+
 	function checkWicket() {
 
 		var selectedWicket;
 
 		// By Default
+		
 		$('#wicket-involved').hide();
 		$('#wicket-involved2').hide();
 
@@ -558,6 +573,19 @@ var LiveScore2 = function ()
 				$('#wicket-involved2').hide();
 			}
 		});
+	}
+
+	function checkStrikeBatsman() {
+		if (onstrikeid !== batsman1id && onstrikeid !== batsman2id) {
+			Swal.fire({
+			icon: 'error',
+			text:'Please select on strike batsman',
+			showCloseButton: true
+			});
+			resetDefault();
+			return false;
+		}
+		return true;
 	}
 
 	return {

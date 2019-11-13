@@ -84,7 +84,7 @@
 			<div class="modal-body">
 
 				<div id="strike-batsman">
-					<label>Select Out Batsman</label>
+					<label>Select Strike Batsman</label>
 					<div class="radio">
 						<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value=""><span></span></label>
 					</div>
@@ -324,10 +324,10 @@
 						<div id="out-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $match['batsman_record'][0]['batsman']; ?>"><?php echo isset($match['batsman_record'][0]['player_name']) ? $match['batsman_record'][0]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman1-out" value=""><span></span></label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $match['batsman_record'][1]['batsman']; ?>"><?php echo isset($match['batsman_record'][1]['player_name']) ? $match['batsman_record'][1]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman2-out"  value=""><span></span></label>
 							</div>
 						</div>
 
