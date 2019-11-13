@@ -309,7 +309,7 @@
 								<?php } ?>
 							</select>
 						</div>
-						
+
 						<div id="wicket-involved2">
 							<label>Select Player Involved 2</label>
 							<select class="form-control" name="wicketInvolved2" id="wicketInvolved2">
@@ -324,10 +324,10 @@
 						<div id="out-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $batsman_record[0]['batsman']; ?>"><?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman1-out" value="<?php echo $match['batsman_record'][0]['batsman']; ?>"><?php echo isset($match['batsman_record'][0]['player_name']) ? $match['batsman_record'][0]['player_name'] : 'Batsman 1'; ?></label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $batsman_record[1]['batsman']; ?>"><?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 1'; ?></label>
+								<label><input type="radio" name="outBatsman" id="batsman2-out"  value="<?php echo $match['batsman_record'][1]['batsman']; ?>"><?php echo isset($match['batsman_record'][1]['player_name']) ? $match['batsman_record'][1]['player_name'] : 'Batsman 1'; ?></label>
 							</div>
 						</div>
 
@@ -376,79 +376,6 @@
 				</div>
 			</div>
 		</div>
-
-
-		<!-- <section id='wicket-options'>
-			<div class="col-md-12">
-				<div class="box box-secondary">
-					<div class="box-body">
-						<div id="wicket-dropdown">
-							<label>Select Wicket Option</label>
-							<select class="form-control" id='wicket-type'>
-								<option value="">--Select--</option>
-								<option value="Bowled">Bowled</option>
-								<option value="Catch Out">Catch Out</option>
-								<option value="Run Out">Run Out</option>
-								<option value="Stumped">Stumped</option>
-								<option value="Hit Wicket">Hit Wicket</option>
-								<option value="Ball Handled">Ball Handled</option>
-								<option value="Field Obstruction">Field Obstruction</option>
-							</select>
-						</div>
-
-						<div id="wicket-involved">
-							<label>Select Player Involved</label>
-							<select class="form-control" name="wicketInvolved" id="wicketInvolved">
-								<option value="">--Select--</option>
-								<?php foreach ($team2_all as $team2_player_all) { ?>
-									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
-										- <?php echo $team2_player_all['employee_id']; ?></option>
-								<?php } ?>
-							</select>
-						</div>
-
-						<div id="wicket-involved2">
-							<label>Select Player Involved 2</label>
-							<select class="form-control" name="wicketInvolved2" id="wicketInvolved2">
-								<option value="">--Select--</option>
-								<?php foreach ($team2_all as $team2_player_all) { ?>
-									<option value="<?php echo $team2_player_all['player_id']; ?>" data-bowler="<?php echo $team2_player_all['player_name']; ?>"><?php echo $team2_player_all['player_name']; ?>
-										- <?php echo $team2_player_all['employee_id']; ?></option>
-								<?php } ?>
-							</select>
-						</div>
-
-						<div id="out-batsman">
-							<label>Select Out Batsman</label>
-							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out"
-											  value="<?php echo isset($match['batsman_record'][0]['batsman']) ? $match['batsman_record'][0]['batsman'] : 0; ?>">
-									<?php echo isset($batsman_record[0]['player_name']) ? $batsman_record[0]['player_name'] : 'Batsman 1'; ?>
-								</label>
-							</div>
-							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out"
-											  value="<?php echo isset($match['batsman_record'][1]['batsman']) ? $match['batsman_record'][1]['batsman'] : 0; ?>">
-									<?php echo isset($batsman_record[1]['player_name']) ? $batsman_record[1]['player_name'] : 'Batsman 2'; ?>
-								</label>
-							</div>
-						</div>
-
-						<div id="new-batsman">
-							<label>Select New Batsman</label>
-							<select class="form-control" name="newBatsman" id="newBatsman">
-								<option value="">--Select--</option>
-								<?php foreach ($team1 as $team1_player) { ?>
-									<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>">
-										<?php echo $team1_player['player_name']; ?>
-										- <?php echo $team1_player['employee_id']; ?></option>
-								<?php } ?>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section> -->
 
 		<section class="runs_scored">
 			<div class="col-md-12">
