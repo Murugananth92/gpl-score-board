@@ -105,10 +105,9 @@ var LiveScore2 = function ()
 		totalOvers = $('#total_overs');
 
 		highlightStrike();
-
 		checkWicket();
-
-		swapBatsman()
+		swapBatsman();
+		verifyOverStatus();
 	}
 
 	function load()
@@ -127,11 +126,12 @@ var LiveScore2 = function ()
 		{
 			setOutBatsman();
 
-			if($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true){
-				
+			if ($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true) {
+
 				WicketModal.modal({backdrop: 'static', keyboard: false, show: true});
-				
-			} else {
+
+			}
+			else {
 				batsman1 = $('#batsman1_name').html();
 				batsman2 = $('#batsman2_name').html();
 				batsman1id = $('#batsman1_id').val();
@@ -140,7 +140,7 @@ var LiveScore2 = function ()
 				onstrike = batsman1;
 				onstrikeid = $('#on_strike_batsman').val();
 
-				if(checkStrikeBatsman() === false) {
+				if (checkStrikeBatsman() === false) {
 					return false;
 				}
 
@@ -167,7 +167,6 @@ var LiveScore2 = function ()
 				perball['wicket_assist1'] = 0;
 				perball['wicket_assist2'] = 0;
 
-				console.log(wicketInvolved);
 				if (!is_extras && !is_wicket) {
 					if (is_byes) {
 						perball['byes'] = parseInt(runs);
@@ -188,7 +187,7 @@ var LiveScore2 = function ()
 							perball['wicket_type'] = how_out;
 							if (how_out === 'Run Out') {
 								perball['runout'] = 1;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 								if (!wicketInvolved2 == '') {
@@ -202,7 +201,7 @@ var LiveScore2 = function ()
 								perball['wicket_assist1'] = wicketInvolved;
 								perball['out_batsman'] = outBatsman;
 								perball['new_batsman'] = newBatsman;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 							}
@@ -210,7 +209,7 @@ var LiveScore2 = function ()
 								perball['wicket'] = 1;
 								perball['out_batsman'] = outBatsman;
 								perball['new_batsman'] = newBatsman;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 								if (!wicketInvolved2 == '') {
@@ -231,7 +230,7 @@ var LiveScore2 = function ()
 							perball['wicket_type'] = how_out;
 							if (how_out === 'Run Out') {
 								perball['runout'] = 1;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 								if (!wicketInvolved2 == '') {
@@ -245,7 +244,7 @@ var LiveScore2 = function ()
 								perball['wicket_assist1'] = wicketInvolved;
 								perball['out_batsman'] = outBatsman;
 								perball['new_batsman'] = newBatsman;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 							}
@@ -253,7 +252,7 @@ var LiveScore2 = function ()
 								perball['wicket'] = 1;
 								perball['out_batsman'] = outBatsman;
 								perball['new_batsman'] = newBatsman;
-								if(wicketInvolved != '') {
+								if (wicketInvolved != '') {
 									perball['wicket_assist1'] = wicketInvolved;
 								}
 								if (!wicketInvolved2 == '') {
@@ -269,12 +268,12 @@ var LiveScore2 = function ()
 					if (how_out === 'Run Out') {
 						perball['runout'] = 1;
 
-							if(wicketInvolved != '') {
-								perball['wicket_assist1'] = wicketInvolved;
-							}
-							if (!wicketInvolved2 == '') {
-								perball['wicket_assist2'] = wicketInvolved2;
-							}
+						if (wicketInvolved != '') {
+							perball['wicket_assist1'] = wicketInvolved;
+						}
+						if (!wicketInvolved2 == '') {
+							perball['wicket_assist2'] = wicketInvolved2;
+						}
 						perball['out_batsman'] = outBatsman;
 						perball['new_batsman'] = newBatsman;
 					}
@@ -283,7 +282,7 @@ var LiveScore2 = function ()
 						perball['wicket_assist1'] = wicketInvolved;
 						perball['out_batsman'] = outBatsman;
 						perball['new_batsman'] = newBatsman;
-						if(wicketInvolved != '') {
+						if (wicketInvolved != '') {
 							perball['wicket_assist1'] = wicketInvolved;
 						}
 					}
@@ -291,7 +290,7 @@ var LiveScore2 = function ()
 						perball['wicket'] = 1;
 						perball['out_batsman'] = outBatsman;
 						perball['new_batsman'] = newBatsman;
-						if(wicketInvolved != '') {
+						if (wicketInvolved != '') {
 							perball['wicket_assist1'] = wicketInvolved;
 						}
 						if (!wicketInvolved2 == '') {
@@ -301,7 +300,6 @@ var LiveScore2 = function ()
 					ballnumber++;
 				}
 
-
 				perball['ballnumber'] = ballnumber;
 				perball['onstrike'] = onstrike;
 				perball['onstrikeid'] = onstrikeid;
@@ -310,14 +308,11 @@ var LiveScore2 = function ()
 				perball['bowler'] = bowler;
 				perball['batsman1'] = batsman1id;
 				perball['batsman2'] = batsman2id;
-				console.log(perball);
 				// Function to insert Ball records
-			insertBallRecords(perball);
-			// Reset to default
-			resetDefault();
+				insertBallRecords(perball);
+				// Reset to default
+				resetDefault();
 			}
-
-
 		});
 	}
 
@@ -336,11 +331,11 @@ var LiveScore2 = function ()
 	{
 		$('#batsman1_strike,#batsman2_strike').removeClass('highlight');
 
-		if (onStrikeField.val() == batsmanId1Field.val()) {
+		if (onStrikeField.val() === batsmanId1Field.val() && parseInt(batsmanId1Field.val()) !== 0) {
 			$('#batsman1_strike').addClass('highlight')
 		}
 
-		if (onStrikeField.val() == batsmanId2Field.val()) {
+		if (onStrikeField.val() === batsmanId2Field.val() && parseInt(batsmanId2Field.val()) !== 0) {
 			$('#batsman2_strike').addClass('highlight')
 		}
 	}
@@ -424,7 +419,6 @@ var LiveScore2 = function ()
 		displayBalls.text(res.team_score.balls);
 
 		currentOverStatus.val(res.over.is_completed);
-		totalOvers.val(res.totalOver.match_overs);
 
 		var overRuns = displayCurrentOverRuns(res.current_over_records);
 		currentOverRuns.text(overRuns);
@@ -442,14 +436,15 @@ var LiveScore2 = function ()
 
 	function verifyOverStatus()
 	{
-		if (parseInt(currentOverStatus.val()) === 1) {
+		if (parseInt(currentOverStatus.val()) === 1 && parseInt(overNumberField.val()) !== parseInt(totalOvers.val())) {
 			$('#newBowler').val();
 			newBowlerModal.modal({backdrop: 'static', keyboard: false, show: true});
 			newOver();
 		}
 
 		if (parseInt(currentOverStatus.val()) === 1 && parseInt(overNumberField.val()) === parseInt(totalOvers.val())) {
-			alert('Innings Completed');
+
+			inningsCompleted();
 		}
 
 	}
@@ -467,6 +462,8 @@ var LiveScore2 = function ()
 	function newOver()
 	{
 		newBowlerModal.modal({backdrop: 'static', keyboard: false, show: true});
+		$('#selectNewBowler').unbind('click');
+
 		$('#selectNewBowler').on('click', function ()
 		{
 			var newBowler = $('#newBowler').val();
@@ -535,12 +532,14 @@ var LiveScore2 = function ()
 	}
 
 	// Closing Wicket Modal
-	$('#wicket-options').on('hidden.bs.modal', function () {
+	$('#wicket-options').on('hidden.bs.modal', function ()
+	{
 		console.log($("input[name='runs']:checked"));
 		$("input[name='runs']:checked").trigger('click');
-	  });
+	});
 
-	function setOutBatsman() {
+	function setOutBatsman()
+	{
 		$('#batsman1-out').val(batsmanId1Field.val());
 		$('#batsman2-out').val(batsmanId2Field.val());
 
@@ -548,12 +547,13 @@ var LiveScore2 = function ()
 		$('#batsman2-out').next().text(batsman2NameField.text());
 	}
 
-	function checkWicket() {
+	function checkWicket()
+	{
 
 		var selectedWicket;
 
 		// By Default
-		
+
 		$('#wicket-involved').hide();
 		$('#wicket-involved2').hide();
 
@@ -575,17 +575,39 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function checkStrikeBatsman() {
+	function checkStrikeBatsman()
+	{
 		if (onstrikeid !== batsman1id && onstrikeid !== batsman2id) {
 			Swal.fire({
-			icon: 'error',
-			text:'Please select on strike batsman',
-			showCloseButton: true
+				icon: 'error',
+				text: 'Please select on strike batsman',
+				showCloseButton: true
 			});
 			resetDefault();
 			return false;
 		}
 		return true;
+	}
+
+	function inningsCompleted()
+	{
+		$.ajax({
+			url: url + 'Live_score/innings_completed',
+			type: "POST",
+			data: {},
+			beforeSend: function ()
+			{
+				load();
+			},
+			success: function (data)
+			{
+				unLoad();
+				var response = JSON.parse(data);
+				if (response === 'success') {
+					location.reload();
+				}
+			}
+		});
 	}
 
 	return {
