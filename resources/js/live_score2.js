@@ -54,6 +54,7 @@ var LiveScore2 = function ()
 	var newBowlerModal;
 	var swapBatsmanModal;
 	var WicketModal;
+	var othersModal;
 
 	function init()
 	{
@@ -61,6 +62,7 @@ var LiveScore2 = function ()
 		newBowlerModal = $('#selectBowlermodal');
 		WicketModal = $('#wicket-options');
 		swapBatsmanModal = $('#swap-batsman');
+		othersModal = $('#othersModal');
 		scoreRuns();
 		undoFunction();
 		loader = $('.loader');
@@ -108,6 +110,7 @@ var LiveScore2 = function ()
 		checkWicket();
 		swapBatsman();
 		verifyOverStatus();
+		othersFunction();
 	}
 
 	function load()
@@ -531,12 +534,40 @@ var LiveScore2 = function ()
 		});
 	}
 
-	// Closing Wicket Modal
-	$('#wicket-options').on('hidden.bs.modal', function ()
+	function othersFunction()
 	{
-		console.log($("input[name='runs']:checked"));
-		$("input[name='runs']:checked").trigger('click');
-	});
+		$('#othersOption').on('click', function (e)
+		{
+			e.preventDefault();
+			$('#team-won').hide();
+			$('#end-comments').hide();
+			othersModal.modal({backdrop: 'static', keyboard: false, show: true});
+
+			$('input[type=radio][name=endoptions]').change(function() 
+			{	
+				if($('input[name=endoptions]:checked').val() == 'endmatch') {
+					$('#team-won').show();
+					$('#end-comments').show();
+					$('#out-submit').click(function() {
+						matchCompleted();	
+					});
+				} else if($('input[name=endoptions]:checked').val() == 'reschedulematch') {
+					$('#team-won').hide();
+					$('#end-comments').show();
+					$('#out-submit').click(function() {
+						reschedulematch();	
+					});
+				} else {
+
+					$('#out-submit').click(function() {
+						$('#team-won').hide();
+						$('#end-comments').hide();
+						inningsCompleted();	
+					});
+				}				
+			});
+		});
+	}
 
 	function setOutBatsman()
 	{
@@ -551,6 +582,11 @@ var LiveScore2 = function ()
 	{
 
 		var selectedWicket;
+
+		$('#wicket-options').on('hidden.bs.modal', function ()
+		{
+			$("input[name='runs']:checked").trigger('click');
+		});
 
 		// By Default
 
@@ -587,6 +623,48 @@ var LiveScore2 = function ()
 			return false;
 		}
 		return true;
+	}
+
+	function reschedulematch()
+	{
+		$.ajax({
+			url: url + 'Live_score/match_reschedule',
+			type: "POST",
+			data: {},
+			beforeSend: function ()
+			{
+				load();
+			},
+			success: function (data)
+			{
+				unLoad();
+				var response = JSON.parse(data);
+				if (response === 'success') {
+					location.reload();
+				}
+			}
+		});
+	}
+
+	function matchCompleted()
+	{
+		$.ajax({
+			url: url + 'Live_score/match_completed',
+			type: "POST",
+			data: {},
+			beforeSend: function ()
+			{
+				load();
+			},
+			success: function (data)
+			{
+				unLoad();
+				var response = JSON.parse(data);
+				if (response === 'success') {
+					location.reload();
+				}
+			}
+		});
 	}
 
 	function inningsCompleted()

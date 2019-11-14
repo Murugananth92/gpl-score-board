@@ -378,6 +378,52 @@
 			</div>
 		</div>
 
+		<div id="othersModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Select Other Options</h4>
+					</div>
+					<div class="modal-body">
+
+						<div id="end-radio">
+							<label>Select Other Options</label>
+							<div class="radio">
+								<label><input type="radio" name="endoptions" id="endinnings" value="endinnings">End Innings</label>
+							</div>
+							<div class="radio">
+								<label><input type="radio" name="endoptions" id="endmatch" value="endmatch">End Match</label>
+							</div>
+							<div class="radio">
+								<label><input type="radio" name="endoptions" id="reschedulematch" value="reschedulematch">Reschedule Match</label>
+							</div>
+						</div>
+
+						<div id="team-won">
+							<label>Select Team Won</label>
+							<select class="form-control" name="teamWon" id="teamWon">
+								<option value="">--Select--</option>
+									<option value="<?php echo $details['teamid_1']; ?>"><?php echo $details['team_1']; ?></option>
+									<option value="<?php echo $details['teamid_2']; ?>"><?php echo $details['team_2']; ?></option>
+							</select>
+						</div>
+
+						<div id="end-comments">
+							<label>Comments</label>
+							<textarea class="form-control" rows="4" cols="50">
+							
+							</textarea>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="out-submit" class="btn btn-default" data-dismiss="modal">Confirm</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<section class="runs_scored">
 			<div class="col-md-12">
 				<div class="box box-info">
@@ -403,7 +449,7 @@
 								<input type="radio" id="runs8" class="runs" name="runs" value="8">
 								<label for="runs8">8</label>
 							</div>
-							<button class="btn btn-info">Others</button>
+							<button class="btn btn-info" id="othersOption">Others</button>
 							<button class="btn btn-info" id="undoRecord">Undo</button>
 						</div>
 					</form>
@@ -441,32 +487,6 @@
 				.siblings().removeAttr('disabled');
 			$("#batsman1 option[value='" + batsman2 + "']").attr('disabled', true);
 		});
-
-		// $('#wicket-involved').hide();
-		// $('#wicket-involved2').hide();
-		// var selectedWicket = '';
-
-		// $('input[name=wicket]').on('click init-post-format', function ()
-		// {
-		// 	$('#wicket-options').toggle($('#wicket').prop('checked'));
-		// }).trigger('init-post-format');
-
-		// $('#wicket-dropdown').change(function ()
-		// {
-		// 	var selectedWicket = $('#wicket-dropdown option:selected').val();
-		// 	if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
-		// 		$('#wicket-involved').show();
-		// 		$('#wicket-involved2').hide();
-		// 	}
-		// 	else if (selectedWicket == 'Run Out') {
-		// 		$('#wicket-involved').show();
-		// 		$('#wicket-involved2').show();
-		// 	}
-		// 	else {
-		// 		$('#wicket-involved').hide();
-		// 		$('#wicket-involved2').hide();
-		// 	}
-		// });
 
 		var res = {
 			loader: $('<div />', {class: 'loading-bar'}),

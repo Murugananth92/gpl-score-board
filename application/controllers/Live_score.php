@@ -21,7 +21,7 @@ class Live_score extends CI_Controller
 		$data['is_innings_progressing'] = $this->live_score_model->get_innings();
 		$data['details'] = $this->live_score_model->get_match_toss_details($match_id);
 		$data['match'] = $this->current_match_details($match_id);
-		//echo '<pre>';print_r($data);exit;
+		// echo '<pre>';print_r($data);exit;
 		if (count($data['played_innings']) == 2) {
 			$data['is_innings_progressing'] = 1;
 		}
@@ -392,6 +392,16 @@ class Live_score extends CI_Controller
 		$data = $this->live_score_model->getBowlerOverDetails($bowler_id, $inning_id);
 		$bowler_innings = $this->live_score_model->getBowlerInnings($data, $inning_id, $bowler_id);
 		$this->live_score_model->updateBowlerInnings($bowler_innings, $bowler_id, $inning_id);
+	}
+
+	function match_completed()
+	{
+
+	}
+
+	function match_reschedule()
+	{
+		
 	}
 
 
