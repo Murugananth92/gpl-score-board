@@ -309,7 +309,7 @@ class Live_score_model extends CI_Model
 	}
 
 	function update_batsman_innings($inning_id, $batsman, $data)
-	{	
+	{
 		$this->db->where('batsman', $batsman);
 		$this->db->where('inning_id', $inning_id);
 		$this->db->update('batsman_innings', $data);
@@ -319,6 +319,33 @@ class Live_score_model extends CI_Model
 	{
 		$this->db->insert('fall_of_wickets', $data);
 
+	}
+
+	function get_match_toss_details($match_id)
+	{
+		$this->db->select('M.match_id,T.team_id as teamid_1, T1.team_id as teamid_2,T.team_name as team_1, T1.team_name as team_2,
+						   M.match_date,M.match_venue,M.toss_won,M.toss_option,M.match_overs');
+		$this->db->join('teams as T', 'M.team_1 = T.team_id');
+		$this->db->join('teams as T1', 'M.team_2 = T1.team_id ');
+		return $this->db->get_where('matches as M', array('match_id =' => $match_id))->row_array();
+	}
+
+	function update_innings($inning_id, $data)
+	{
+		$this->db->where('inning_id', $inning_id);
+		$this->db->update('innings', $data);
+	}
+
+	function get_played_innings($match_id)
+	{
+		$this->db->select('I.*,T.team_name');
+		$this->db->join('teams as T', 'I.batting_team = T.team_id');
+		return $this->db->get_where('innings as I', array('I.is_completed =' => 1, 'I.match_id' => $match_id))->result_array();
+	}
+
+	function get_current_innings($match_id)
+	{
+		return $this->db->get_where('innings', array('is_completed =' => 0, 'match_id' => $match_id))->result_array();
 	}
 
 }

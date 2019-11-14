@@ -7,7 +7,6 @@
 				<h4 class="modal-title">Select Batsmen & Bowler</h4>
 			</div>
 			<div class="modal-body">
-				<!--<form role="form" method="post" action='--><? //= base_url()?><!--live_score/updateBatBowl'>-->
 				<form role="form" method="post" action='#'>
 
 					<label>Select Striker</label>
@@ -113,8 +112,10 @@
 					<div class="box-body">
 						<table class="table">
 							<tr>
-								<th><?php echo $team1_name . ' vs ' . $team2_name; ?></th>
-								<td>First Innining</td>
+								<th><?php echo $details['team_1'] . ' vs ' . $details['team_2']; ?></th>
+								<?php if (!empty($played_innings)) { ?>
+									<th><?php echo $played_innings[0]['team_name'] ?> : <?php echo $played_innings[0]['runs_scored'] . '/' . $played_innings[0]['wickets_lost'] ?></th>
+								<?php } ?>
 								<input type='hidden' id='inningId' name='inningId' value="<?php echo isset($match['team_score']['inning_id']) ? $match['team_score']['inning_id'] : 0 ?>">
 								<input type='hidden' id='overId' name='overId' value="<?php echo isset($match['team_score']['over_id']) ? $match['team_score']['over_id'] : 0 ?>">
 								<input type='hidden' id='ballid' name='ballid' value="<?php echo isset($match['team_score']['ball_id']) ? $match['team_score']['ball_id'] : 0 ?>">
@@ -122,7 +123,7 @@
 								<input type='hidden' id='overNumber' name='overNumber' value="<?php echo isset($match['team_score']['overs']) ? $match['team_score']['overs'] : 0 ?>">
 								<input type='hidden' id='on_strike_batsman' name='on_strike_batsman' value="<?php echo isset($match['on_strike_batsman']) ? $match['on_strike_batsman'] : 0; ?>">
 								<input type='hidden' id='current_over_status' name='current_over_status' value="<?php echo isset($match['over']['is_completed']) ? $match['over']['is_completed'] : 0; ?>">
-								<input type='hidden' id='total_overs' name='total_overs' value="<?php echo isset($match['totalOver']['match_overs']) ? $match['totalOver']['match_overs'] : 0; ?>">
+								<input type='hidden' id='total_overs' name='total_overs' value="<?php echo isset($match['details']['match_overs']) ? $match['details']['match_overs'] : 0 ?>">
 
 							</tr>
 							<tr>
@@ -285,7 +286,7 @@
 						<h4 class="modal-title">Select Wicket Options</h4>
 					</div>
 					<div class="modal-body">
-					<div id="wicket-dropdown">
+						<div id="wicket-dropdown">
 							<label>Select Wicket Option</label>
 							<select class="form-control" id='wicket-type'>
 								<option value="">--Select--</option>
@@ -327,7 +328,7 @@
 								<label><input type="radio" name="outBatsman" id="batsman1-out" value=""><span></span></label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman2-out"  value=""><span></span></label>
+								<label><input type="radio" name="outBatsman" id="batsman2-out" value=""><span></span></label>
 							</div>
 						</div>
 
@@ -358,14 +359,14 @@
 						<h4 class="modal-title">Select Batsman On Strike</h4>
 					</div>
 					<div class="modal-body">
-					
-					<div id="strike-batsman">
+
+						<div id="strike-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
 								<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value=""><</label>
 							</div>
 							<div class="radio">
-								<label><input type="radio" name="strikeBatsman" id="strikeBatsman2"  value=""></label>
+								<label><input type="radio" name="strikeBatsman" id="strikeBatsman2" value=""></label>
 							</div>
 						</div>
 

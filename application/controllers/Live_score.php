@@ -9,37 +9,38 @@ class Live_score extends CI_Controller
 		$this->load->model('live_score_model');
 	}
 
-	function index()
+	function index($match_id)
 	{
-		$match_id = $this->session->userdata('match_id');
-		$team_1 = $this->session->userdata('team1');
-		$team_2 = $this->session->userdata('team2');
-		$toss_won = $this->session->userdata('toss_won');
-		$data['team1_name'] = $this->session->userdata('team1_name');
-		$data['team2_name'] = $this->session->userdata('team2_name');
-
-		$data['team1'] = $this->live_score_model->get_players($match_id, $team_1);
-		$data['team2'] = $this->live_score_model->get_players($match_id, $team_2);
-		$data['team2_all'] = $this->live_score_model->get_players_all($team_2);
-		$data['team_playing'] = $this->live_score_model->get_playingTeam($match_id, $team_1);
-
-		$data['match'] = $this->current_match_details($match_id);
-
+		$this->session->set_userdata('match_id', $match_id);
+		$data['played_innings'] = $this->live_score_model->get_played_innings($match_id);
+		$toss = $this->get_match_toss_details(count($data['played_innings']));
+		$data['team1'] = $this->live_score_model->get_players($match_id, $toss['team1']);
+		$data['team2'] = $this->live_score_model->get_players($match_id, $toss['team2']);
+		$data['team2_all'] = $this->live_score_model->get_players_all($toss['team2']);
+		$data['team_playing'] = $this->live_score_model->get_playingTeam($match_id, $toss['team1']);
 		$data['is_innings_progressing'] = $this->live_score_model->get_innings();
+		$data['details'] = $this->live_score_model->get_match_toss_details($match_id);
+		$data['match'] = $this->current_match_details($match_id);
+		//echo '<pre>';print_r($data);exit;
+		if (count($data['played_innings']) == 2) {
+			$data['is_innings_progressing'] = 1;
+		}
+
 		$data['_view'] = 'scoreboard/livescore_view';
 		$this->load->view('layouts/main', $data);
 	}
 
 	function start_innings()
 	{
-		$inningsData = array('match_id' => $this->session->userdata('match_id'),
-			'batting_team' => $this->session->userdata('team1'),
-			'bowling_team' => $this->session->userdata('team2'),
+		$data['played_innings'] = $this->live_score_model->get_played_innings($this->session->userdata('match_id'));
+		$toss = $this->get_match_toss_details(count($data['played_innings']));
+		$inningsData = array(
+			'match_id' => $this->session->userdata('match_id'),
+			'batting_team' => $toss['team1'],
+			'bowling_team' => $toss['team2'],
 			'batsman_1' => $this->input->post('batsman1'),
 			'batsman_2' => $this->input->post('batsman2'),
 			'bowler' => $this->input->post('bowler'),
-			'inning_number' => 1,
-			'inning_name' => 'First Innings'
 		);
 
 		//Add a record in innings table
@@ -74,8 +75,8 @@ class Live_score extends CI_Controller
 		$data = $_POST;
 
 		// Forming an array
-		$ball = ['over_id' => $data['over_id'], 'ball_number' => $data['ballnumber'], 
-		'bowler' => $data['bowler'], 'batsman' => $data['onstrikeid']];
+		$ball = ['over_id' => $data['over_id'], 'ball_number' => $data['ballnumber'],
+			'bowler' => $data['bowler'], 'batsman' => $data['onstrikeid']];
 
 		$ball['runs_scored'] = $data['runs_scored'];
 
@@ -140,7 +141,6 @@ class Live_score extends CI_Controller
 		$data['team_score'] = $this->live_score_model->get_team_score($match_id);
 
 		if ($data['wicket'] == 1 || $data['runout'] == 1) {
-
 			$get_batsman_innings = $this->live_score_model->get_batsman_innings($data['inning_id'], $data['out_batsman']);
 
 			$batsman_inning_data = array('runs_scored' => $get_batsman_innings['runs'], 'total_4' => $get_batsman_innings['fours'], 'total_6' => $get_batsman_innings['sixes'],
@@ -166,6 +166,13 @@ class Live_score extends CI_Controller
 
 	function current_match_details($match_id)
 	{
+
+		$played_innings = $this->live_score_model->get_played_innings($match_id);
+		$current_innings = $this->live_score_model->get_current_innings($match_id);
+
+		if (count($played_innings) == 1 && count($current_innings) == 0) {
+			return $data['batsman_record'] = $data['team_score'] = $data['bowler_record'] = $data['current_over_records'] = $data['over'] = [];
+		}
 		//Current batsman records
 		$data['batsman_record'] = $this->live_score_model->get_batsman_record($match_id);
 
@@ -185,8 +192,8 @@ class Live_score extends CI_Controller
 		if (count($data['batsman_record']) > 0) {
 			$data['on_strike_batsman'] = $this->checkCurrentBatsman($current_batsman, $data['batsman_record']);
 		}
+
 		$data['over'] = $this->live_score_model->getLastOver($data['team_score']['inning_id']);
-		$data['totalOver'] = $this->live_score_model->getTotalOvers($data['team_score']['inning_id']);
 
 		return $data;
 	}
@@ -258,9 +265,8 @@ class Live_score extends CI_Controller
 		$over['is_completed'] = 1;
 		$this->live_score_model->updateOverDetails($over, $data['over_id']);
 
-		$data = $this->live_score_model->getBowlerOverDetails($getOverArray['bowler'], $getOverArray['inning_id']);
-		$bowler_innings = $this->live_score_model->getBowlerInnings($data, $getOverArray['inning_id'], $getOverArray['bowler']);
-		$this->live_score_model->updateBowlerInnings($bowler_innings, $getOverArray['bowler'], $getOverArray['inning_id']);
+		$this->update_bowler_innings($getOverArray['bowler'], $getOverArray['inning_id']);
+
 	}
 
 	function new_over()
@@ -325,4 +331,60 @@ class Live_score extends CI_Controller
 		return $final;
 
 	}
+
+	function get_match_toss_details($played_innings)
+	{
+
+		$match_toss_details = $this->live_score_model->get_match_toss_details($this->session->userdata('match_id'));
+
+		if ($match_toss_details['toss_option'] == 'bat') {
+			$batting_team_id = $match_toss_details['toss_won'];
+			$bowling_team_id = ($match_toss_details['teamid_1'] == $match_toss_details['toss_won']) ? $match_toss_details['teamid_2'] : $match_toss_details['teamid_1'];
+		}
+		else {
+			$batting_team_id = ($match_toss_details['teamid_1'] == $match_toss_details['toss_won']) ? $match_toss_details['teamid_2'] : $match_toss_details['teamid_1'];
+			$bowling_team_id = $match_toss_details['toss_won'];
+		}
+
+		if ($played_innings == 1) {
+			return array('team1' => $bowling_team_id, 'team2' => $batting_team_id);
+		}
+
+		return array('team1' => $batting_team_id, 'team2' => $bowling_team_id);
+	}
+
+	function innings_completed()
+	{
+		$data = $this->current_match_details($this->session->userdata('match_id'));
+		$inning_id = $data['team_score']['inning_id'];
+
+		//Update batsman innings
+		foreach ($data['batsman_record'] as $batsman) {
+			$batsman_inning_data = array('runs_scored' => $batsman['runs'], 'total_4' => $batsman['total_4'], 'total_6' => $batsman['total_6'],
+				'balls_faced' => $batsman['balls'], 'is_out' => 0);
+
+			$this->live_score_model->update_batsman_innings($inning_id, $batsman['batsman'], $batsman_inning_data);
+		}
+
+		//Update bowler innings
+		$this->update_bowler_innings($data['bowler_record']['bowler'], $inning_id);
+
+		//Update innings table
+		$innings_data = array('runs_scored' => $data['team_score']['total_team_score'], 'wickets_lost' => $data['team_score']['wickets'],
+			'overs_bowled' => $data['team_score']['overs'], 'balls_bowled_in_current_over' => $data['team_score']['balls'], 'is_completed' => 1);
+
+		$this->live_score_model->update_innings($inning_id, $innings_data);
+
+		echo json_encode(array('status' => 'success'), true);
+
+	}
+
+	function update_bowler_innings($bowler_id, $inning_id)
+	{
+		$data = $this->live_score_model->getBowlerOverDetails($bowler_id, $inning_id);
+		$bowler_innings = $this->live_score_model->getBowlerInnings($data, $inning_id, $bowler_id);
+		$this->live_score_model->updateBowlerInnings($bowler_innings, $bowler_id, $inning_id);
+	}
+
+
 }

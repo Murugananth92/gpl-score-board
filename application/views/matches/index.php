@@ -59,11 +59,11 @@
 									<?php
 									switch($m['match_status']){
 										case "Not started": ?>
-											<a href="<?php echo site_url('matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-pencil"></span> Delete</a>
-											<a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Start match</a>
+											<a href="<?php echo site_url('Matches/delete/'.$m['match_id']); ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-xs"><span class="fa fa-pencil"></span> Delete</a>
+											<a href="<?php echo site_url('Start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Start match</a>
 											<?php  break;
 										case "In Progress": ?>
-											<a href="<?php echo site_url('start_match/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Continue match</a>
+											<a href="<?php echo site_url('Live_score/index/'.$m['match_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Continue match</a>
 											<?php  break;
 									}
 									?>
