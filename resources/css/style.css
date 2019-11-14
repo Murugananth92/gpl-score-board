@@ -26,6 +26,16 @@ input[name=runs] + label {
 	background: transparent;
 	border-radius: 100px;
 	border: 1px solid #00a65a;
+	margin-bottom: 10px;
+}
+
+.this_over .box-body strong {
+    margin-right: 5px;
+    float: left;
+}
+
+p#currentOverRuns {
+    margin-bottom: 2px;
 }
 
 input[name=runs]:checked + label { 
