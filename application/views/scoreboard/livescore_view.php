@@ -235,7 +235,6 @@
 
 									<div class="col-md-12 col-xs-12">
 										<div class="box-footer">
-											<button class="btn btn-success">Retire</button>
 											<button class="btn btn-success" id="changeStrikeBatsman">Swap Batsman</button>
 										</div>
 									</div>
@@ -296,6 +295,7 @@
 								<option value="Hit Wicket">Hit Wicket</option>
 								<option value="Ball Handled">Ball Handled</option>
 								<option value="Field Obstruction">Field Obstruction</option>
+								<option value="Retired">Retired</option>
 							</select>
 						</div>
 
