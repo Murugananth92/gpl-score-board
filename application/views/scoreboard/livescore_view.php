@@ -100,6 +100,11 @@
 	</div>
 </div>
 
+<div style="display: none">
+	<a href="<?php echo site_url('Matches'); ?>" id="matchIndexUrl">TEST</a>
+	<a href="<?php echo site_url() . 'Live_score/index/' . $details['match_id'] ?>" id="currentUrl"></a>
+</div>
+
 <div class="loader"></div>
 <section class="live_match">
 	<div class="row">
@@ -123,7 +128,7 @@
 								<input type='hidden' id='overNumber' name='overNumber' value="<?php echo isset($match['team_score']['overs']) ? $match['team_score']['overs'] : 0 ?>">
 								<input type='hidden' id='on_strike_batsman' name='on_strike_batsman' value="<?php echo isset($match['on_strike_batsman']) ? $match['on_strike_batsman'] : 0; ?>">
 								<input type='hidden' id='current_over_status' name='current_over_status' value="<?php echo isset($match['over']['is_completed']) ? $match['over']['is_completed'] : 0; ?>">
-								<input type='hidden' id='total_overs' name='total_overs' value="<?php echo isset($match['details']['match_overs']) ? $match['details']['match_overs'] : 0 ?>">
+								<input type='hidden' id='total_overs' name='total_overs' value="<?php echo isset($details['match_overs']) ? $details['match_overs'] : 0 ?>">
 
 							</tr>
 							<tr>
@@ -251,14 +256,12 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span></button>
 						<h4 class="modal-title">Select Bowler</h4>
 					</div>
 					<div class="modal-body">
 						<form role="form" method="post" action='#'>
 							<label>Select Bowler</label>
-							<select class="form-control" name="new_bowler" id="newBowler">
+							<select class="form-control" name="new_bowler" id="newBowler" required>
 								<option value="empty">Select Bowler</option>
 								<?php foreach ($team2 as $team2_player) { ?>
 									<option value="<?php echo $team2_player['player_id']; ?>" data-bowler="<?php echo $team2_player['player_name']; ?>"><?php echo $team2_player['player_name']; ?>
@@ -281,13 +284,12 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Select Wicket Options</h4>
 					</div>
 					<div class="modal-body">
 						<div id="wicket-dropdown">
 							<label>Select Wicket Option</label>
-							<select class="form-control" id='wicket-type'>
+							<select class="form-control" id='wicket-type' required>
 								<option value="">--Select--</option>
 								<option value="Bowled">Bowled</option>
 								<option value="Catch Out">Catch Out</option>
@@ -355,7 +357,6 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Select Batsman On Strike</h4>
 					</div>
 					<div class="modal-body">
@@ -386,7 +387,6 @@
 						<h4 class="modal-title">Select Other Options</h4>
 					</div>
 					<div class="modal-body">
-
 						<div id="end-radio">
 							<label>Select Other Options</label>
 							<div class="radio">
@@ -404,14 +404,14 @@
 							<label>Select Team Won</label>
 							<select class="form-control" name="teamWon" id="teamWon">
 								<option value="">--Select--</option>
-									<option value="<?php echo $details['teamid_1']; ?>"><?php echo $details['team_1']; ?></option>
-									<option value="<?php echo $details['teamid_2']; ?>"><?php echo $details['team_2']; ?></option>
+								<option value="<?php echo $details['teamid_1']; ?>"><?php echo $details['team_1']; ?></option>
+								<option value="<?php echo $details['teamid_2']; ?>"><?php echo $details['team_2']; ?></option>
 							</select>
 						</div>
 
 						<div id="end-comments">
 							<label>Comments</label>
-							<textarea class="form-control" rows="4" cols="50">
+							<textarea class="form-control" rows="4" cols="50" id="matchCommentsField">
 							
 							</textarea>
 						</div>
@@ -458,6 +458,7 @@
 		</section>
 	</div>
 </section>
+
 <script src="<?php echo site_url('resources/js/live_score.js'); ?>"></script>
 <script src="<?php echo site_url('resources/js/live_score2.js'); ?>"></script>
 <style>

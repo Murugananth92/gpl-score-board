@@ -348,4 +348,10 @@ class Live_score_model extends CI_Model
 		return $this->db->get_where('innings', array('is_completed =' => 0, 'match_id' => $match_id))->result_array();
 	}
 
+	function update_match_status($match_id, $data)
+	{
+		$this->db->where('match_id', $match_id);
+		$this->db->update('matches', $data);
+	}
+
 }
