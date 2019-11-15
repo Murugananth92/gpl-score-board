@@ -1,5 +1,5 @@
-var LiveScore2 = function ()
-{
+var LiveScore2 = function () {
+
 	var batsman1;
 	var batsman2;
 	var batsman1id;
@@ -48,22 +48,21 @@ var LiveScore2 = function ()
 
 	var totalOvers;
 	var currentOverStatus;
-
 	/* END */
 
+	/* MODAL */
 	var newBowlerModal;
 	var swapBatsmanModal;
 	var WicketModal;
 	var othersModal;
+	/* END */
 
 	/*Other action fields*/
 	var teamWon;
 	var matchComments;
-
 	/* END */
 
-	function init()
-	{
+	function init() {
 		url = $('#url').val();
 		newBowlerModal = $('#selectBowlermodal');
 		WicketModal = $('#wicket-options');
@@ -72,9 +71,6 @@ var LiveScore2 = function ()
 		scoreRuns();
 		undoFunction();
 		loader = $('.loader');
-
-		// Highlight batsman 1 by default
-		// $('#batsman1_highlight').css('font-weight', 'bold');
 
 		batsmanId1Field = $('#batsman1_id');
 		batsmanId2Field = $('#batsman2_id');
@@ -122,26 +118,20 @@ var LiveScore2 = function ()
 		othersFunction();
 	}
 
-	function load()
-	{
+	function load() {
 		loader.show();
 	}
 
-	function unLoad()
-	{
+	function unLoad() {
 		loader.hide();
 	}
 
-	function scoreRuns()
-	{
-		$('.runs').click(function ()
-		{
+	function scoreRuns() {
+		$('.runs').click(function () {
 			setOutBatsman();
 
 			if ($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true) {
-
 				WicketModal.modal({backdrop: 'static', keyboard: false, show: true});
-
 			}
 			else {
 				batsman1 = $('#batsman1_name').html();
@@ -320,6 +310,7 @@ var LiveScore2 = function ()
 				perball['bowler'] = bowler;
 				perball['batsman1'] = batsman1id;
 				perball['batsman2'] = batsman2id;
+
 				// Function to insert Ball records
 				insertBallRecords(perball);
 				// Reset to default
@@ -328,8 +319,8 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function resetDefault()
-	{
+	function resetDefault() {
+
 		$('input[type="radio"]').prop('checked', false);
 		$('input[type="checkbox"]').prop('checked', false);
 		$('#wicket-type').prop('selectedIndex', 0);
@@ -339,8 +330,8 @@ var LiveScore2 = function ()
 		$('#WicketModal').modal('hide');
 	}
 
-	function highlightStrike()
-	{
+	function highlightStrike() {
+
 		$('#batsman1_strike,#batsman2_strike').removeClass('highlight');
 
 		if (onStrikeField.val() === batsmanId1Field.val() && parseInt(batsmanId1Field.val()) !== 0) {
@@ -352,10 +343,9 @@ var LiveScore2 = function ()
 		}
 	}
 
-	function insertBallRecords(perball)
-	{
+	function insertBallRecords(perball) {
+
 		try {
-			// temp value for over_id and batsman_id
 			perball['over_id'] = $('#overId	').val();
 			var ballid = $('#ballid');
 
@@ -363,12 +353,10 @@ var LiveScore2 = function ()
 				url: url + 'Live_score/insertBallRecords',
 				type: "POST",
 				data: perball,
-				beforeSend: function ()
-				{
+				beforeSend: function () {
 					load();
 				},
-				success: function (data)
-				{
+				success: function (data) {
 					unLoad();
 					var response = JSON.parse(data);
 					updateScoreData(response);
@@ -376,8 +364,7 @@ var LiveScore2 = function ()
 					verifyOverStatus();
 					highlightStrike();
 				},
-				error: function (error)
-				{
+				error: function (error) {
 					unLoad();
 					Swal.fire({
 						icon: 'error',
@@ -398,8 +385,8 @@ var LiveScore2 = function ()
 
 	}
 
-	function updateScoreData(res)
-	{
+	function updateScoreData(res) {
+
 		batsmanId1Field.val(res.batsman_record[0].batsman);
 		batsmanId2Field.val(res.batsman_record[1].batsman);
 		onStrikeField.val(res.on_strike_batsman);
@@ -437,8 +424,8 @@ var LiveScore2 = function ()
 
 	}
 
-	function updateBowlerRecords(res)
-	{
+	function updateBowlerRecords(res) {
+
 		bowlerIdField.val(res.bowler_record.bowler);
 		bowlerName.text(res.bowler_record.player_name);
 		bowledOver.text(res.bowler_record.over_number + '.' + res.bowler_record.ball_number);
@@ -446,8 +433,8 @@ var LiveScore2 = function ()
 		bowlerWickets.text(res.bowler_record.bowler_wickets == null ? 0 : res.bowler_record.bowler_wickets);
 	}
 
-	function verifyOverStatus()
-	{
+	function verifyOverStatus() {
+
 		if (parseInt(currentOverStatus.val()) === 1 && parseInt(overNumberField.val()) !== parseInt(totalOvers.val())) {
 			$('#newBowler').val();
 			newBowlerModal.modal({backdrop: 'static', keyboard: false, show: true});
@@ -463,11 +450,10 @@ var LiveScore2 = function ()
 
 			inningsCompleted();
 		}
-
 	}
 
-	function displayCurrentOverRuns(data)
-	{
+	function displayCurrentOverRuns(data) {
+
 		var overRuns = '';
 		$.each(data, function (key, value)
 		{
@@ -476,59 +462,57 @@ var LiveScore2 = function ()
 		return overRuns;
 	}
 
-	function newOver()
-	{
+	function newOver() {
+
 		newBowlerModal.modal({backdrop: 'static', keyboard: false, show: true});
 		$('#selectNewBowler').unbind('click');
 
-		$('#selectNewBowler').on('click', function ()
-		{
-			var newBowler = $('#newBowler').val();
-			return $.ajax({
-				url: url + 'Live_score/new_over',
-				type: "POST",
-				data: {'bowler': newBowler, 'inning_id': inningIdField.val()},
-				beforeSend: function ()
-				{
-					load();
-				},
-				success: function (data)
-				{
-					unLoad();
-					newBowlerModal.modal('hide');
-					ballNumberField.val(0);
-					var response = JSON.parse(data);
-					overIdField.val(response.over_id);
-					updateBowlerRecords(response);
-				}
-			});
+		$('#selectNewBowler').on('click', function () {
+
+			if(validateRequiredFields(['newBowler'],'selectBowlermodal')) {
+				var newBowler = $('#newBowler').val();
+				return $.ajax({
+					url: url + 'Live_score/new_over',
+					type: "POST",
+					data: {'bowler': newBowler, 'inning_id': inningIdField.val()},
+					beforeSend: function () {
+						load();
+					},
+					success: function (data) {
+						unLoad();
+						newBowlerModal.modal('hide');
+						ballNumberField.val(0);
+						var response = JSON.parse(data);
+						overIdField.val(response.over_id);
+						updateBowlerRecords(response);
+					}
+				});
+			}
 		});
 	}
 
-	function undoFunction()
-	{
-		$('#undoRecord').on('click', function (e)
-		{
+	function undoFunction() {
+		$('#undoRecord').on('click', function (e) {
 			e.preventDefault();
-			var ballid = $('#ballid').val();
-			$.ajax({
-				url: url + 'Live_score/undoBall',
-				type: "POST",
-				data: {ballid: ballid},
-				success: function (data)
-				{
-					var response = JSON.parse(data);
-					updateScoreData(response);
-				}
-			});
-
+			if(confirm('Are you sure?')) {
+				var ballid = $('#ballid').val();
+				$.ajax({
+					url: url + 'Live_score/undoBall',
+					type: "POST",
+					data: {ballid: ballid},
+					success: function (data)
+					{
+						var response = JSON.parse(data);
+						updateScoreData(response);
+					}
+				});
+			}
 		});
 	}
 
-	function swapBatsman()
-	{
-		$('#changeStrikeBatsman').on('click', function (e)
-		{
+	function swapBatsman() {
+
+		$('#changeStrikeBatsman').on('click', function (e) {
 			e.preventDefault();
 			$('#strikeBatsman1').val(batsmanId1Field.val());
 			$('#strikeBatsman2').val(batsmanId2Field.val());
@@ -536,6 +520,7 @@ var LiveScore2 = function ()
 			$('#strikeBatsman1').next().text(batsman1NameField.text());
 			$('#strikeBatsman2').next().text(batsman2NameField.text());
 
+			$('#strikeBatsman1').prop('checked',true);
 			swapBatsmanModal.modal({backdrop: 'static', keyboard: false, show: true});
 
 			$('#changeStrike').on('click', function ()
@@ -548,73 +533,79 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function othersFunction()
-	{
-		$('#othersOption').on('click', function (e)
-		{
+	function othersFunction() {
+		$('#othersOption').on('click', function (e) {
 			e.preventDefault();
 			teamWon.hide();
 			matchComments.hide();
-
+			$('input[name=endoptions]').prop('checked',false);
 			othersModal.modal({backdrop: 'static', keyboard: false, show: true});
 
-			$('input[type=radio][name=endoptions]').change(function ()
-			{
+			$('input[type=radio][name=endoptions]').change(function () {
 				if ($('input[name=endoptions]:checked').val() == 'endmatch') {
 					teamWon.show();
 					matchComments.show();
-					$('#out-submit').click(function ()
-					{
-						matchCompleted();
+					$('#out-submit').click(function () {
+						if(validateRequiredFields(['teamWon', 'matchCommentsField'],'othersModal')){
+							matchCompleted();
+						}
 					});
 				}
 				if ($('input[name=endoptions]:checked').val() == 'reschedulematch') {
 					teamWon.hide();
 					matchComments.show();
-					$('#out-submit').click(function ()
-					{
-						reScheduleMatch();
+					$('#out-submit').click(function () {
+						if(validateRequiredFields(['matchCommentsField'],'othersModal')) {
+							reScheduleMatch();
+						}
 					});
 				}
 				if ($('input[name=endoptions]:checked').val() == 'endinnings') {
 					teamWon.hide();
 					matchComments.hide();
-					$('#out-submit').click(function ()
-					{
-						inningsCompleted();
+					$('#out-submit').click(function () {
+						if(validateRequiredFields([],'othersModal')) {
+							inningsCompleted();
+						}
 					});
 				}
 			});
 		});
 	}
 
-	function setOutBatsman()
-	{
+	function setOutBatsman() {
 		$('#batsman1-out').val(batsmanId1Field.val());
 		$('#batsman2-out').val(batsmanId2Field.val());
 
 		$('#batsman1-out').next().text(batsman1NameField.text());
 		$('#batsman2-out').next().text(batsman2NameField.text());
+
+		$('#batsman1-out').prop('checked',true);
 	}
 
-	function checkWicket()
-	{
+	function checkWicket() {
 
 		var selectedWicket;
-
-		$('#wicket-options').on('hidden.bs.modal', function ()
-		{
-			$("input[name='runs']:checked").trigger('click');
+		$("#wicketConfirm").click(function(){
+			selectedWicket = $('#wicket-type').val();
+			let requiredFields = ['wicket-type','newBatsman'];
+			if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
+				requiredFields.push('wicketInvolved');
+			} else if (selectedWicket == 'Run Out') {
+				requiredFields.push('wicketInvolved');
+				requiredFields.push('wicketInvolved2');
+			}
+			if(validateRequiredFields(requiredFields,'wicket-options')){
+				$("input[name='runs']:checked").trigger('click');
+			}
 		});
 
 		// By Default
-
 		$('#wicket-involved').hide();
 		$('#wicket-involved2').hide();
 
-		$('#wicket-dropdown').change(function ()
-		{
-			var selectedWicket = $('#wicket-dropdown option:selected').val();
+		$('#wicket-dropdown').change(function () {
+			selectedWicket = $('#wicket-type').val();
 			if (selectedWicket == 'Catch Out' || selectedWicket == 'Stumped') {
 				$('#wicket-involved').show();
 				$('#wicket-involved2').hide();
@@ -630,8 +621,7 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function checkStrikeBatsman()
-	{
+	function checkStrikeBatsman() {
 		if (onstrikeid !== batsman1id && onstrikeid !== batsman2id) {
 			Swal.fire({
 				icon: 'error',
@@ -644,19 +634,17 @@ var LiveScore2 = function ()
 		return true;
 	}
 
-	function reScheduleMatch()
-	{
+	function reScheduleMatch() {
 		$.ajax({
 			url: url + 'Live_score/match_reschedule',
 			type: "POST",
 			data: {'comments': $('#matchCommentsField').val()},
-			beforeSend: function ()
-			{
+			beforeSend: function () {
 				load();
 			},
-			success: function (data)
-			{
+			success: function (data) {
 				unLoad();
+				console.log(data);
 				var response = JSON.parse(data);
 				if (response.status === 'success') {
 					$('#matchIndexUrl').get(0).click();
@@ -665,18 +653,15 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function matchCompleted()
-	{
+	function matchCompleted() {
 		$.ajax({
 			url: url + 'Live_score/match_completed',
 			type: "POST",
 			data: {'comments': $('#matchCommentsField').val(), 'teamWon': $('#teamWon').val()},
-			beforeSend: function ()
-			{
+			beforeSend: function () {
 				load();
 			},
-			success: function (data)
-			{
+			success: function (data) {
 				unLoad();
 				var response = JSON.parse(data);
 				if (response.status === 'success') {
@@ -686,18 +671,15 @@ var LiveScore2 = function ()
 		});
 	}
 
-	function inningsCompleted()
-	{
+	function inningsCompleted() {
 		$.ajax({
 			url: url + 'Live_score/innings_completed',
 			type: "POST",
 			data: {},
-			beforeSend: function ()
-			{
+			beforeSend: function () {
 				load();
 			},
-			success: function (data)
-			{
+			success: function (data) {
 				unLoad();
 				var response = JSON.parse(data);
 				if (response.status === 'success') {
@@ -705,6 +687,26 @@ var LiveScore2 = function ()
 				}
 			}
 		});
+	}
+
+	function validateRequiredFields(fields,modal = '') {
+		let validation = true;
+		if(fields.length) {
+			$.each(fields, function( index, value ) {
+				let field_id = $("#"+value);
+				val = $.trim(field_id.val());
+				if(val === '') {
+					validation = false;
+					field_id.addClass('has-error');
+				} else {
+					field_id.removeClass('has-error');
+				}
+			  });
+		}
+		if(modal !== '' && validation) {
+			$('#'+modal).modal('hide');
+		}
+		return validation;
 	}
 
 	return {

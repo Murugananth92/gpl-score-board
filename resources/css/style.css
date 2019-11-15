@@ -143,3 +143,7 @@ input[name=runs]:hover + label {
 .swal2-popup {
 	font-size: 1.6rem !important;
 }
+
+.has-error {
+	border: 1px solid red;
+}

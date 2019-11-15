@@ -1,5 +1,5 @@
-var LiveScore = function ()
-{
+var LiveScore = function () {
+	
 	var url;
 	var liveScoreModal;
 	var isInningsProgressing;
@@ -19,8 +19,8 @@ var LiveScore = function ()
 	var batsman2id;
 	var loader;
 
-	function init()
-	{
+	function init() {
+		
 		url = $('#url').val();
 		liveScoreModal = $('#modal-selectplayer');
 		inningId = $('#inningId');
@@ -38,46 +38,62 @@ var LiveScore = function ()
 		selectPlayers();
 	}
 
-	function selectPlayers()
-	{
-		$('#startMatch').on('click', function ()
-		{
-			batsman1 = $('#batsman1').val();
-			batsman2 = $('#batsman2').val();
-			bowler = $('#bowler').val();
-			bowlerid = $('#bowler_id');
-			batsman1id = $('#batsman1_id');
-			batsman2id = $('#batsman2_id');
+	function validateRequiredFields(fields,modal = '') {
+		let validation = true;
+		if(fields.length) {
+			$.each(fields, function( index, value ) {
+				let field_id = $("#"+value);
+				val = $.trim(field_id.val());
+				if(val === '') {
+					validation = false;
+					field_id.addClass('has-error');
+				} else {
+					field_id.removeClass('has-error');
+				}
+			  });
+		}
+		if(modal !== '' && validation) {
+			$('#'+modal).modal('hide');
+		}
+		return validation;
+	}
 
-			batsmanName1 = $('#batsman1 option:selected').attr('data-batsman1');
-			batsmanName2 = $('#batsman2 option:selected').attr('data-batsman2');
-			bowlerName = $('#bowler option:selected').attr('data-bowler');
-			setInnings(batsman1, batsman2, bowler);
+	function selectPlayers() {
+		$('#startMatch').on('click', function () {
+			
+			if(validateRequiredFields(['batsman1','batsman2','bowler'],'modal-selectplayer')) {
+				batsman1 = $('#batsman1').val();
+				batsman2 = $('#batsman2').val();
+				bowler = $('#bowler').val();
+				bowlerid = $('#bowler_id');
+				batsman1id = $('#batsman1_id');
+				batsman2id = $('#batsman2_id');
+	
+				batsmanName1 = $('#batsman1 option:selected').attr('data-batsman1');
+				batsmanName2 = $('#batsman2 option:selected').attr('data-batsman2');
+				bowlerName = $('#bowler option:selected').attr('data-bowler');
+				setInnings(batsman1, batsman2, bowler);
+			}
 		});
 	}
 
-	function load()
-	{
+	function load() {
 		loader.show();
 	}
 
-	function unLoad()
-	{
+	function unLoad() {
 		loader.hide();
 	}
 
-	function setInnings(batsman1, batsman2, bowler)
-	{
+	function setInnings(batsman1, batsman2, bowler) {
 		return $.ajax({
 			url: url + 'Live_score/start_innings',
 			type: "POST",
 			data: {batsman1: batsman1, batsman2: batsman2, bowler: bowler},
-			beforeSend: function ()
-			{
+			beforeSend: function () {
 				load();
 			},
-			success: function (data)
-			{
+			success: function (data) {
 				unLoad();
 				var response = JSON.parse(data);
 				liveScoreModal.modal('hide');
@@ -103,18 +119,16 @@ var LiveScore = function ()
 
 }();
 
-$(document).ready(function ()
-{
-	$('#batsman1').on('change', function ()
-	{
+// Select Batsman Disable Function
+$(document).ready(function () {
+	$('#batsman1').on('change', function () {
 		var batsman1 = $(this).val();
 		$("#batsman2 option").attr('disabled', 'disabled')
 			.siblings().removeAttr('disabled');
 		$("#batsman2 option[value='" + batsman1 + "']").attr('disabled', true);
 	});
 
-	$('#batsman2').on('change', function ()
-	{
+	$('#batsman2').on('change', function () {
 		var batsman2 = $(this).val();
 		$("#batsman1 option").attr('disabled', 'disabled')
 			.siblings().removeAttr('disabled');
