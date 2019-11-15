@@ -13,6 +13,10 @@
 <body>
 <div class="logo"><img src="<?php echo site_url('resources/img/gpl-logo.png'); ?>" alt="GPL"></div>
 <div class="container">
+
+
+
+	<?php if($match && !empty($batsman_record)){ ?>
 	<div class="row mt25">
 		<div class="col-md-12">
 			<div class="panel panel-default">
@@ -48,8 +52,8 @@
 						</tr>
 						</tr>
 						<?php foreach($batsman_record as $record){ ?>
-							<tr>
-								<td><span class="<?php echo ($record['batsman'] === $on_strike_batsman)?"on-strike-batsman":""; ?>"><?php echo $record['player_name']; ?></td>
+							<tr class="<?php echo ($record['batsman'] === $on_strike_batsman)?"on-strike-batsman":""; ?>">
+								<td><span ><?php echo $record['player_name']; ?></td>
 								<td><?php echo ($record['runs'])?$record['runs']:'0'; ?></td>
 								<td><?php echo ($record['balls'])?$record['balls']:'0'; ?></td>
 								<td><?php echo ($record['total_4'])?$record['total_4']:'0'; ?></td>
@@ -88,9 +92,19 @@
 			}?>
 		</div>
 	</div>
+	<?php } else { ?>
+		<h1 class="text-center">Match Not Started Yet</h1>
+	<?php } ?>
 </div>
 
 <script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
 <script src="<?php echo site_url('resources/js/bootstrap.min.js');?>"></script>
+<script>
+	$('document').ready(function () {
+		$('.refresh-btn').click(function () {
+			location.reload();
+		});
+	});
+</script>
 </body>
 </html>
