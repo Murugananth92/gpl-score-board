@@ -1,0 +1,78 @@
+body {
+    background:url(../img/bg.jpg) no-repeat top center;
+    background-size: cover;
+}
+.on-strike-batsman {
+    font-weight: bolder;
+    color: #00ff00;
+}
+.logo {
+    display:table;
+    width: 100%;
+    padding: 10px 0px;
+    text-align: center;
+}
+.panel-default>.panel-heading {
+    color: #ffffff;
+    background-color: #de3466;
+    border-color: #de3466;
+}
+.panel-default {
+    border-color: #de3466;
+}
+.panel-body {
+    padding: 15px 0px;
+}
+.on-strike-batsman {
+    font-weight: bolder;
+    color: #00b6ed;
+}
+.team-score {
+    color: #de3466;
+    font-size:30px;
+}
+.ball-by-ball {
+    line-height: 50px;
+    background-color: #00b6ed;
+    display: table;
+    width: 100%;
+    -webkit-border-radius:6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin: 0px 0px 80px 0px;
+    color: #ffffff;
+}
+.ball-by-ball span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius:50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    background: #f7e936;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    color: #000000;
+}
+.refresh-btn {
+    background: transparent;
+    border: 0px;
+    float: right;
+    font-size: 20px;
+    line-height: 20px;
+    color: #ffffff;
+}
+.refresh-btn:hover {
+    color: #f7e936;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    vertical-align: center;
+}
+.first-innings {
+    margin:0px 20px;
+    display: inline-block;
+    font-weight: bold;
+    color: #f7e936;
+
+}
