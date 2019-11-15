@@ -12,6 +12,7 @@ class Livescore_display extends CI_Controller
 	function index()
 	{
 		$data = $this->getScoreData();
+		$data['match'] = !empty($data)?true:false;
 		//echo "<pre>"; print_r($data); echo "</pre>";
 		$this->load->view('livescore_display', $data);
 	}
