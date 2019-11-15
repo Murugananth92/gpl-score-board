@@ -2,16 +2,12 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span></button>
 				<h4 class="modal-title">Select Batsmen & Bowler</h4>
 			</div>
 			<div class="modal-body">
-				<form role="form" method="post" action='#'>
-
 					<label>Select Striker</label>
 					<select class="form-control" name="batsman1" id="batsman1">
-						<option value="empty">Select Striker</option>
+						<option value="">Select Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
 							<option value="<?php echo $team1_player['player_id']; ?>" data-batsman1="<?php echo $team1_player['player_name']; ?>"><?php echo $team1_player['player_name']; ?>
 								- <?php echo $team1_player['employee_id']; ?></option>
@@ -19,7 +15,7 @@
 					</select>
 					<label>Select Non Striker</label>
 					<select class="form-control" name="batsman2" id="batsman2">
-						<option value="empty">Select Non Striker</option>
+						<option value="">Select Non Striker</option>
 						<?php foreach ($team1 as $team1_player) { ?>
 							<option value="<?php echo $team1_player['player_id']; ?>" data-batsman2="<?php echo $team1_player['player_name']; ?>"><?php echo $team1_player['player_name']; ?>
 								- <?php echo $team1_player['employee_id']; ?></option>
@@ -27,7 +23,7 @@
 					</select>
 					<label>Select Bowler</label>
 					<select class="form-control" name="bowler" id="bowler">
-						<option value="empty">Select Bowler</option>
+						<option value="">Select Bowler</option>
 						<?php foreach ($team2 as $team2_player) { ?>
 							<option value="<?php echo $team2_player['player_id']; ?>" data-bowler="<?php echo $team2_player['player_name']; ?>"><?php echo $team2_player['player_name']; ?>
 								- <?php echo $team2_player['employee_id']; ?></option>
@@ -39,7 +35,6 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" id="startMatch">Start</button>
 			</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -48,15 +43,12 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span></button>
 				<h4 class="modal-title">Select Bowler</h4>
 			</div>
 			<div class="modal-body">
-				<form role="form" method="post" action='#'>
 					<label>Select Bowler</label>
 					<select class="form-control" name="new_bowler" id="newBowler">
-						<option value="empty">Select Bowler</option>
+						<option value="">Select Bowler</option>
 						<?php foreach ($team2 as $team2_player) { ?>
 							<option value="<?php echo $team2_player['player_id']; ?>" data-bowler="<?php echo $team2_player['player_name']; ?>"><?php echo $team2_player['player_name']; ?>
 								- <?php echo $team2_player['employee_id']; ?></option>
@@ -68,7 +60,6 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" id="selectNewBowler">Start</button>
 			</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -85,7 +76,7 @@
 				<div id="strike-batsman">
 					<label>Select Strike Batsman</label>
 					<div class="radio">
-						<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value=""><span></span></label>
+						<label><input type="radio" name="strikeBatsman" id="strikeBatsman1" value="" checked><span></span></label>
 					</div>
 					<div class="radio">
 						<label><input type="radio" name="strikeBatsman" id="strikeBatsman2" value=""><span></span></label>
@@ -327,7 +318,7 @@
 						<div id="out-batsman">
 							<label>Select Out Batsman</label>
 							<div class="radio">
-								<label><input type="radio" name="outBatsman" id="batsman1-out" value=""><span></span></label>
+								<label><input type="radio" name="outBatsman" id="batsman1-out" value="" checked><span></span></label>
 							</div>
 							<div class="radio">
 								<label><input type="radio" name="outBatsman" id="batsman2-out" value=""><span></span></label>
@@ -347,7 +338,7 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Proceed</button>
+						<button type="button" class="btn btn-default" id="wicketConfirm">Proceed</button>
 					</div>
 				</div>
 			</div>
@@ -418,7 +409,7 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="out-submit" class="btn btn-default" data-dismiss="modal">Confirm</button>
+						<button type="button" id="out-submit" class="btn btn-default" >Confirm</button>
 					</div>
 				</div>
 			</div>
@@ -473,21 +464,21 @@
 		LiveScore.init();
 		LiveScore2.init();
 
-		$('#batsman1').on('change', function ()
-		{
-			var batsman1 = $(this).val();
-			$("#batsman2 option").attr('disabled', 'disabled')
-				.siblings().removeAttr('disabled');
-			$("#batsman2 option[value='" + batsman1 + "']").attr('disabled', true);
-		});
+		// $('#batsman1').on('change', function ()
+		// {
+		// 	var batsman1 = $(this).val();
+		// 	$("#batsman2 option").attr('disabled', 'disabled')
+		// 		.siblings().removeAttr('disabled');
+		// 	$("#batsman2 option[value='" + batsman1 + "']").attr('disabled', true);
+		// });
 
-		$('#batsman2').on('change', function ()
-		{
-			var batsman2 = $(this).val();
-			$("#batsman1 option").attr('disabled', 'disabled')
-				.siblings().removeAttr('disabled');
-			$("#batsman1 option[value='" + batsman2 + "']").attr('disabled', true);
-		});
+		// $('#batsman2').on('change', function ()
+		// {
+		// 	var batsman2 = $(this).val();
+		// 	$("#batsman1 option").attr('disabled', 'disabled')
+		// 		.siblings().removeAttr('disabled');
+		// 	$("#batsman1 option[value='" + batsman2 + "']").attr('disabled', true);
+		// });
 
 		var res = {
 			loader: $('<div />', {class: 'loading-bar'}),

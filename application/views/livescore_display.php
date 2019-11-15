@@ -27,24 +27,24 @@
 					<span class="first-innings"><?php if(!empty($played_innings)){
 							echo $played_innings['0']['team_name']. " : ".$played_innings['0']['runs_scored']." / ".$played_innings['0']['wickets_lost'];
 						}?></span>
-					<button class="refresh-btn"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+					<button class="refresh-btn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M9 13.5c-2.49 0-4.5-2.01-4.5-4.5S6.51 4.5 9 4.5c1.24 0 2.36.52 3.17 1.33L10 8h5V3l-1.76 1.76C12.15 3.68 10.66 3 9 3 5.69 3 3.01 5.69 3.01 9S5.69 15 9 15c2.97 0 5.43-2.16 5.9-5h-1.52c-.46 2-2.24 3.5-4.38 3.5z"/></svg>
+					</button>
 				</div>
 
 				<div class="panel-body">
+				<div class="score-card">
+						<div class="team-score"><?php echo $playing_team['batting_team']['team_name']; ?> : <?php echo $team_score['total_team_score']; ?> / <?php echo $team_score['wickets']; ?></div>
+						<div class="team-overs">Overs : <?php echo $team_score["overs"];?>.<?php echo $team_score["balls"];?></div>
+					</div>
 					<table class="table table-striped borderless">
-						<tbody><tr>
-							<th class="col-sm-4 team-score"><?php echo $playing_team['batting_team']['team_name']; ?> : <?php echo $team_score['total_team_score']; ?> / <?php echo $team_score['wickets']; ?></th>
-							<th class="col-sm-2"></th>
-							<th class="col-sm-2"></th>
-							<th class="col-sm-2">Overs : <?php echo $team_score["overs"];?> . <?php echo $team_score["balls"];?></th>
-							<th class="col-sm-2"></th>
-						</tr>
+						<tbody>
 						<tr>
-							<th>Batsman</th>
-							<th>Runs</th>
-							<th>Balls</th>
-							<th>4s</th>
-							<th>6s</th>
+							<th width="40%">Batsman</th>
+							<th width="15%">Runs</th>
+							<th width="15%">Balls</th>
+							<th width="15%">4s</th>
+							<th width="15%">6s</th>
 						</tr>
 						</tr>
 						<?php foreach($batsman_record as $record){ ?>

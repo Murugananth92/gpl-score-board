@@ -223,10 +223,12 @@ class Live_score extends CI_Controller
 		}
 
 		// Remove all files except recently created
+
 		$files = scandir('./live_score', SCANDIR_SORT_DESCENDING);
 
 		for ($i = 0; $i < count($files); $i++) {
 			if ($i > 4 && strpos($files[$i], 'json') !== false) {
+				
 				unlink('./live_score/' . $files[$i]);
 			}
 		}
@@ -350,8 +352,11 @@ class Live_score extends CI_Controller
 				case ($d['is_wide'] == 1 && $d['is_byes'] == 0):
 					$final[$i]['runs'] = 'Wd ';
 					break;
-				case ($d['is_noball'] == 1 && $d['is_byes'] == 1):
+				case ($d['is_noball'] == 1 && ($d['is_byes'] == 1 || $d['runs_scored'] != 0)):
 					$final[$i]['runs'] = 'Nb +' . $d['runs_scored'];
+					break;
+				case ($d['is_noball'] == 1):
+					$final[$i]['runs'] = 'Nb ';
 					break;
 				case ($d['is_byes'] == 1):
 					$final[$i]['runs'] = 'B +' . $d['runs_scored'];
@@ -442,7 +447,7 @@ class Live_score extends CI_Controller
 	function match_reschedule()
 	{
 		//Close innings
-		$this->innings_completed();
+		$this->innings_completed(false);
 		//close match
 		$match_data = array('comments' => $this->input->post('comments'), 'is_rescheduled' => 1);
 		$this->live_score_model->update_match_status($this->session->userdata('match_id'), $match_data);
