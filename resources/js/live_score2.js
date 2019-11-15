@@ -135,9 +135,10 @@ var LiveScore2 = function ()
 	{
 		$('.runs').click(function ()
 		{
-			setOutBatsman();
+			
 
 			if ($("#wicket-type").val() == '' && $("#wicket").prop("checked") == true) {
+				setOutBatsman();
 				WicketModal.modal({backdrop: 'static', keyboard: false, show: true});
 			}
 			else {
