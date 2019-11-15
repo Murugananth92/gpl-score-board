@@ -1,58 +1,96 @@
-<div class="row">
-    <div class="col-md-12">
-      	<div class="box box-info">
-            <div class="box-header with-border">
-              	<h3 class="box-title">Live score</h3>
-            </div>
-            <?php echo form_open('player/add'); ?>
-          	<div class="box-body">
-              <div class="row clearfix">
-					<div class="col-md-6">
-						<label for="teams" class="control-label"><span class="text-danger"></span>teams</label>
-						<div class="form-group">
-							<input type="text" name="teams" value="" class="form-control" id="teams" />
-						</div>
-					</div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="refresh" content="5">
+	<title>GPL - Livew Score</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="<?php echo site_url('resources/css/bootstrap.min.css');?>">
+	<link rel="stylesheet" href="<?php echo site_url('resources/css/font-awesome.min.css');?>">
+	<link rel="stylesheet" href="<?php echo site_url('resources/css/live-score.css');?>">
+</head>
+<body>
+<div class="logo"><img src="<?php echo site_url('resources/img/gpl-logo.png'); ?>" alt="GPL"></div>
+<div class="container">
+	<div class="row mt25">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+                <span class="panel-title" id="team1">
+                <?php echo $details['team_1'];?>
+				</span>
+					Vs
+					<span class="panel-title" id="team2">
+                <?php echo $details['team_2'];?>
+					</span>
+					<span class="first-innings"><?php if(!empty($played_innings)){
+							echo $played_innings['0']['team_name']. " : ".$played_innings['0']['runs_scored']." / ".$played_innings['0']['wickets_lost'];
+						}?></span>
+					<button class="refresh-btn"><i class="fa fa-refresh" aria-hidden="true"></i></button>
 				</div>
-          		<div class="row clearfix">
-					<div class="col-md-6">
-						<label for="live_score" class="control-label"><span class="text-danger"></span>Live score</label>
-						<div class="form-group">
-							<input type="text" name="live_score" value="" class="form-control" id="live_score" />
-						</div>
-					</div>
+
+				<div class="panel-body">
+					<table class="table table-striped borderless">
+						<tbody><tr>
+							<th class="col-sm-4 team-score"><?php echo $playing_team['batting_team']['team_name']; ?> : <?php echo $team_score['total_team_score']; ?> / <?php echo $team_score['wickets']; ?></th>
+							<th class="col-sm-2"></th>
+							<th class="col-sm-2"></th>
+							<th class="col-sm-2">Overs : <?php echo $team_score["overs"];?> . <?php echo $team_score["balls"];?></th>
+							<th class="col-sm-2"></th>
+						</tr>
+						<tr>
+							<th>Batsman</th>
+							<th>Runs</th>
+							<th>Balls</th>
+							<th>4s</th>
+							<th>6s</th>
+						</tr>
+						</tr>
+						<?php foreach($batsman_record as $record){ ?>
+							<tr>
+								<td><span class="<?php echo ($record['batsman'] === $on_strike_batsman)?"on-strike-batsman":""; ?>"><?php echo $record['player_name']; ?></td>
+								<td><?php echo ($record['runs'])?$record['runs']:'0'; ?></td>
+								<td><?php echo ($record['balls'])?$record['balls']:'0'; ?></td>
+								<td><?php echo ($record['total_4'])?$record['total_4']:'0'; ?></td>
+								<td><?php echo ($record['total_6'])?$record['total_6']:'0'; ?></td>
+							</tr>
+						<?php  }?>
+						<tr>
+						<tr>
+							<th>Bowler</th>
+							<th>Over</th>
+							<th>Runs</th>
+							<th>Wickets</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td><?php echo $bowler_record['player_name'];?></td>
+							<td><?php echo $bowler_record['over_number'].'.'.$bowler_record['ball_number']; ?></td>
+							<td><?php echo $bowler_record['bowler_runs_gave']; ?></td>
+							<td><?php echo $bowler_record['bowler_wickets']; ?></td>
+							<td></td>
+						</tr>
+						</tbody>
+					</table>
+
 				</div>
 			</div>
-            <?php echo form_close(); ?>
-      	</div>
-    </div>
+		</div>
+	</div>
+	<div class="mt25 ball-by-ball">
+		<div class="col-md-2">Current over records : </div>
+		<div class="col-md-10">
+			<?php if(!empty($current_over_records)){
+				foreach ($current_over_records as $record){ ?>
+					<span><?php echo $record['runs']?></span>
+				<?php }
+			}?>
+		</div>
+	</div>
 </div>
 
-
-<script>
-    $(document).ready(function ()
-		{
-            alert('hii1');
-                function getScore(){
-                    $.ajax({
-                    // alert('hii');
-                    url: "<?php echo site_url('Livescore_display/match_detail'); ?>",
-                    type: "POST",
-                    data: {},
-                    success: function (response)
-                        {
-                            var response = JSON.parse(response);
-                            // getPlayers(response);
-                            // var matchID = response.match_id;
-                            var team_name = response.team1_name+' vs '+response.team2_name;
-                            // console.log(response)
-                            // console.log('matchID', matchID)
-                            $('#live_score').val(response.runs);
-                            $('#teams').val(team_name);
-                            setTimeout(function(){ getScore(); }, 5000);
-                        }
-                    });
-                }
-                getScore();
-		});
-</script>
+<script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+<script src="<?php echo site_url('resources/js/bootstrap.min.js');?>"></script>
+</body>
+</html>

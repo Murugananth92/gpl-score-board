@@ -21,12 +21,12 @@ class Live_score extends CI_Controller
 		$data['is_innings_progressing'] = $this->live_score_model->get_innings();
 		$data['details'] = $this->live_score_model->get_match_toss_details($match_id);
 		$data['match'] = $this->current_match_details($match_id);
-		// echo '<pre>';print_r($data);exit;
+
 		if (count($data['played_innings']) == 2) {
 			$data['is_innings_progressing'] = 1;
 		}
 
-		$this->session->set_userdata('team_playing', $data['team_playing']);
+		$this->session->set_userdata('batting_team', $data['team_playing']);
 		$data['_view'] = 'scoreboard/livescore_view';
 		$this->load->view('layouts/main', $data);
 	}
@@ -217,7 +217,7 @@ class Live_score extends CI_Controller
 
 		$data['played_innings'] = $this->live_score_model->get_played_innings($this->session->userdata('match_id'));
 		$data['playing_team'] = array('batting_team' => $this->session->userdata('batting_team'));
-		//echo '<pre>';print_r($data['playing_team']);exit;
+
 		if (!is_dir('live_score')) {
 			mkdir('live_score', 0777, true);
 		}
