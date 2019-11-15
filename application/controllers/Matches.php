@@ -6,7 +6,8 @@ class Matches extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Matches_model');
-        $this->user_data = $this->session->userdata; 
+        $this->user_data = $this->session->userdata;
+		verify_session();
     } 
 
     /*

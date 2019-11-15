@@ -5,6 +5,7 @@ class Team extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Team_model');
+		verify_session();
     } 
 
     /*
