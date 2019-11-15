@@ -5,6 +5,7 @@ class User extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('User_model');
+		verify_session();
     } 
 
     /*

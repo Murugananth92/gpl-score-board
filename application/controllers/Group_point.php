@@ -5,6 +5,7 @@ class Group_point extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Group_point_model');
+		verify_session();
     } 
 
     /*

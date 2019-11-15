@@ -5,6 +5,7 @@ class Tournament_team extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Tournament_team_model');
+		verify_session();
     } 
 
     /*

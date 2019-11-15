@@ -192,10 +192,52 @@ class Live_score_model extends CI_Model
 
 	function delete_ball_record($ball)
 	{
+
+		//Get over records
+		$sql = " SELECT * FROM `ball_records` WHERE `ball_id` = '" . $ball . "' ";
+		$over = $this->db->query($sql)->row_array();
+		$over_data = $this->db->get_where('over_records', array('over_id' => $over['over_id']))->row_array();
+
+		if ($over_data['is_completed'] == 1) {
+			//Delete new over records
+			$over_sql = " SELECT * FROM `over_records` WHERE `inning_id` = '" . $over_data['inning_id'] . "' order by `over_id` desc limit 1";
+			$last_over = $this->db->query($over_sql)->row_array();
+
+			$this->db->where('over_id', $last_over['over_id']);
+			$this->db->delete('over_records');
+
+			$over_data = array("is_completed" => 0);
+			$this->db->where('over_id', $over['over_id']);
+			$this->db->update('over_records', $over_data);
+		}
+
+
 		$this->db->where('ball_id', $ball);
 		$this->db->delete('ball_records');
 		$this->db->where('ball_id', $ball);
 		$this->db->delete('batsman_ball_records');
+
+		//Functionality for wickets
+		$wickets_data = $this->db->get_where('fall_of_wickets', array('ball_id' => $ball))->row_array();
+		if (!empty($wickets_data)) {
+			$batsman_inning_data = array("is_out" => 0, 'is_retired' => 0, 'wicket_type' => null, 'wicket_assist1' => 0, 'wicket_assist2' => 0, 'bowler' => 0);
+
+			$this->db->where('batsman', $wickets_data['batsman']);
+			$this->db->where('inning_id', $wickets_data['inning_id']);
+			$this->db->update('batsman_innings', $batsman_inning_data);
+
+			//Get last insert batsman data
+			$sql1 = " SELECT * FROM `batsman_innings` WHERE `inning_id` = '" . $wickets_data['inning_id'] . "' order by `batsman_inning_id` desc limit 1";
+			$last_batsman = $this->db->query($sql1)->row_array();
+
+			//Delete new batsman record
+			$this->db->where('batsman_inning_id', $last_batsman['batsman']);
+			$this->db->delete('batsman_innings');
+
+			$this->db->where('ball_id', $ball);
+			$this->db->delete('batsman_ball_records');
+		}
+
 	}
 
 	function insert_batsman_ball_records($bat_ball)

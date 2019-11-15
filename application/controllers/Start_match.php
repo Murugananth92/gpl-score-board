@@ -7,6 +7,7 @@ class Start_match extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Start_match_model');
+		verify_session();
 	}
 
 	function index($match_id)

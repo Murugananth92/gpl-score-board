@@ -5,6 +5,7 @@ class Group extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Group_model');
+		verify_session();
     } 
 
     /*
