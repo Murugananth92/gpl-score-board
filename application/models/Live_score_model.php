@@ -129,6 +129,7 @@ class Live_score_model extends CI_Model
 		foreach ($data as $d) {
 			$runs += $d['runs_scored'] + $d['is_wide'] + $d['is_noball'];
 			$wickets += $d['is_wicket'];
+			$wickets += $d['is_runout'];
 		}
 
 		$last_array = end($data);

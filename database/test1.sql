@@ -18,9 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `test1`
---
+
 
 -- --------------------------------------------------------
 
@@ -40,8 +38,8 @@ CREATE TABLE `ball_records` (
   `is_byes` tinyint(4) NOT NULL DEFAULT 0,
   `is_wicket` tinyint(4) NOT NULL DEFAULT 0,
   `is_runout` tinyint(4) NOT NULL DEFAULT 0,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -61,7 +59,7 @@ CREATE TABLE `batsman_ball_records` (
   `is_4` tinyint(4) NOT NULL DEFAULT 0,
   `is_6` tinyint(4) NOT NULL DEFAULT 0,
   `is_out` tinyint(4) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL,
   `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -86,7 +84,7 @@ CREATE TABLE `batsman_innings` (
   `bowler` int(11) NOT NULL,
   `is_retired` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL,
   `created_by` int(11) NOT NULL,
   `updated_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -108,7 +106,7 @@ CREATE TABLE `bowler_innings` (
   `wides` int(11) NOT NULL,
   `no_balls` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL,
   `created_by` int(11) NOT NULL,
   `updated_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -125,7 +123,7 @@ CREATE TABLE `fall_of_wickets` (
   `ball_id` int(11) NOT NULL,
   `batsman` int(11) NOT NULL,
   `run` int(11) NOT NULL COMMENT 'team runs at the moment',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -138,8 +136,8 @@ CREATE TABLE `groups` (
   `group_id` int(11) NOT NULL,
   `group_name` varchar(255) NOT NULL,
   `tournament_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -159,8 +157,8 @@ CREATE TABLE `group_points` (
   `wins` int(11) NOT NULL,
   `losses` int(11) NOT NULL,
   `n/r` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -186,8 +184,8 @@ CREATE TABLE `innings` (
   `wickets_lost` int(11) DEFAULT NULL,
   `overs_bowled` int(11) DEFAULT NULL,
   `balls_bowled_in_current_over` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `is_completed` tinyint(4) NOT NULL DEFAULT 0
@@ -216,8 +214,8 @@ CREATE TABLE `matches` (
   `winning_team` int(11) DEFAULT NULL,
   `man_of_match` int(11) DEFAULT NULL,
   `man_of_match_description` varchar(150) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `is_completed` tinyint(4) NOT NULL DEFAULT 0,
@@ -291,8 +289,8 @@ CREATE TABLE `match_squads` (
   `team_id` int(11) NOT NULL COMMENT 'Tournament team Id',
   `player_id` int(11) NOT NULL,
   `player_role` enum('player','captain','vice captain') NOT NULL DEFAULT 'player',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -317,7 +315,7 @@ CREATE TABLE `over_records` (
   `dots` int(11) NOT NULL,
   `is_completed` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL,
   `created_by` int(11) NOT NULL,
   `updated_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -336,8 +334,8 @@ CREATE TABLE `players` (
   `company` enum('CG','G2') NOT NULL,
   `employee_id` varchar(11) NOT NULL,
   `player_role` enum('Batsman','Bowler','All Rounder') NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `is_deleted` tinyint(4) NOT NULL DEFAULT 0
@@ -480,8 +478,8 @@ CREATE TABLE `teams` (
   `team_name` varchar(150) NOT NULL COMMENT 'Eg: Chennai Super Kings',
   `team_logo` varchar(255) NOT NULL COMMENT 'Eg: image.jpg',
   `is_active` enum('T','F') NOT NULL DEFAULT 'T' COMMENT 'T - True, F - False',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -511,8 +509,8 @@ CREATE TABLE `tournaments` (
   `tournament_name` varchar(150) NOT NULL COMMENT 'Eg: GPL 2019',
   `tournament_year` int(4) NOT NULL,
   `is_active` enum('T','F') NOT NULL DEFAULT 'T' COMMENT 'T - True, F - False',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -534,8 +532,8 @@ CREATE TABLE `tournament_players` (
   `tournament_players_id` int(11) NOT NULL,
   `tournament_team_id` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `is_deleted` tinyint(4) NOT NULL DEFAULT 0
@@ -679,8 +677,8 @@ CREATE TABLE `tournament_teams` (
   `team_id` int(11) NOT NULL,
   `captain` int(11) NOT NULL,
   `vice_captain` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `is_active` enum('T','F') NOT NULL DEFAULT 'T'
@@ -712,8 +710,8 @@ CREATE TABLE `users` (
   `user_email` varchar(255) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   `is_active` enum('T','F') NOT NULL DEFAULT 'T' COMMENT 'T - True, F - False',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
