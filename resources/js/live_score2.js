@@ -117,6 +117,7 @@ var LiveScore2 = function ()
 		highlightStrike();
 		checkWicket();
 		swapBatsman();
+		swapBowler();
 		verifyOverStatus();
 		othersFunction();
 	}
@@ -476,6 +477,15 @@ var LiveScore2 = function ()
 			overRuns += ' ' + value.runs;
 		});
 		return overRuns;
+	}
+	function swapBowler()
+	{
+		$('#changeBowler').on('click', function (e)
+		{
+			e.preventDefault();
+			 newOver();
+			//alert("hi");
+		});
 	}
 
 	function newOver()

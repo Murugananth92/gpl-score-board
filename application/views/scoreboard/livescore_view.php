@@ -232,7 +232,8 @@
 
 									<div class="col-md-12 col-xs-12">
 										<div class="box-footer">
-											<button class="btn btn-success" id="changeStrikeBatsman">Swap Batsman</button>
+										<button class="btn btn-success" id="changeStrikeBatsman">Swap Batsman</button>
+										<button class="btn btn-success" id="changeBowler">Swap Bowler</button>
 										</div>
 									</div>
 								</div>
